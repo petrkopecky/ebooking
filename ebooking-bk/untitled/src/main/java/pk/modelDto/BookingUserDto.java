@@ -1,10 +1,6 @@
-package pk.entity;
-import jakarta.persistence.*;
-@Entity
-public class BookingUser {
+package pk.modelDto;
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+public class BookingUserDto {
     private Long id;
     private String userName;
     private String firstName;
@@ -85,8 +81,5 @@ public class BookingUser {
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    public BookingUser() {
     }
 }
