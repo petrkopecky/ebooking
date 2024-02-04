@@ -5,12 +5,13 @@ function App() {
   function onDateChange(date: Date) {
     console.log(date);
     console.log(date.getDay());
-    alert(date.getDate());
   }
   return (
     <>
       <div className="app">
-        <text>ebooking</text>
+        <span>ebooking</span>
+        <DatePicker onDateChange={onDateChange}></DatePicker>
+        <DatePicker onDateChange={onDateChange}></DatePicker>
         <DatePicker onDateChange={onDateChange}></DatePicker>
       </div>
     </>
