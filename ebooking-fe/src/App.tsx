@@ -1,6 +1,6 @@
 import DatePicker from "./components/DatePicker/DatePicker";
 import BookingTable from "./components/BookingTable/BookingTable";
-import { BookingTableStructure } from "./types/bookingTableStructure.ts";
+import { BookingTableStructure } from "./types/bookingTable.ts";
 import "./App.css";
 import bookingStructureJson from "./assets/bookingStructure.json";
 

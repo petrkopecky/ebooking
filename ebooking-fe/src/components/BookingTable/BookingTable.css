@@ -1,0 +1,9 @@
+.header-hour-slot {
+  font-size: 2em;
+  border: 1px solid;
+}
+
+.header-time-slot {
+  font-size: 0.8em;
+  border: 1px solid;
+}

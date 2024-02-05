@@ -21,3 +21,11 @@
     name: string
     key: string
   }
+
+  export interface BookingSlot {
+    articleKey: string
+    slotKey: string
+    slotValue: string
+    info: string
+    userPins: string[]
+  }
