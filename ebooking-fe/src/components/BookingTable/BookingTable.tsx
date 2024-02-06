@@ -10,17 +10,18 @@ function BookingTable({
   bookingTableStructure,
   bookingSlots,
 }: BookingTableProps) {
-  bookingTableStructure.articles.forEach((article) => {
-    console.log(article.name);
-  });
+  console.log("BookingTable");
   return (
     <div>
       booking table
       <table>
         <thead>
-          <tr>{hoursSlotsRow(bookingTableStructure)}</tr>
-          <tr>{timeSlotsRow(bookingTableStructure)}</tr>
+          <tr key="hourslots">{hoursSlotsRow(bookingTableStructure)}</tr>
+          <tr key="timeslots">{timeSlotsRow(bookingTableStructure)}</tr>
         </thead>
+        <tbody>
+          {bookingArticlesRows(bookingTableStructure, bookingSlots)}
+        </tbody>
       </table>
     </div>
   );
@@ -40,7 +41,8 @@ function hoursSlotsRow(
     columns.push(
       <th
         className="header-hour-slot"
-        colSpan={bookingTableStructure.slotsPerHour.length}
+        colSpan={hourSlot.slotsPerHour.length}
+        key={hourSlot.key}
       >
         {hourSlot.name}
       </th>
@@ -60,11 +62,56 @@ function timeSlotsRow(
   );
 
   bookingTableStructure.hourSlots.forEach((hourSlot) => {
-    bookingTableStructure.slotsPerHour.forEach((slotPerHour) => {
-      columns.push(<th className="header-time-slot">{slotPerHour.name}</th>);
+    hourSlot.slotsPerHour.forEach((slotPerHour) => {
+      let timeSlotKey = hourSlot.key + slotPerHour.key;
+      columns.push(
+        <th key={timeSlotKey} className="header-time-slot">
+          {slotPerHour.name}
+        </th>
+      );
     });
   });
   return columns;
+}
+
+function bookingArticlesRows(
+  bookingTableStructure: bookingTableT.BookingTableStructure,
+  bookingSlots: bookingTableT.BookingSlot[]
+): JSX.Element[] {
+  const columns: JSX.Element[] = [];
+
+  bookingTableStructure.articles.forEach((article) => {
+    columns.push(
+      bookingArticleRow(bookingTableStructure, bookingSlots, article)
+    );
+  });
+  return columns;
+}
+
+function bookingArticleRow(
+  bookingTableStructure: bookingTableT.BookingTableStructure,
+  bookingSlots: bookingTableT.BookingSlot[],
+  article: bookingTableT.Article
+): JSX.Element {
+  const bookingSlotsE: JSX.Element[] = [];
+  bookingSlotsE.push(<td key={article.key}>{article.name}</td>);
+  bookingTableStructure.hourSlots.forEach((hourSlot) => {
+    hourSlot.slotsPerHour.forEach((slotPerHour) => {
+      let slotKey: string =
+        article.key +
+        "-" +
+        bookingTableStructure.dateKey +
+        hourSlot.key +
+        slotPerHour.key;
+      bookingSlotsE.push(
+        <td id={slotKey} key={slotKey}>
+          {slotKey}
+        </td>
+      );
+    });
+  });
+  const row = <tr key={article.key}>{bookingSlotsE}</tr>;
+  return row;
 }
 
 export default BookingTable;

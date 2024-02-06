@@ -6,7 +6,7 @@ interface DatePickerProps {
 }
 
 function DatePicker({ onDateChange }: DatePickerProps) {
-  const [pickerDate, setPickerDate] = useState(new Date());
+  const [pickerDate, setPickerDate] = useState<Date>(new Date());
 
   function onDateSub(date: Date) {
     setPickerDate(addDays(date, -1));

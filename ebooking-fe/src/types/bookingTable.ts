@@ -1,10 +1,8 @@
 
-
-  
   export interface BookingTableStructure {
-    articles: Article[]
+    dateKey:string,
+    articles: Article[],
     hourSlots: HourSlot[]
-    slotsPerHour: SlotsPerHour[]
   }
   
   export interface Article {
@@ -15,9 +13,10 @@
   export interface HourSlot {
     name: string
     key: string
+      slotsPerHour:SlotPerHour[]
   }
   
-  export interface SlotsPerHour {
+  export interface SlotPerHour {
     name: string
     key: string
   }
