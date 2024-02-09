@@ -5,7 +5,7 @@ import { BookingTableStructure, BookingSlot } from "./types/bookingTable.ts";
 import "./App.css";
 import bookingStructureJson from "./assets/bookingStructure.json";
 import bookingSlotsJson from "./assets/bookingSlots.json";
-
+import bookigTableStructureService from "./service/BookingTableStructureService.ts";
 function App() {
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>(
     bookingSlotsJson as BookingSlot[]
@@ -22,7 +22,12 @@ function App() {
     console.log(date);
     setBookingDate(date);
     setBookingSlots(bookingSlotsJson as BookingSlot[]);
-    setBookingTableStructure(bookingStructureJson as BookingTableStructure);
+    //setBookingTableStructure(bookingStructureJson as BookingTableStructure);
+    bookigTableStructureService.getBookingTableStructure1().then((data) => {
+      console.log("onDateChange-<geBookingTableStructure1");
+      setBookingTableStructure(data);
+    });
+    console.log("onDateChange.");
   }
 
   //const bookingTableStructure: BookingTableStructure =bookingStructureJson as BookingTableStructure;

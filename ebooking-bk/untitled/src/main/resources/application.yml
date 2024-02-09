@@ -14,3 +14,6 @@ logging:
   level:
     root: info
 
+booking:
+  bookingTableStructureFilePath: C:/_tmp/ebooking/ebooking-bk/untitled/config/bookingTableStructure.json
+

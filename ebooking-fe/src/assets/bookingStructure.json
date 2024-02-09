@@ -1,10 +1,10 @@
 {
   "dateKey": "20240205",
   "articles": [
-    { "name": "kurt_1", "key": "k1" },
-    { "name": "kurt_2", "key": "k2" },
-    { "name": "kurt_3", "key": "k3" },
-    { "name": "kurt_4", "key": "k4" }
+    { "name": "kurt_a", "key": "k1" },
+    { "name": "kurt_b", "key": "k2" },
+    { "name": "kurt_c", "key": "k3" },
+    { "name": "kurt_d", "key": "k4" }
   ],
   "hourSlots": [
     {
