@@ -2,8 +2,8 @@ import * as bookingTableT from "../../types/bookingTable.ts";
 import "./BookingTable.css";
 
 interface BookingTableProps {
-  bookingTableStructure: bookingTableT.BookingTableStructure;
-  bookingSlots: bookingTableT.BookingSlot[];
+  bookingTableStructure?: bookingTableT.BookingTableStructure;
+  bookingSlots?: bookingTableT.BookingSlot[];
 }
 
 function BookingTable({
@@ -14,15 +14,17 @@ function BookingTable({
   return (
     <div>
       booking table
-      <table>
-        <thead>
-          <tr key="hourslots">{hoursSlotsRow(bookingTableStructure)}</tr>
-          <tr key="timeslots">{timeSlotsRow(bookingTableStructure)}</tr>
-        </thead>
-        <tbody>
-          {bookingArticlesRows(bookingTableStructure, bookingSlots)}
-        </tbody>
-      </table>
+      {bookingTableStructure && bookingSlots && (
+        <table>
+          <thead>
+            <tr key="hourslots">{hoursSlotsRow(bookingTableStructure)}</tr>
+            <tr key="timeslots">{timeSlotsRow(bookingTableStructure)}</tr>
+          </thead>
+          <tbody>
+            {bookingArticlesRows(bookingTableStructure, bookingSlots)}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

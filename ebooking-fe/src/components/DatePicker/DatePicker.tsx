@@ -2,11 +2,12 @@ import { useState } from "react";
 import "./DatePicker.css";
 
 interface DatePickerProps {
+  date?: Date;
   onDateChange(date: Date): void;
 }
 
-function DatePicker({ onDateChange }: DatePickerProps) {
-  const [pickerDate, setPickerDate] = useState<Date>(new Date());
+function DatePicker({ onDateChange, date }: DatePickerProps) {
+  const [pickerDate, setPickerDate] = useState<Date>(date ?? new Date());
 
   function onDateSub(date: Date) {
     setPickerDate(addDays(date, -1));

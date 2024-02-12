@@ -20,23 +20,18 @@ export async function getBookingTableStructure() {
 
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   console.log("geBookingTableStructure");
-  return fetch("/api/booking-table-structurex", {
+  return fetch("/api/booking-table-structure", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      console.log("getBookingTableStructure status:" + response.status);
-      return response.json() as Promise<BookingTableStructure>;
-    })
-    .catch((error) => {
-      console.log(error);
-      throw "error call getBookingTableStructure";
-    });
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    console.log("getBookingTableStructure status:" + response.status);
+    return response.json() as Promise<BookingTableStructure>;
+  });
 }
 
 const BookingTableStructureService = {
