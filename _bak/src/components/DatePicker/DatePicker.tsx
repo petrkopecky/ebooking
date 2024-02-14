@@ -8,23 +8,20 @@ interface DatePickerProps {
 
 function DatePicker({ onDateChange, initialDate }: DatePickerProps) {
   const [pickerDate, setPickerDate] = useState<Date>(initialDate ?? new Date());
-  console.log("datepicker initial " + initialDate?.toDateString());
+
   function onDateSub(date: Date) {
-    let newDate = addDays(date, -1);
-    setPickerDate(newDate);
-    onDateChange(newDate);
+    setPickerDate(addDays(date, -1));
+    onDateChange(pickerDate);
   }
 
   function onDateAdd(date: Date) {
-    let newDate = addDays(date, 1);
-    setPickerDate(newDate);
-    onDateChange(newDate);
+    setPickerDate(addDays(date, 1));
+    onDateChange(pickerDate);
   }
 
   function onDateToday(date: Date) {
-    let newDate = new Date();
-    setPickerDate(newDate);
-    onDateChange(newDate);
+    setPickerDate(new Date());
+    onDateChange(pickerDate);
   }
 
   return (
@@ -38,7 +35,8 @@ function DatePicker({ onDateChange, initialDate }: DatePickerProps) {
 }
 
 function addDays(date: Date, days: number): Date {
-  return new Date(date.getTime() + 1000 * 60 * 60 * 24 * days);
+  date.setDate(date.getDate() + days);
+  return new Date(date);
 }
 
 export default DatePicker;

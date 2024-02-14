@@ -6,11 +6,12 @@ import bookingService from "./service/BookingService.ts";
 import BookingTable from "./components/BookingTable/BookingTable";
 
 function App() {
+  const initialDate = new Date();
   const [spin, setSpin] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [bookingDate, setBookingDate] = useState<Date>(new Date());
+  const [bookingDate, setBookingDate] = useState<Date>(new Date(initialDate));
   const [bookingTableStructure, setBookingTableStructure] =
     useState<BookingTableStructure>();
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();
@@ -63,23 +64,22 @@ function App() {
           <span>ebooking</span>
           {spin && <p>Loading</p>}
 
-          {ready && (
-            <div>
-              <DatePicker
-                onDateChange={(date) => {
-                  onDateChange(date);
-                }}
-                initialDate={bookingDate}
-              ></DatePicker>
-
+          <div>
+            <DatePicker
+              onDateChange={(date) => {
+                onDateChange(date);
+              }}
+              initialDate={initialDate}
+            ></DatePicker>
+            {ready && (
               <div>
                 <BookingTable
                   bookingTableStructure={bookingTableStructure}
                   bookingSlots={bookingSlots}
                 ></BookingTable>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </>
     );
