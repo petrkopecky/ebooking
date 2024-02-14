@@ -90,6 +90,18 @@ function bookingArticlesRows(
   return columns;
 }
 
+function getBookingDateSlot(slotKey: string): bookingTableT.BookingSlot {
+  let bookingSlot = {} as bookingTableT.BookingSlot;
+  bookingSlot.slotValue = "FREE";
+  return bookingSlot;
+}
+
+function getBookingSlotTd(slotKey: string): JSX.Element {
+  //const bookingSlotsE: JSX.Element;
+  let bookingSlot: bookingTableT.BookingSlot = getBookingDateSlot(slotKey);
+  return <div>{bookingSlot.slotValue}</div>;
+}
+
 function bookingArticleRow(
   bookingTableStructure: bookingTableT.BookingTableStructure,
   bookingSlots: bookingTableT.BookingSlot[],
@@ -108,6 +120,7 @@ function bookingArticleRow(
       bookingSlotsE.push(
         <td id={slotKey} key={slotKey}>
           {slotKey}
+          {getBookingSlotTd(slotKey)}
         </td>
       );
     });
