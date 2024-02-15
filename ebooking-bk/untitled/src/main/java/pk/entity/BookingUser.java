@@ -6,9 +6,14 @@ public class BookingUser {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
+    private Integer pin;
+
+    @Column(unique = true)
     private String userName;
     private String firstName;
     private String secondName;
+    @Column(unique = true)
     private String email;
     private String telefonNumber;
     private String passwordHash;
@@ -88,5 +93,13 @@ public class BookingUser {
     }
 
     public BookingUser() {
+    }
+
+    public Integer getPin() {
+        return pin;
+    }
+
+    public void setPin(Integer pin) {
+        this.pin = pin;
     }
 }

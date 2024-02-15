@@ -1,27 +1,33 @@
 import * as bookingTableT from "../../types/bookingTable.ts";
 import "./BookingTable.css";
+import utilsService from "../../service/UtilsService.ts";
 
 interface BookingTableProps {
+  bookingDate?: Date;
   bookingTableStructure?: bookingTableT.BookingTableStructure;
   bookingSlots?: bookingTableT.BookingSlot[];
 }
 
 function BookingTable({
+  bookingDate,
   bookingTableStructure,
   bookingSlots,
 }: BookingTableProps) {
-  console.log("BookingTable");
   return (
     <div>
-      booking table
-      {bookingTableStructure && bookingSlots && (
+      booking table:{bookingDate?.toDateString()}
+      {bookingDate && bookingTableStructure && bookingSlots && (
         <table>
           <thead>
             <tr key="hourslots">{hoursSlotsRow(bookingTableStructure)}</tr>
             <tr key="timeslots">{timeSlotsRow(bookingTableStructure)}</tr>
           </thead>
           <tbody>
-            {bookingArticlesRows(bookingTableStructure, bookingSlots)}
+            {bookingArticlesRows(
+              bookingDate,
+              bookingTableStructure,
+              bookingSlots
+            )}
           </tbody>
         </table>
       )}
@@ -77,6 +83,7 @@ function timeSlotsRow(
 }
 
 function bookingArticlesRows(
+  bookingDate: Date,
   bookingTableStructure: bookingTableT.BookingTableStructure,
   bookingSlots: bookingTableT.BookingSlot[]
 ): JSX.Element[] {
@@ -84,25 +91,47 @@ function bookingArticlesRows(
 
   bookingTableStructure.articles.forEach((article) => {
     columns.push(
-      bookingArticleRow(bookingTableStructure, bookingSlots, article)
+      bookingArticleRow(
+        bookingDate,
+        bookingTableStructure,
+        bookingSlots,
+        article
+      )
     );
   });
   return columns;
 }
 
-function getBookingDateSlot(slotKey: string): bookingTableT.BookingSlot {
-  let bookingSlot = {} as bookingTableT.BookingSlot;
-  bookingSlot.slotValue = "FREE";
+function getBookingDateSlot(
+  slotKey: string,
+  bookingSlots: bookingTableT.BookingSlot[]
+): bookingTableT.BookingSlot {
+  let bookingSlot = bookingSlots.find((slot) => slot.slotKey === slotKey);
+  if (bookingSlot === undefined) {
+    bookingSlot = {} as bookingTableT.BookingSlot;
+    bookingSlot.slotKey = slotKey;
+    bookingSlot.slotValue = "CLOSED";
+    bookingSlot.info = "closed";
+    bookingSlot.userPins = [];
+  }
   return bookingSlot;
 }
 
-function getBookingSlotTd(slotKey: string): JSX.Element {
+function getBookingSlotTd(
+  slotKey: string,
+  bookingSlots: bookingTableT.BookingSlot[]
+): JSX.Element {
   //const bookingSlotsE: JSX.Element;
-  let bookingSlot: bookingTableT.BookingSlot = getBookingDateSlot(slotKey);
+  let bookingSlot: bookingTableT.BookingSlot = getBookingDateSlot(
+    slotKey,
+    bookingSlots
+  );
+
   return <div>{bookingSlot.slotValue}</div>;
 }
 
 function bookingArticleRow(
+  bookingDate: Date,
   bookingTableStructure: bookingTableT.BookingTableStructure,
   bookingSlots: bookingTableT.BookingSlot[],
   article: bookingTableT.Article
@@ -114,13 +143,13 @@ function bookingArticleRow(
       let slotKey: string =
         article.key +
         "-" +
-        bookingTableStructure.dateKey +
-        hourSlot.key +
+        utilsService.dateToYYYYMMDD(bookingDate) +
+        "-" +
         slotPerHour.key;
       bookingSlotsE.push(
         <td id={slotKey} key={slotKey}>
           {slotKey}
-          {getBookingSlotTd(slotKey)}
+          {getBookingSlotTd(slotKey, bookingSlots)}
         </td>
       );
     });

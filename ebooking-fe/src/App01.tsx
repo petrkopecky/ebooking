@@ -31,7 +31,7 @@ function App() {
       bookingService.getBookingTableStructure1().then((data) => {
         setBookingTableStructure(data);
       }),
-      bookingService.getBookingDateSlots().then((data) => {
+      bookingService.getBookingDateSlots(bookingDate).then((data) => {
         setBookingSlots(data);
       }),
     ])
@@ -74,6 +74,7 @@ function App() {
 
               <div>
                 <BookingTable
+                  bookingDate={bookingDate}
                   bookingTableStructure={bookingTableStructure}
                   bookingSlots={bookingSlots}
                 ></BookingTable>

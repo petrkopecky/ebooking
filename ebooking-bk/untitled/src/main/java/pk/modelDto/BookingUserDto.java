@@ -1,7 +1,9 @@
 package pk.modelDto;
 
+
 public class BookingUserDto {
     private Long id;
+    private Integer pin;
     private String userName;
     private String firstName;
     private String secondName;
@@ -17,6 +19,14 @@ public class BookingUserDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getPin() {
+        return pin;
+    }
+
+    public void setPin(Integer pin) {
+        this.pin = pin;
     }
 
     public String getUserName() {

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pk.modelDto.BookingUserDto;
 import pk.service.BookingTableStructureService;
@@ -30,8 +31,9 @@ public class BookingController {
     ;
 
     @PostMapping("/booking-date-slots")
-    public String getBookingDateSlots(Date bookingDate) {
-        return "[{\"articleKey\":\"k1\",\"slotKey\":\"k1-20230607-0930-1000\",\"slotValue\":\"R\",\"info\":\"30,31\",\"userPins\":[\"30\",\"31\"]},{\"articleKey\":\"k2\",\"slotKey\":\"k1-20230607-0930-1000\",\"slotValue\":\"R\",\"info\":\"30,31\",\"userPins\":[\"30\",\"31\"]}]";
+    public String getBookingDateSlots(@RequestBody Date bookingDate) {
+        log.info("getBookingDateSlots:"+(bookingDate==null?"":bookingDate.toString()));
+        return "[{\"articleKey\":\"k1\",\"slotKey\":\"k1-20240216-0930-1000\",\"slotValue\":\"R\",\"info\":\"30,31\",\"userPins\":[\"30\",\"31\"]},{\"articleKey\":\"k2\",\"slotKey\":\"k1-20240216-1230-1300\",\"slotValue\":\"R\",\"info\":\"30,31\",\"userPins\":[\"30\",\"31\"]}]";
     }
 
 }
