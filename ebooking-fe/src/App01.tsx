@@ -32,6 +32,7 @@ function App() {
         setBookingTableStructure(data);
       }),
       bookingService.getBookingDateSlots(bookingDate).then((data) => {
+        console.log(data);
         setBookingSlots(data);
       }),
     ])

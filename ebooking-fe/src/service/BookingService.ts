@@ -18,7 +18,7 @@ export function getBookingTableStructure1(): Promise<BookingTableStructure> {
 
 export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   console.log("getBookingDateSlots" + bookingDate.toDateString());
-  return fetch("/api/booking-date-slots", {
+  return fetch("/api/booking-date-slots1", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
