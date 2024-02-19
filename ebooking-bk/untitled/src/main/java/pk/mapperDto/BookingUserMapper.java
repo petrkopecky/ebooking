@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface BookingUserMapper {
+
     BookingUserDto bookingUserToBookingUserDto( BookingUser bookingUser);
     BookingUser bookingUserDtoToBookingUser( BookingUserDto bookingUserDto);
 

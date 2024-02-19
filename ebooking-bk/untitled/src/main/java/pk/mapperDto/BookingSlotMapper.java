@@ -8,9 +8,9 @@ import pk.modelDto.BookingSlotDto;
 
 import java.util.List;
 
-@Mapper
+//@Mapper
 public interface BookingSlotMapper {
-    @Mapping(source="bookingArticle", target="bookingArticleDto")
+   /* @Mapping(source="bookingArticle", target="bookingArticleDto")
     @Mapping(source="bookingUser", target="bookingUserDto")
     BookingSlotDto bookingSlotToBookingSlotDto( BookingSlot bookingSlot);
     @Mapping(source="bookingArticleDto", target="bookingArticle")
@@ -20,6 +20,6 @@ public interface BookingSlotMapper {
 
     List<BookingSlotDto> bookingSlotsToBookingSlotsDto(List<BookingSlot> bookingSlots);
     List<BookingSlot> bookingSlotsDtoToBookingSlots( List<BookingSlotDto> bookingSlotsDto);
-
+*/
 
 }

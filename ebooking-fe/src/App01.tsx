@@ -29,17 +29,18 @@ function App() {
     setSpin(true);
     Promise.all([
       bookingService.getBookingTableStructure1().then((data) => {
+        console.log("getBookingTableStructure1 data:" + data);
         setBookingTableStructure(data);
       }),
       bookingService.getBookingDateSlots(bookingDate).then((data) => {
-        console.log(data);
+        console.log("getBookingDateSlots data:" + data);
         setBookingSlots(data);
       }),
     ])
       .catch((error) => {
-        console.log(`setDate error: ${error}`);
+        console.log(error);
         setError(true);
-        setErrorMessage("Error occured:");
+        setErrorMessage(error.message);
       })
       .finally(() => {
         setSpin(false);

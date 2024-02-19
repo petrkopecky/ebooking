@@ -6,14 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pk.entity.BookingSlot;
 import pk.mapperDto.BookingSlotMapper;
-import pk.mapperDto.BookingUserMapper;
-import pk.modelDto.BookingSlotDto;
-import pk.modelDto.BookingTableStot;
+import pk.modelDto.BookingTableSlot;
 import pk.repository.BookingSlotJpaRepository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,7 +25,7 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
     private final BookingSlotJpaRepository bookingSlotJpaRepository;
     private final BookingSlotMapper bookingSlotMapper= Mappers.getMapper(BookingSlotMapper.class);
 
- 
+
    /* public List<BookingSlotDto> getBookingSlots(Date bookingDate) {
         Optional<BookingSlot> bookingSlot=bookingSlotJpaRepository.findById(1L);
         log.info("getBookingSlots:"+bookingSlotJpaRepository.findAll()==null?"null":"neco");
@@ -36,7 +35,16 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
 
 
     @Override
-    public List<BookingTableStot> getBookingSlots(Date bookingDate) {
-        return null;
+    public List<BookingTableSlot> getBookingSlots(String bookingDate) {
+
+        List<BookingTableSlot> bookingTableSlots =bookingSlotJpaRepository.findByBookingDate(bookingDate).stream().map(
+                bookingSlot->{
+                    BookingTableSlot bookingTableSlot=new BookingTableSlot();
+                    bookingTableSlot.setSlotKey("k1-20240217-1030-1100");
+                    bookingTableSlot.setSlotValue("BOOKED");
+                    return bookingTableSlot;
+                }
+        ).collect(Collectors.toList());
+        return bookingTableSlots;
     }
 }

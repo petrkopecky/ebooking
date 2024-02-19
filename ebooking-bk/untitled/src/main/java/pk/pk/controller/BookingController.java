@@ -2,15 +2,19 @@ package pk.pk.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import pk.modelDto.BookingSlotDto;
+import pk.modelDto.BookingTableSlot;
 import pk.modelDto.BookingUserDto;
 import pk.service.BookingSlotService;
 import pk.service.BookingTableStructureService;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -41,11 +45,17 @@ public class BookingController {
     }
 
     @PostMapping("/booking-date-slots1")
-    public List<BookingSlotDto> getBookingDateSlots1(@RequestBody Date bookingDate) {
+    public List<BookingTableSlot> getBookingDateSlots1(@RequestBody String bookingDate) {
         log.info("getBookingDateSlots1.0:"+(bookingDate==null?"":bookingDate.toString()));
-        List<BookingSlotDto> bookingSlotDtos= bookingSlotService.getBookingSlots(bookingDate);
-        log.info("getBookingDateSlots1.1:"+(bookingSlotDtos==null?"":bookingSlotDtos.size()));
-        return bookingSlotDtos;
+        List<BookingTableSlot> BookingTableSlots= bookingSlotService.getBookingSlots(bookingDate);
+        //log.info("getBookingDateSlots1.1:"+(BookingTableSlots==null?"":BookingTableSlots.size()));
+        if(bookingDate==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
+        }
+        if (BookingTableSlots==null ||BookingTableSlots.size()==0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no slot for bookingDate "+bookingDate.toString());
+        }
+        return BookingTableSlots;
     }
 
 

@@ -6,12 +6,14 @@ import pk.modelDto.BookingArticleDto;
 
 import java.util.List;
 
-@Mapper
+//@Mapper
 public interface BookingArticleMapper {
-    BookingArticleDto bookingArticleToBookingArticleDto(BookingArticle bookingArticle);
+  /*  BookingArticleDto bookingArticleToBookingArticleDto(BookingArticle bookingArticle);
     BookingArticle bookingArticleDtoToBookingArticle( BookingArticleDto bookingArticleDto);
 
 
     List<BookingArticleDto> bookingArticlesToBookingArticlesDto(List<BookingArticle> bookingArticles);
     List<BookingArticle> bookingArticlesDtoToBookingArticles( List<BookingArticleDto> bookingArticlesDto);
+*/
 }
+

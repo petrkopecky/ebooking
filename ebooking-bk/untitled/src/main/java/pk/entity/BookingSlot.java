@@ -2,6 +2,7 @@ package pk.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -48,6 +49,7 @@ public class BookingSlot {
         this.note = note;
     }
 
+
     public String getBookingDate() {
         return bookingDate;
     }
@@ -79,4 +81,6 @@ public class BookingSlot {
     public void setBookingUsers(List<BookingUser> bookingUsers) {
         this.bookingUsers = bookingUsers;
     }
+
+
 }

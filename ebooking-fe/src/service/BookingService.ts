@@ -11,7 +11,6 @@ export function getBookingTableStructure1(): Promise<BookingTableStructure> {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    //console.log("getBookingTableStructure status:" + response.status);
     return response.json() as Promise<BookingTableStructure>;
   });
 }
@@ -26,11 +25,15 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
     body: JSON.stringify(bookingDate),
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error("getBookingDateSlots:" + response.statusText);
     }
-    //console.log("getBookingDateSlots status:" + response.status);
     return response.json() as Promise<BookingSlot[]>;
   });
+}
+
+async function getBookingDateSlotsA(bookingDate: Date) {
+  const data: BookingSlot[] = await getBookingDateSlots(bookingDate);
+  return data;
 }
 
 const BookingService = {
