@@ -4,12 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pk.entity.BookingArticleSlot;
 import pk.entity.BookingSlot;
 import pk.mapperDto.BookingSlotMapper;
 import pk.modelDto.BookingTableSlot;
+import pk.repository.BookingArticleSlotJpaRepository;
 import pk.repository.BookingSlotJpaRepository;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,11 +21,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BookingSlotServiceImpl implements  BookingSlotService{
     @Autowired
-    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository){
+    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository,BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository){
         this.bookingSlotJpaRepository=bookingSlotJpaRepository;
+        this.bookingArticleSlotJpaRepository=bookingArticleSlotJpaRepository;
     }
 
     private final BookingSlotJpaRepository bookingSlotJpaRepository;
+    private final BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository;
     private final BookingSlotMapper bookingSlotMapper= Mappers.getMapper(BookingSlotMapper.class);
 
 
@@ -47,4 +52,53 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
         ).collect(Collectors.toList());
         return bookingTableSlots;
     }
+
+    @Override
+    public List<BookingTableSlot> getBookingArticleSlots(String bookingDate){
+        LocalDate bookingDateParam=LocalDate.parse("2024-01-01");
+        List<BookingArticleSlot> bookingArticleSlots=bookingArticleSlotJpaRepository.getAllBetweenDates(bookingDateParam);
+        bookingArticleSlots.forEach(bookingArticleSlot -> {
+            String[] timeSlots=bookingArticleSlot.getTimeSlot().split("-",2);
+            String startTimeSlot=timeSlots[0];
+            String stopTimeSlot=timeSlots[1];
+            String timeSlot=startTimeSlot;
+            while(compareTimeStols(timeSlot,stopTimeSlot)<0){
+                timeSlot=getNextTimeSlot2pH(timeSlot);
+                log.info("gen. time slot, next value:"+timeSlot);
+            }
+        });
+
+        
+
+
+        if(bookingArticleSlots==null){
+            log.info("nullll");
+        }else{
+            log.info("necooo");
+        }
+        return null;
+    }
+
+    String getNextTimeSlot2pH(String timeSlot){
+      String hour=timeSlot.substring(0,2);
+      String minutes=timeSlot.substring(2,4);
+      String newHour;
+      String newMinutes;
+      if(minutes.equals("00")){
+          newMinutes="30";
+          newHour=hour;
+      } else if (minutes.equals("30")) {
+          newMinutes="00";
+          newHour=String.format("%02d",Integer.parseInt(hour)+1);
+
+      }else{
+          throw new RuntimeException("timeSlot error, wrong value:"+timeSlot);
+      }
+      return newHour+newMinutes;
+    }
+
+    int compareTimeStols(String timeSlot1,String timeSlot2){
+        return timeSlot1.compareTo(timeSlot2);
+    }
+
 }

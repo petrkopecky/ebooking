@@ -58,5 +58,10 @@ public class BookingController {
         return BookingTableSlots;
     }
 
+    @GetMapping("/booking-article-date-slots")
+    public String getBookingArticleDateStols(){
+        bookingSlotService.getBookingArticleSlots("20240221");
+        return "ok";
+    }
 
 }
