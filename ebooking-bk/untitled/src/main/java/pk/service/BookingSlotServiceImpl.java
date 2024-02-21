@@ -13,6 +13,7 @@ import pk.repository.BookingSlotJpaRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,14 +58,22 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
     public List<BookingTableSlot> getBookingArticleSlots(String bookingDate){
         LocalDate bookingDateParam=LocalDate.parse("2024-01-01");
         List<BookingArticleSlot> bookingArticleSlots=bookingArticleSlotJpaRepository.getAllBetweenDates(bookingDateParam);
+        List<BookingTableSlot> bookingTableSlots=new ArrayList<BookingTableSlot>();
         bookingArticleSlots.forEach(bookingArticleSlot -> {
             String[] timeSlots=bookingArticleSlot.getTimeSlot().split("-",2);
-            String startTimeSlot=timeSlots[0];
-            String stopTimeSlot=timeSlots[1];
-            String timeSlot=startTimeSlot;
-            while(compareTimeStols(timeSlot,stopTimeSlot)<0){
-                timeSlot=getNextTimeSlot2pH(timeSlot);
-                log.info("gen. time slot, next value:"+timeSlot);
+            String bookingArticleStartTimeSlot=timeSlots[0];
+            String bookingArticleEndTimeSlot=timeSlots[1];
+            String iStartTimeSlot=bookingArticleStartTimeSlot;
+            //kontrola na den v tydnu
+            //pred vlozeni kontrola zda neexituje s vetsi prioritou
+            while(compareTimeStols(iStartTimeSlot,bookingArticleEndTimeSlot)<0){
+                String iEndTimeSlot=getEndTimeSlot2pH(iStartTimeSlot);
+                log.info("gen. time slot, next value:"+iStartTimeSlot);
+                BookingTableSlot bookingTableSlot=new BookingTableSlot();
+                bookingTableSlot.setSlotValue(bookingArticleSlot.getStatus());
+                bookingTableSlot.setSlotKey(bookingArticleSlot.getBookingArticle().getKey()+"-"+bookingDate+"-"+iStartTimeSlot+"-"+iEndTimeSlot);
+                bookingTableSlots.add(bookingTableSlot);
+                iStartTimeSlot=iEndTimeSlot;
             }
         });
 
@@ -79,7 +88,7 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
         return null;
     }
 
-    String getNextTimeSlot2pH(String timeSlot){
+    String getEndTimeSlot2pH(String timeSlot){
       String hour=timeSlot.substring(0,2);
       String minutes=timeSlot.substring(2,4);
       String newHour;
