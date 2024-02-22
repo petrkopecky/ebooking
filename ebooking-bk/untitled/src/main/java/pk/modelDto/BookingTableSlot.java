@@ -7,6 +7,8 @@ public class BookingTableSlot {
     String info;
     String[] userPins;
 
+    Integer priority;
+
     public String getArticleKey() {
         return articleKey;
     }
@@ -45,5 +47,13 @@ public class BookingTableSlot {
 
     public void setUserPins(String[] userPins) {
         this.userPins = userPins;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 }

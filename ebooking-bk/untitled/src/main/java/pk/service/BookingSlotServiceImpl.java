@@ -11,25 +11,30 @@ import pk.modelDto.BookingTableSlot;
 import pk.repository.BookingArticleSlotJpaRepository;
 import pk.repository.BookingSlotJpaRepository;
 
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class BookingSlotServiceImpl implements  BookingSlotService{
+public class BookingSlotServiceImpl implements BookingSlotService {
+
+
     @Autowired
-    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository,BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository){
-        this.bookingSlotJpaRepository=bookingSlotJpaRepository;
-        this.bookingArticleSlotJpaRepository=bookingArticleSlotJpaRepository;
+    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository) {
+        this.bookingSlotJpaRepository = bookingSlotJpaRepository;
+        this.bookingArticleSlotJpaRepository = bookingArticleSlotJpaRepository;
     }
 
     private final BookingSlotJpaRepository bookingSlotJpaRepository;
     private final BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository;
-    private final BookingSlotMapper bookingSlotMapper= Mappers.getMapper(BookingSlotMapper.class);
+    private final BookingSlotMapper bookingSlotMapper = Mappers.getMapper(BookingSlotMapper.class);
 
 
    /* public List<BookingSlotDto> getBookingSlots(Date bookingDate) {
@@ -43,9 +48,9 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
     @Override
     public List<BookingTableSlot> getBookingSlots(String bookingDate) {
 
-        List<BookingTableSlot> bookingTableSlots =bookingSlotJpaRepository.findByBookingDate(bookingDate).stream().map(
-                bookingSlot->{
-                    BookingTableSlot bookingTableSlot=new BookingTableSlot();
+        List<BookingTableSlot> bookingTableSlots = bookingSlotJpaRepository.findByBookingDate(bookingDate).stream().map(
+                bookingSlot -> {
+                    BookingTableSlot bookingTableSlot = new BookingTableSlot();
                     bookingTableSlot.setSlotKey("k1-20240217-1030-1100");
                     bookingTableSlot.setSlotValue("BOOKED");
                     return bookingTableSlot;
@@ -55,59 +60,84 @@ public class BookingSlotServiceImpl implements  BookingSlotService{
     }
 
     @Override
-    public List<BookingTableSlot> getBookingArticleSlots(String bookingDate){
-        LocalDate bookingDateParam=LocalDate.parse("2024-01-01");
-        List<BookingArticleSlot> bookingArticleSlots=bookingArticleSlotJpaRepository.getAllBetweenDates(bookingDateParam);
-        List<BookingTableSlot> bookingTableSlots=new ArrayList<BookingTableSlot>();
+    public List<BookingTableSlot> getBookingArticleSlots(String bookingDateString) {
+        //LocalDate bookingDateParam=LocalDate.parse("2024-01-01");
+        LocalDate bookingDate = parseDate(bookingDateString);
+        List<BookingArticleSlot> bookingArticleSlots = bookingArticleSlotJpaRepository.getAllBetweenDates(bookingDate);
+        List<BookingTableSlot> bookingTableSlots = new ArrayList<BookingTableSlot>();
         bookingArticleSlots.forEach(bookingArticleSlot -> {
-            String[] timeSlots=bookingArticleSlot.getTimeSlot().split("-",2);
-            String bookingArticleStartTimeSlot=timeSlots[0];
-            String bookingArticleEndTimeSlot=timeSlots[1];
-            String iStartTimeSlot=bookingArticleStartTimeSlot;
-            //kontrola na den v tydnu
-            //pred vlozeni kontrola zda neexituje s vetsi prioritou
-            while(compareTimeStols(iStartTimeSlot,bookingArticleEndTimeSlot)<0){
-                String iEndTimeSlot=getEndTimeSlot2pH(iStartTimeSlot);
-                log.info("gen. time slot, next value:"+iStartTimeSlot);
-                BookingTableSlot bookingTableSlot=new BookingTableSlot();
-                bookingTableSlot.setSlotValue(bookingArticleSlot.getStatus());
-                bookingTableSlot.setSlotKey(bookingArticleSlot.getBookingArticle().getKey()+"-"+bookingDate+"-"+iStartTimeSlot+"-"+iEndTimeSlot);
-                bookingTableSlots.add(bookingTableSlot);
-                iStartTimeSlot=iEndTimeSlot;
+            String[] timeSlots = bookingArticleSlot.getTimeSlot().split("-", 2);
+            String bookingArticleStartTimeSlot = timeSlots[0];
+            String bookingArticleEndTimeSlot = timeSlots[1];
+            String iStartTimeSlot = bookingArticleStartTimeSlot;
+            DayOfWeek bookingDayOfWeek = bookingDate.getDayOfWeek();
+            if ((bookingArticleSlot.getRepeatDay().equals(bookingDayOfWeek.name()) || bookingArticleSlot.getRepeatDay().equals("ONCE-" + bookingDateString))) {
+                while (compareTimeStols(iStartTimeSlot, bookingArticleEndTimeSlot) < 0) {
+                    String iEndTimeSlot = getEndTimeSlot2pH(iStartTimeSlot);
+                    String slotKey = bookingArticleSlot.getBookingArticle().getKey() + "-" + bookingDate + "-" + iStartTimeSlot + "-" + iEndTimeSlot;
+                    log.info("gen. time slot, next value:" + slotKey);
+                    BookingTableSlot bookingTableSlot = new BookingTableSlot();
+                    bookingTableSlot.setSlotValue(bookingArticleSlot.getStatus());
+                    bookingTableSlot.setSlotKey(slotKey);
+                    bookingTableSlot.setPriority(bookingArticleSlot.getPriority());
+                    addBookingTableSlot(bookingTableSlot, bookingTableSlots);
+                    iStartTimeSlot = iEndTimeSlot;
+                }
             }
         });
 
-        
-
-
-        if(bookingArticleSlots==null){
+        if (bookingArticleSlots == null) {
             log.info("nullll");
-        }else{
+        } else {
             log.info("necooo");
         }
         return null;
     }
 
-    String getEndTimeSlot2pH(String timeSlot){
-      String hour=timeSlot.substring(0,2);
-      String minutes=timeSlot.substring(2,4);
-      String newHour;
-      String newMinutes;
-      if(minutes.equals("00")){
-          newMinutes="30";
-          newHour=hour;
-      } else if (minutes.equals("30")) {
-          newMinutes="00";
-          newHour=String.format("%02d",Integer.parseInt(hour)+1);
-
-      }else{
-          throw new RuntimeException("timeSlot error, wrong value:"+timeSlot);
-      }
-      return newHour+newMinutes;
+    void addBookingTableSlot(BookingTableSlot bookingTableSlot, List<BookingTableSlot> bookingTableSlots) {
+        Optional<BookingTableSlot> bookingTableSlotF = bookingTableSlots.stream().filter(iBookingTableSlot -> (iBookingTableSlot.getSlotKey().equals(bookingTableSlot.getSlotKey()))).findFirst();
+        if (!bookingTableSlotF.isPresent()) {
+            log.info("add slot :" + bookingTableSlot.getSlotKey());
+            bookingTableSlots.add(bookingTableSlot);
+        } else if (bookingTableSlotF.isPresent() && bookingTableSlotF.get().getPriority() < bookingTableSlot.getPriority()) {
+            bookingTableSlots.remove(bookingTableSlotF);
+            bookingTableSlots.add(bookingTableSlot);
+            log.info("remove slot and add:" + bookingTableSlot.getSlotKey());
+        } else {
+            log.info("do nothing:" + bookingTableSlot.getSlotKey());
+        }
     }
 
-    int compareTimeStols(String timeSlot1,String timeSlot2){
+    String getEndTimeSlot2pH(String timeSlot) {
+        String hour = timeSlot.substring(0, 2);
+        String minutes = timeSlot.substring(2, 4);
+        String newHour;
+        String newMinutes;
+        if (minutes.equals("00")) {
+            newMinutes = "30";
+            newHour = hour;
+        } else if (minutes.equals("30")) {
+            newMinutes = "00";
+            newHour = String.format("%02d", Integer.parseInt(hour) + 1);
+
+        } else {
+            throw new RuntimeException("timeSlot error, wrong value:" + timeSlot);
+        }
+        return newHour + newMinutes;
+    }
+
+    int compareTimeStols(String timeSlot1, String timeSlot2) {
         return timeSlot1.compareTo(timeSlot2);
+    }
+
+    LocalDate parseDate(String dateYYYYMMDD) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            return LocalDate.parse(dateYYYYMMDD, formatter);
+        } catch (Exception ex) {
+            throw new RuntimeException("error parse date:" + dateYYYYMMDD);
+        }
+
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface BookingArticleSlotJpaRepository extends JpaRepository<BookingArticleSlot,Long> {
 
-    @Query(value = "from BookingArticleSlot t where fromDate >= :bookingDate AND :bookingDate <=toDate")
+    @Query(value = "from BookingArticleSlot t where fromDate <= :bookingDate AND :bookingDate <=toDate")
     public List<BookingArticleSlot> getAllBetweenDates(@Param("bookingDate") LocalDate startDate);
 
 }
