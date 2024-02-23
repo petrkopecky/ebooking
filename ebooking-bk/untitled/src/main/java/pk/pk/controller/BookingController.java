@@ -15,6 +15,7 @@ import pk.service.BookingSlotService;
 import pk.service.BookingTableStructureService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -46,21 +47,22 @@ public class BookingController {
 
     @PostMapping("/booking-date-slots1")
     public List<BookingTableSlot> getBookingDateSlots1(@RequestBody String bookingDate) {
+
         log.info("getBookingDateSlots1.0:"+(bookingDate==null?"":bookingDate.toString()));
-        List<BookingTableSlot> BookingTableSlots= bookingSlotService.getBookingSlots(bookingDate);
+        List<BookingTableSlot> bookingTableSlots= bookingSlotService.getBookingTableSlots(bookingDate);
         //log.info("getBookingDateSlots1.1:"+(BookingTableSlots==null?"":BookingTableSlots.size()));
         if(bookingDate==null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
         }
-        if (BookingTableSlots==null ||BookingTableSlots.size()==0) {
+        if (bookingTableSlots==null ||bookingTableSlots.size()==0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no slot for bookingDate "+bookingDate.toString());
         }
-        return BookingTableSlots;
+        return bookingTableSlots;
     }
 
     @GetMapping("/booking-article-date-slots")
     public String getBookingArticleDateStols(){
-        bookingSlotService.getBookingArticleSlots("20240221");
+        bookingSlotService.getBookingArticleSlots("2024-02-21");
         return "ok";
     }
 

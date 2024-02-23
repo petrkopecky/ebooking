@@ -1,9 +1,9 @@
 {
   "articles": [
-    { "name": "kurt_a", "key": "k1" },
-    { "name": "kurt_b", "key": "k2" },
-    { "name": "kurt_c", "key": "k3" },
-    { "name": "kurt_d", "key": "k4" }
+    { "name": "kurt_a", "key": "k01" },
+    { "name": "kurt_b", "key": "k02" },
+    { "name": "kurt_c", "key": "k03" },
+    { "name": "kurt_d", "key": "k04" }
   ],
   "hourSlots": [
     {

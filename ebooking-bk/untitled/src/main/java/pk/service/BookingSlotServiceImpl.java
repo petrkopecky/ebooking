@@ -44,6 +44,21 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     }*/
     //</editor-fold>
 
+    @Override
+    public List<BookingTableSlot> getBookingTableSlots(String bookingDate) {
+        List<BookingTableSlot> bookingArticleTableSlots = getBookingArticleSlots(bookingDate);
+        List<BookingTableSlot> bookingTableSlots = getBookingSlots(bookingDate);
+        return combineBookingAndArticleSlots(bookingTableSlots,bookingArticleTableSlots);
+    }
+    public List<BookingTableSlot> combineBookingAndArticleSlots(List<BookingTableSlot> bookingTableSlots,List<BookingTableSlot> bookingArticleTableSlots) {
+        List<BookingTableSlot> cBookingTableSlots=null;
+        if(bookingTableSlots==null || bookingTableSlots.size()==0){
+            cBookingTableSlots=bookingArticleTableSlots;
+        }else{
+
+        }
+        return cBookingTableSlots;
+    }
 
     @Override
     public List<BookingTableSlot> getBookingSlots(String bookingDate) {
@@ -51,8 +66,9 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         List<BookingTableSlot> bookingTableSlots = bookingSlotJpaRepository.findByBookingDate(bookingDate).stream().map(
                 bookingSlot -> {
                     BookingTableSlot bookingTableSlot = new BookingTableSlot();
-                    bookingTableSlot.setSlotKey("k1-20240217-1030-1100");
+                    bookingTableSlot.setSlotKey("k1-2024-02-17-1030-1100");
                     bookingTableSlot.setSlotValue("BOOKED");
+                    bookingTableSlot.setPriority(10);
                     return bookingTableSlot;
                 }
         ).collect(Collectors.toList());
@@ -61,10 +77,9 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
     @Override
     public List<BookingTableSlot> getBookingArticleSlots(String bookingDateString) {
-        //LocalDate bookingDateParam=LocalDate.parse("2024-01-01");
-        LocalDate bookingDate = parseDate(bookingDateString);
-        List<BookingArticleSlot> bookingArticleSlots = bookingArticleSlotJpaRepository.getAllBetweenDates(bookingDate);
+        LocalDate bookingDate = LocalDate.parse(bookingDateString);
         List<BookingTableSlot> bookingTableSlots = new ArrayList<BookingTableSlot>();
+        List<BookingArticleSlot> bookingArticleSlots = bookingArticleSlotJpaRepository.getAllBetweenDates(bookingDate);
         bookingArticleSlots.forEach(bookingArticleSlot -> {
             String[] timeSlots = bookingArticleSlot.getTimeSlot().split("-", 2);
             String bookingArticleStartTimeSlot = timeSlots[0];
@@ -85,13 +100,8 @@ public class BookingSlotServiceImpl implements BookingSlotService {
                 }
             }
         });
+        return bookingTableSlots;
 
-        if (bookingArticleSlots == null) {
-            log.info("nullll");
-        } else {
-            log.info("necooo");
-        }
-        return null;
     }
 
     void addBookingTableSlot(BookingTableSlot bookingTableSlot, List<BookingTableSlot> bookingTableSlots) {
@@ -130,14 +140,5 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         return timeSlot1.compareTo(timeSlot2);
     }
 
-    LocalDate parseDate(String dateYYYYMMDD) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            return LocalDate.parse(dateYYYYMMDD, formatter);
-        } catch (Exception ex) {
-            throw new RuntimeException("error parse date:" + dateYYYYMMDD);
-        }
-
-    }
 
 }

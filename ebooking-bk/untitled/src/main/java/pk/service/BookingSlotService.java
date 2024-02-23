@@ -11,4 +11,6 @@ public interface BookingSlotService {
     List<BookingTableSlot> getBookingSlots(String bookingDate);
 
     List<BookingTableSlot> getBookingArticleSlots(String bookingDate);
+
+    List<BookingTableSlot> getBookingTableSlots(String bookingDate);
 }

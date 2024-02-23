@@ -22,7 +22,7 @@ function DatePicker({ onDateChange, initialDate }: DatePickerProps) {
   }
 
   function onDateToday(date: Date) {
-    let newDate = new Date();
+    let newDate = new Date(new Date().setHours(0, 0, 0, 0));
     setPickerDate(newDate);
     onDateChange(newDate);
   }

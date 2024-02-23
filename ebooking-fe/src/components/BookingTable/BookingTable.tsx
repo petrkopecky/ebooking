@@ -143,7 +143,7 @@ function bookingArticleRow(
       let slotKey: string =
         article.key +
         "-" +
-        utilsService.dateToYYYYMMDD(bookingDate) +
+        utilsService.dateToYYYY_MM_DD(bookingDate) +
         "-" +
         slotPerHour.key;
       bookingSlotsE.push(

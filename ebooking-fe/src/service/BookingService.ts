@@ -1,5 +1,5 @@
 import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
-
+import utilsService from "./UtilsService.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
@@ -22,9 +22,10 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(bookingDate),
+    body: utilsService.dateToYYYY_MM_DD(bookingDate),
   }).then((response) => {
     if (!response.ok) {
+      console.log(response.statusText);
       throw new Error("getBookingDateSlots:" + response.statusText);
     }
     return response.json() as Promise<BookingSlot[]>;
