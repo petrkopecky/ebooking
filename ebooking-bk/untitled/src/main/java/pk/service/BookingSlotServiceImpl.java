@@ -51,11 +51,21 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         return combineBookingAndArticleSlots(bookingTableSlots,bookingArticleTableSlots);
     }
     public List<BookingTableSlot> combineBookingAndArticleSlots(List<BookingTableSlot> bookingTableSlots,List<BookingTableSlot> bookingArticleTableSlots) {
-        List<BookingTableSlot> cBookingTableSlots=null;
+        List<BookingTableSlot> cBookingTableSlots;
         if(bookingTableSlots==null || bookingTableSlots.size()==0){
             cBookingTableSlots=bookingArticleTableSlots;
         }else{
-
+            cBookingTableSlots = new ArrayList<BookingTableSlot>();
+            bookingArticleTableSlots.forEach(bookingArticleSlot->{
+                log.info("bookingArticleSlot:"+bookingArticleSlot.getSlotKey());
+                Optional<BookingTableSlot> bookingTableSlot = bookingTableSlots.stream().filter(iBookingTableSlot -> (iBookingTableSlot.getSlotKey().equals(bookingArticleSlot.getSlotKey()))).findFirst();
+                if(bookingTableSlot.isPresent()){
+                    cBookingTableSlots.add(bookingTableSlot.get());
+                }
+                else{
+                    cBookingTableSlots.add(bookingArticleSlot);
+                }
+            });
         }
         return cBookingTableSlots;
     }
@@ -67,6 +77,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
                 bookingSlot -> {
                     BookingTableSlot bookingTableSlot = new BookingTableSlot();
                     bookingTableSlot.setSlotKey("k1-2024-02-17-1030-1100");
+                    bookingTableSlot.setSlotKey(getSlotKey(bookingSlot.getBookingArticle().getKey(), bookingDate, bookingSlot.getBookingTimeSlot()));
                     bookingTableSlot.setSlotValue("BOOKED");
                     bookingTableSlot.setPriority(10);
                     return bookingTableSlot;
@@ -89,7 +100,8 @@ public class BookingSlotServiceImpl implements BookingSlotService {
             if ((bookingArticleSlot.getRepeatDay().equals(bookingDayOfWeek.name()) || bookingArticleSlot.getRepeatDay().equals("ONCE-" + bookingDateString))) {
                 while (compareTimeStols(iStartTimeSlot, bookingArticleEndTimeSlot) < 0) {
                     String iEndTimeSlot = getEndTimeSlot2pH(iStartTimeSlot);
-                    String slotKey = bookingArticleSlot.getBookingArticle().getKey() + "-" + bookingDate + "-" + iStartTimeSlot + "-" + iEndTimeSlot;
+                    //String slotKey = bookingArticleSlot.getBookingArticle().getKey() + "-" + bookingDate + "-" + iStartTimeSlot + "-" + iEndTimeSlot;
+                    String slotKey =getSlotKey(bookingArticleSlot.getBookingArticle().getKey(),bookingDateString,iStartTimeSlot + "-" + iEndTimeSlot);
                     log.info("gen. time slot, next value:" + slotKey);
                     BookingTableSlot bookingTableSlot = new BookingTableSlot();
                     bookingTableSlot.setSlotValue(bookingArticleSlot.getStatus());
@@ -102,6 +114,10 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         });
         return bookingTableSlots;
 
+    }
+
+    String getSlotKey(String articleKey, String bookingDate, String timeSlot){
+        return   articleKey + "-" + bookingDate + "-" + timeSlot;
     }
 
     void addBookingTableSlot(BookingTableSlot bookingTableSlot, List<BookingTableSlot> bookingTableSlots) {
