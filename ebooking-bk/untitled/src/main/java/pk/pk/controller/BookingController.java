@@ -54,9 +54,12 @@ public class BookingController {
         if(bookingDate==null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
         }
+        /*
         if (bookingTableSlots==null ||bookingTableSlots.size()==0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no slot for bookingDate "+bookingDate.toString());
         }
+        */
+
         return bookingTableSlots;
     }
 
