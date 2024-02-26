@@ -1,15 +1,15 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { AppContext, AppContextType, useAppContext } from "../AppContext";
+import { UserContext, UserContextType, useUserContext } from "../UserContext";
 
 const Home = () => {
-  const { user } = useAppContext();
-  console.log(user);
+  const userContext = useUserContext();
   return (
     <div>
-      {" "}
-      Home
-      <Link to="/login">Already have an account? Login</Link>
+      <p>Home</p>
+      <p>{userContext.userName}</p>
+      <p>
+        <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 };

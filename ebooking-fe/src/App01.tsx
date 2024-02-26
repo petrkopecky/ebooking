@@ -10,7 +10,9 @@ function App() {
   const [ready, setReady] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [bookingDate, setBookingDate] = useState<Date>(new Date());
+  const [bookingDate, setBookingDate] = useState<Date>(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
   const [bookingTableStructure, setBookingTableStructure] =
     useState<BookingTableStructure>();
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();

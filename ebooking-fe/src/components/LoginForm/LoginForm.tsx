@@ -1,18 +1,24 @@
-//https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5
 import { useState } from "react";
+import {
+  UserContext,
+  UserContextType,
+  useUserContext,
+} from "../../UserContext";
 
 const Login = () => {
+  const userContext = useUserContext();
   const [input, setInput] = useState({
     username: "",
     password: "",
   });
 
-  const handleSubmitEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+  console.log("login-user:" + userContext.userName);
+
+  const handleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.username !== "" && input.password !== "") {
-      //dispatch action from hooks
+      userContext.setUserName("aaaa");
     }
-    alert("please provide a valid input");
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
