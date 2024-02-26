@@ -6,7 +6,8 @@ const Home = () => {
   return (
     <div>
       <p>Home</p>
-      <p>{userContext.userName}</p>
+      <p>{userContext?.bookingUser?.userName}</p>
+      <p>{userContext?.bookingUser?.userRole}</p>
       <p>
         <Link to="/login">Login</Link>
       </p>
