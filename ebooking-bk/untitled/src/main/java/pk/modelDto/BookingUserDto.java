@@ -8,7 +8,7 @@ public class BookingUserDto {
     private String firstName;
     private String secondName;
     private String email;
-    private String telefonNumber;
+    private String telefoneNumber;
     private String passwordHash;
     private String userRole;
     private boolean isActive;
@@ -61,12 +61,12 @@ public class BookingUserDto {
         this.email = email;
     }
 
-    public String getTelefonNumber() {
-        return telefonNumber;
+    public String getTelefoneNumber() {
+        return telefoneNumber;
     }
 
-    public void setTelefonNumber(String telefonNumber) {
-        this.telefonNumber = telefonNumber;
+    public void setTelefoneNumber(String telefoneNumber) {
+        this.telefoneNumber = telefoneNumber;
     }
 
     public String getPasswordHash() {

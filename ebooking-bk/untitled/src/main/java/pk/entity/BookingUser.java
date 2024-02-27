@@ -15,7 +15,7 @@ public class BookingUser {
     private String secondName;
     @Column(unique = true)
     private String email;
-    private String telefonNumber;
+    private String telefoneNumber;
     private String passwordHash;
     private String userRole;
     private boolean isActive;
@@ -60,12 +60,12 @@ public class BookingUser {
         this.email = email;
     }
 
-    public String getTelefonNumber() {
-        return telefonNumber;
+    public String getTelefoneNumber() {
+        return telefoneNumber;
     }
 
-    public void setTelefonNumber(String telefonNumber) {
-        this.telefonNumber = telefonNumber;
+    public void setTelefoneNumber(String telefoneNumber) {
+        this.telefoneNumber = telefoneNumber;
     }
 
     public String getPasswordHash() {

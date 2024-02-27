@@ -1,5 +1,5 @@
 import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
-import { BookingUserType } from "../types/bookingUser.ts";
+import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
@@ -36,7 +36,7 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
 export function bookingUserLogin(
   userName: string,
   userPassword: string
-): Promise<BookingUserType> {
+): Promise<BookingUser> {
   console.log("bookingUserLogin" + userName);
   return fetch("/api/booking-user-login", {
     method: "POST",
@@ -49,7 +49,7 @@ export function bookingUserLogin(
       console.log(response.statusText);
       throw new Error("bookingUserLogin:" + response.statusText);
     }
-    return response.json() as Promise<BookingUserType>;
+    return response.json() as Promise<BookingUser>;
   });
 }
 

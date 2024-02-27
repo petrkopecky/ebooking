@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pk.mapperDto.BookingUserMapper;
 import pk.modelDto.BookingUserDto;
+import pk.modelDto.LoginUserDto;
 import pk.repository.BookingUserJpaRepository;
 
 import java.util.List;
@@ -32,5 +33,12 @@ public class BookingUserServiceImpl implements  BookingUserService{
     @Override
     public List<BookingUserDto> getBookingUsersList() {
         return null;
+    }
+    @Override
+    public BookingUserDto loginUser(LoginUserDto loginUserDto){
+        BookingUserDto bookingUserDto=new BookingUserDto();
+        bookingUserDto.setUserName("john");
+        bookingUserDto.setPin(7);
+        return bookingUserDto;
     }
 }

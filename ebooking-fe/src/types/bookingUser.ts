@@ -1,5 +1,10 @@
-export type BookingUserType = {
+export type BookingUser = {
+  id?: number;
   userName?: string;
+  firstName?: string;
+  secondName?: string;
   userRole?: string;
-  userPin?: number;
+  pin?: number;
+  email?: string;
+  telephoneNumber: string;
 };

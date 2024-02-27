@@ -14,6 +14,7 @@ import pk.modelDto.BookingUserDto;
 import pk.modelDto.LoginUserDto;
 import pk.service.BookingSlotService;
 import pk.service.BookingTableStructureService;
+import pk.service.BookingUserService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,13 +26,15 @@ import java.util.List;
 public class BookingController {
     //@GetMapping("/booking-users")
     @Autowired
-    public BookingController(BookingTableStructureService bookingTableStructureService,BookingSlotService bookingSlotService) {
+    public BookingController(BookingTableStructureService bookingTableStructureService,BookingSlotService bookingSlotService,BookingUserService bookingUserService) {
         this.bookingTableStructureService = bookingTableStructureService;
         this.bookingSlotService=bookingSlotService;
+        this.bookingUserService=bookingUserService;
     }
 
     private BookingTableStructureService bookingTableStructureService;
     private BookingSlotService bookingSlotService;
+    private BookingUserService bookingUserService;
 
     @PostMapping("/booking-table-structure")
     public String getBookingTableStructure() {
@@ -71,20 +74,17 @@ public class BookingController {
     }
 
     @PostMapping("/booking-user-login")
-    public BookingUserDto getBookingDateSlots1(@RequestBody LoginUserDto loginUser) {
+    public BookingUserDto getBookingDateSlots1(@RequestBody LoginUserDto loginUserDto) {
+        BookingUserDto bookingUserDto;
 
-        BookingUserDto bookingUserDto=new BookingUserDto();
-        bookingUserDto.setUserName("john");
-        bookingUserDto.setPin(7);
-        if(loginUser==null){
+        if(loginUserDto==null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
+        }else{
+            bookingUserDto= bookingUserService.loginUser(loginUserDto);
         }
-        /*
-        if (bookingTableSlots==null ||bookingTableSlots.size()==0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no slot for bookingDate "+bookingDate.toString());
+        if (bookingUserDto==null ) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no user for:"+loginUserDto.getUserName());
         }
-        */
-
         return bookingUserDto;
 
     }
