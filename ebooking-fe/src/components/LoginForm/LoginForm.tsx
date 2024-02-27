@@ -5,6 +5,7 @@ import {
   useUserContext,
 } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
+import bookingService from "../../service/BookingService.ts";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,6 +20,11 @@ const Login = () => {
   const handleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.username !== "") {
+      bookingService
+        .bookingUserLogin(input.username, input.password)
+        .then((bookinUser) => {
+          console.log("login user then" + bookinUser.userName);
+        });
       //&& input.password !== "") {
       userContext?.setBookingUser({
         userName: "aa",

@@ -1,4 +1,5 @@
 import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
+import { BookingUserType } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
@@ -32,13 +33,29 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
-async function getBookingDateSlotsA(bookingDate: Date) {
-  const data: BookingSlot[] = await getBookingDateSlots(bookingDate);
-  return data;
+export function bookingUserLogin(
+  userName: string,
+  userPassword: string
+): Promise<BookingUserType> {
+  console.log("bookingUserLogin" + userName);
+  return fetch("/api/booking-user-login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userName: userName, userPassword: userPassword }),
+  }).then((response) => {
+    if (!response.ok) {
+      console.log(response.statusText);
+      throw new Error("bookingUserLogin:" + response.statusText);
+    }
+    return response.json() as Promise<BookingUserType>;
+  });
 }
 
 const BookingService = {
   getBookingTableStructure1,
   getBookingDateSlots,
+  bookingUserLogin,
 };
 export default BookingService;

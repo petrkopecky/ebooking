@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pk.modelDto.BookingSlotDto;
 import pk.modelDto.BookingTableSlot;
 import pk.modelDto.BookingUserDto;
+import pk.modelDto.LoginUserDto;
 import pk.service.BookingSlotService;
 import pk.service.BookingTableStructureService;
 
@@ -68,5 +69,25 @@ public class BookingController {
         bookingSlotService.getBookingArticleSlots("2024-02-21");
         return "ok";
     }
+
+    @PostMapping("/booking-user-login")
+    public BookingUserDto getBookingDateSlots1(@RequestBody LoginUserDto loginUser) {
+
+        BookingUserDto bookingUserDto=new BookingUserDto();
+        bookingUserDto.setUserName("john");
+        bookingUserDto.setPin(7);
+        if(loginUser==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
+        }
+        /*
+        if (bookingTableSlots==null ||bookingTableSlots.size()==0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no slot for bookingDate "+bookingDate.toString());
+        }
+        */
+
+        return bookingUserDto;
+
+    }
+
 
 }
