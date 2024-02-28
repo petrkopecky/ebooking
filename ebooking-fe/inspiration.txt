@@ -1,3 +1,5 @@
 https://blog.stackademic.com/manage-your-react-typescript-application-state-using-redux-toolkit-926d3b4abaa7
 https://medium.com/@prabhashi.mm/create-a-simple-react-app-typescript-with-login-register-pages-using-create-react-app-e5c12dd6db53
 https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5
+
+https://blog.logrocket.com/authentication-react-router-v6/

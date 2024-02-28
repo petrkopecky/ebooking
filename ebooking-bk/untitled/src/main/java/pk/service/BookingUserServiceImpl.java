@@ -39,6 +39,7 @@ public class BookingUserServiceImpl implements  BookingUserService{
         BookingUserDto bookingUserDto=new BookingUserDto();
         bookingUserDto.setUserName("john");
         bookingUserDto.setPin(7);
+        bookingUserDto.setAuthtoken("auth-john");
         return bookingUserDto;
     }
 }

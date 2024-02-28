@@ -13,6 +13,8 @@ public class BookingUserDto {
     private String userRole;
     private boolean isActive;
 
+    private String authtoken;
+
     public Long getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class BookingUserDto {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String getAuthtoken() {
+        return authtoken;
+    }
+
+    public void setAuthtoken(String authtoken) {
+        this.authtoken = authtoken;
     }
 }

@@ -4,10 +4,12 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { UserContext } from "./UserContext";
-import { BookingUserType } from "./types/bookingUser";
+import { BookingUser } from "./types/bookingUser";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
-  const [bookingUser, setBookingUser] = useState<BookingUserType>({});
+  const [bookingUser, setBookingUser] = useState<BookingUser>({});
   return (
     <>
       <div className="App">
@@ -16,6 +18,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/my-bookings" element={<MyBookings />} />
+            </Route>
           </Routes>
         </UserContext.Provider>
       </div>

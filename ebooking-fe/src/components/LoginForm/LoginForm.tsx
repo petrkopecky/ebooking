@@ -24,13 +24,27 @@ const Login = () => {
         .bookingUserLogin(input.username, input.password)
         .then((bookinUser) => {
           console.log("login user then" + bookinUser.userName);
+          if (
+            bookinUser?.authtoken?.length &&
+            bookinUser.authtoken.length > 0
+          ) {
+            localStorage.setItem("authtoken", bookinUser.authtoken);
+            userContext?.setBookingUser({
+              userName: bookinUser.userName,
+              userRole: bookinUser.userRole,
+              pin: bookinUser.pin,
+              authtoken: bookinUser.authtoken,
+            });
+            console.log(
+              "login form auth token context:" +
+                userContext.bookingUser?.authtoken
+            );
+          } else {
+            localStorage.removeItem("authtoken");
+            userContext.setBookingUser({});
+          }
         });
       //&& input.password !== "") {
-      userContext?.setBookingUser({
-        userName: "aa",
-        userRole: "rr",
-        userPin: 0,
-      });
 
       navigate("/");
     }
