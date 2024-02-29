@@ -19,32 +19,16 @@ const Login = () => {
       bookingService
         .bookingUserLogin(input.username, input.password)
         .then((bookinUser) => {
-          console.log("login user then" + bookinUser.userName);
           if (
             bookinUser?.authtoken?.length &&
             bookinUser.authtoken.length > 0
           ) {
-            //localStorage.setItem("authtoken", bookinUser.authtoken);
-            /*userContext?.setBookingUser({
-              userName: bookinUser.userName,
-              userRole: bookinUser.userRole,
-              pin: bookinUser.pin,
-              authtoken: bookinUser.authtoken,
-            });
-            */
             userContext.userContextlogin(bookinUser);
-
-            console.log(
-              "login form auth token context:" +
-                userContext.bookingUser?.authtoken
-            );
           } else {
-            //localStorage.removeItem("authtoken");
             userContext.userContextlogout();
           }
         });
       //&& input.password !== "") {
-
       navigate("/");
     }
   };
