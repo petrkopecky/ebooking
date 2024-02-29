@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { BookingUser } from "./types/bookingUser";
 
 export type UserContextType = {
@@ -8,7 +8,9 @@ export type UserContextType = {
   setUserRole: (c: string) => void;
   */
   bookingUser?: BookingUser;
-  setBookingUser: (c: BookingUser) => void;
+  //setBookingUser: (c: BookingUser) => void;
+  userContextlogin: (c: BookingUser) => void;
+  userContextlogout: () => void;
 };
 export const UserContext = createContext<UserContextType>({
   /*userName: "",
@@ -17,7 +19,34 @@ export const UserContext = createContext<UserContextType>({
   setUserRole: () => {},
   */
   bookingUser: {},
-  setBookingUser: () => {},
+  userContextlogin: () => {},
+  userContextlogout: () => {},
 });
+export const useUserContext = () => {
+  return useContext(UserContext);
+};
 
-export const useUserContext = () => useContext(UserContext);
+/*
+export const xxuserContextlogin = (bookingUser: BookingUser) => {
+  const userContext = useUserContext();
+  userContext.setBookingUser(bookingUser);
+};
+*/
+
+export const UserContextProvider = ({ children }: any) => {
+  const [bookingUser, setBookingUser] = useState<BookingUser>({});
+  const userContextlogin = (bookingUser: BookingUser) => {
+    setBookingUser(bookingUser);
+    localStorage.setItem("bookingUser", JSON.stringify({ bookingUser }));
+  };
+  const userContextlogout = () => {
+    setBookingUser({});
+    localStorage.removeItem("bookingUser");
+  };
+  const value = {
+    bookingUser,
+    userContextlogin,
+    userContextlogout,
+  };
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};

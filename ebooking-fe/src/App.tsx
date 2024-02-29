@@ -3,17 +3,17 @@ import { useState } from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { UserContext } from "./UserContext";
+import { UserContextProvider } from "./UserContext";
 import { BookingUser } from "./types/bookingUser";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import MyBookings from "./pages/MyBookings";
 
 function App() {
-  const [bookingUser, setBookingUser] = useState<BookingUser>({});
+  //const [bookingUser, setBookingUser] = useState<BookingUser>({});
   return (
     <>
       <div className="App">
-        <UserContext.Provider value={{ bookingUser, setBookingUser }}>
+        <UserContextProvider>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
@@ -22,7 +22,7 @@ function App() {
               <Route path="/my-bookings" element={<MyBookings />} />
             </Route>
           </Routes>
-        </UserContext.Provider>
+        </UserContextProvider>
       </div>
     </>
   );

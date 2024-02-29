@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  UserContext,
-  UserContextType,
-  useUserContext,
-} from "../../UserContext";
+import { useUserContext } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
 import bookingService from "../../service/BookingService.ts";
 
@@ -28,20 +24,23 @@ const Login = () => {
             bookinUser?.authtoken?.length &&
             bookinUser.authtoken.length > 0
           ) {
-            localStorage.setItem("authtoken", bookinUser.authtoken);
-            userContext?.setBookingUser({
+            //localStorage.setItem("authtoken", bookinUser.authtoken);
+            /*userContext?.setBookingUser({
               userName: bookinUser.userName,
               userRole: bookinUser.userRole,
               pin: bookinUser.pin,
               authtoken: bookinUser.authtoken,
             });
+            */
+            userContext.userContextlogin(bookinUser);
+
             console.log(
               "login form auth token context:" +
                 userContext.bookingUser?.authtoken
             );
           } else {
-            localStorage.removeItem("authtoken");
-            userContext.setBookingUser({});
+            //localStorage.removeItem("authtoken");
+            userContext.userContextlogout();
           }
         });
       //&& input.password !== "") {
