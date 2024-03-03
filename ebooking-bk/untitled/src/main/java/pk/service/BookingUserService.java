@@ -1,5 +1,6 @@
 package pk.service;
 
+import org.springframework.stereotype.Service;
 import pk.modelDto.BookingUserDto;
 import pk.modelDto.LoginUserDto;
 

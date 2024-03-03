@@ -1,6 +1,7 @@
 import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
 import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
+import { ApiResponse } from "../types/apiResponse.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
@@ -36,7 +37,7 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
 export function bookingUserLogin(
   userName: string,
   userPassword: string
-): Promise<BookingUser> {
+): Promise<BookingUser | void> {
   console.log("bookingUserLogin" + userName);
   return fetch("/api/booking-user-login", {
     method: "POST",
@@ -46,10 +47,26 @@ export function bookingUserLogin(
     body: JSON.stringify({ userName: userName, userPassword: userPassword }),
   }).then((response) => {
     if (!response.ok) {
-      console.log(response.statusText);
       throw new Error("bookingUserLogin:" + response.statusText);
+    } else {
+      /* response.json().then((data: ApiResponse<BookingUser>) => {
+        console.log("DATA:" + data.statusCode);
+        //return new Promise<BookingUser>
+        */
+      const rdata = response.json();
+      rdata.then((data: ApiResponse<BookingUser>) => {
+        console.log("DATA:" + data.statusCode);
+        return new Promise<BookingUser>((resolve, reject) => {
+          console.log("new promise:" + JSON.stringify(data));
+          console.log("new promise:" + data.response.userName);
+          resolve(data.response);
+        });
+      });
+
+      //const apiResponse:ApiResponse<BookingUser>=response.json() as ApiResponse<BookingUser>;
     }
-    return response.json() as Promise<BookingUser>;
+
+    //return response.json() as Promise<BookingUser>;
   });
 }
 

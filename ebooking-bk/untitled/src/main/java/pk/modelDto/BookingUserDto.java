@@ -11,7 +11,7 @@ public class BookingUserDto {
     private String telefoneNumber;
     private String passwordHash;
     private String userRole;
-    private boolean isActive;
+    private Boolean isActive;
 
     private String authtoken;
 
@@ -87,11 +87,11 @@ public class BookingUserDto {
         this.userRole = userRole;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 

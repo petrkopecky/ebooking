@@ -26,15 +26,14 @@ import java.util.List;
 public class BookingController {
     //@GetMapping("/booking-users")
     @Autowired
-    public BookingController(BookingTableStructureService bookingTableStructureService,BookingSlotService bookingSlotService,BookingUserService bookingUserService) {
+    public BookingController(BookingTableStructureService bookingTableStructureService,BookingSlotService bookingSlotService) {
         this.bookingTableStructureService = bookingTableStructureService;
         this.bookingSlotService=bookingSlotService;
-        this.bookingUserService=bookingUserService;
+
     }
 
     private BookingTableStructureService bookingTableStructureService;
     private BookingSlotService bookingSlotService;
-    private BookingUserService bookingUserService;
 
     @PostMapping("/booking-table-structure")
     public String getBookingTableStructure() {
@@ -73,21 +72,7 @@ public class BookingController {
         return "ok";
     }
 
-    @PostMapping("/booking-user-login")
-    public BookingUserDto getBookingDateSlots1(@RequestBody LoginUserDto loginUserDto) {
-        BookingUserDto bookingUserDto;
 
-        if(loginUserDto==null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
-        }else{
-            bookingUserDto= bookingUserService.loginUser(loginUserDto);
-        }
-        if (bookingUserDto==null ) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no user for:"+loginUserDto.getUserName());
-        }
-        return bookingUserDto;
-
-    }
 
 
 }

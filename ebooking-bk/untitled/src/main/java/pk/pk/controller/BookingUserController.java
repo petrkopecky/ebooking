@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pk.modelDto.BookingUserDto;
+import pk.modelDto.LoginUserDto;
 import pk.service.BookingUserService;
+import pk.service.InactiveUserException;
+import pk.service.UserNotFoundException;
 
 import java.util.List;
 @RestController
@@ -18,9 +21,9 @@ public class BookingUserController {
 
     @Autowired
     public BookingUserController(BookingUserService bookingUserService){
-        this.bookinUserService=bookingUserService;
+        this.bookingUserService=bookingUserService;
     }
-    private BookingUserService bookinUserService;
+    private BookingUserService bookingUserService;
 
     @GetMapping("/")
     String home() {
@@ -30,14 +33,40 @@ public class BookingUserController {
 
     @GetMapping("/booking-users")
     List<BookingUserDto> bookingUsers() {
-        return bookinUserService.getBookingUsersList();
+        return bookingUserService.getBookingUsersList();
     }
 
 
     @PostMapping("/booking-users")
     public ResponseEntity<BookingUserDto> createBookingUser(@RequestBody BookingUserDto bookingUserDto){
         //log.info(bookingUserDto.getUserName());
-        BookingUserDto newBookingUserDto=bookinUserService.addBookingUser(bookingUserDto);
+        BookingUserDto newBookingUserDto=bookingUserService.addBookingUser(bookingUserDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBookingUserDto);
+    }
+
+    @PostMapping("/booking-user-login")
+    public RestApiResponse<BookingUserDto> bookinkgUserLogin(@RequestBody LoginUserDto loginUserDto) {
+        RestApiResponse<BookingUserDto> bookingUserLoginResponse=new RestApiResponse<BookingUserDto>();
+        if(loginUserDto==null){
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"xxx");
+            bookingUserLoginResponse.setStatusCode("NO_INPUT_PARAMETER");
+            bookingUserLoginResponse.setStatusMessage("no login user input parameter");
+
+        }else {
+            try {
+                bookingUserLoginResponse.setStatusCode("OK");
+                bookingUserLoginResponse.setResponse( bookingUserService.loginUser(loginUserDto));
+            } catch (UserNotFoundException e) {
+                bookingUserLoginResponse.setStatusCode("USENAME_NOT_FOUND");
+                bookingUserLoginResponse.setStatusMessage("user not found");
+            }catch (InactiveUserException e){
+                bookingUserLoginResponse.setStatusCode("INACTIVE_USER");
+                bookingUserLoginResponse.setStatusMessage("inactive user");
+            }catch(Exception e){
+                bookingUserLoginResponse.setStatusCode("OTHER_EXCEPTION");
+                bookingUserLoginResponse.setStatusMessage(e.getMessage());
+            }
+        }
+        return bookingUserLoginResponse;
     }
 }

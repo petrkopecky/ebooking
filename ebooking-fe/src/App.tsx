@@ -4,7 +4,7 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { UserContextProvider } from "./UserContext";
-import { BookingUser } from "./types/bookingUser";
+
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import MyBookings from "./pages/MyBookings";
 

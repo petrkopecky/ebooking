@@ -18,12 +18,13 @@ const Login = () => {
     if (input.username !== "") {
       bookingService
         .bookingUserLogin(input.username, input.password)
-        .then((bookinUser) => {
+        .then((bookingUser) => {
+          console.log("bookingUser:" + bookingUser?.userName);
           if (
-            bookinUser?.authtoken?.length &&
-            bookinUser.authtoken.length > 0
+            bookingUser?.authtoken?.length &&
+            bookingUser.authtoken.length > 0
           ) {
-            userContext.userContextlogin(bookinUser);
+            userContext.userContextlogin(bookingUser);
           } else {
             userContext.userContextlogout();
           }
