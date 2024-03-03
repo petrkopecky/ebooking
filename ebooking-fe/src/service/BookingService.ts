@@ -34,12 +34,12 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
-export function bookingUserLogin(
+export async function bookingUserLogin(
   userName: string,
   userPassword: string
-): Promise<BookingUser | void> {
-  console.log("bookingUserLogin" + userName);
-  return fetch("/api/booking-user-login", {
+): Promise<BookingUser> {
+  //console.log("bookingUserLogin" + userName);
+  const data = await fetch("/api/booking-user-login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -53,8 +53,7 @@ export function bookingUserLogin(
         console.log("DATA:" + data.statusCode);
         //return new Promise<BookingUser>
         */
-      const rdata = response.json();
-      rdata.then((data: ApiResponse<BookingUser>) => {
+      response.json().then((data: ApiResponse<BookingUser>) => {
         console.log("DATA:" + data.statusCode);
         return new Promise<BookingUser>((resolve, reject) => {
           console.log("new promise:" + JSON.stringify(data));
@@ -67,6 +66,11 @@ export function bookingUserLogin(
     }
 
     //return response.json() as Promise<BookingUser>;
+  });
+  return new Promise<BookingUser>((resolve, reject) => {
+    console.log("new promise:" + JSON.stringify(data));
+    console.log("new promise:" + data.response.userName);
+    resolve(data.response);
   });
 }
 
