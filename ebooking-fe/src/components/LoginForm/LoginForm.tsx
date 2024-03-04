@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useUserContext } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
 import bookingService from "../../service/BookingService.ts";
+import { BookingUser } from "../../types/bookingUser.ts";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,12 +14,37 @@ const Login = () => {
 
   console.log("login-user:" + userContext?.bookingUser?.userName);
 
-  const handleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
+  /*
+  const XhandleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.username !== "") {
       bookingService
         .bookingUserLogin(input.username, input.password)
         .then((bookingUser) => {
+          console.log("bookingUser:" + bookingUser?.userName);
+          if (
+            bookingUser?.authtoken?.length &&
+            bookingUser.authtoken.length > 0
+          ) {
+            userContext.userContextlogin(bookingUser);
+          } else {
+            userContext.userContextlogout();
+          }
+        });
+      //&& input.password !== "") {
+      navigate("/");
+    }
+  };
+*/
+
+  const handleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (input.username !== "") {
+      bookingService
+        .bookingUserLogin(input.username, input.password)
+        .then((apiResponse) => {
+          console.log("handleSubmitEvent:" + JSON.stringify(apiResponse));
+          const bookingUser = apiResponse.response as BookingUser;
           console.log("bookingUser:" + bookingUser?.userName);
           if (
             bookingUser?.authtoken?.length &&

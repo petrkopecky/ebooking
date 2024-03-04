@@ -34,12 +34,42 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
-export async function bookingUserLogin(
+export async function XbookingUserLogin(
   userName: string,
   userPassword: string
 ): Promise<BookingUser> {
-  //console.log("bookingUserLogin" + userName);
-  const data = await fetch("/api/booking-user-login", {
+  const data: ApiResponse<BookingUser> | void = await fetch(
+    "/api/booking-user-login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName: userName, userPassword: userPassword }),
+    }
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error("bookingUserLogin:" + response.statusText);
+    } else {
+      return response.json();
+      //const apiResponse:ApiResponse<BookingUser>=response.json() as ApiResponse<BookingUser>;
+    }
+  });
+  console.log("fetch:" + JSON.stringify(data));
+  if (data?.statusCode === "OK") {
+    return new Promise<BookingUser>((resolve, reject) => {
+      resolve(data?.response as BookingUser);
+    });
+  } else {
+    throw new Error("bookingUserLogin:" + data?.statusCode);
+  }
+}
+
+export function bookingUserLogin(
+  userName: string,
+  userPassword: string
+): Promise<ApiResponse<BookingUser>> {
+  return fetch("/api/booking-user-login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -49,28 +79,8 @@ export async function bookingUserLogin(
     if (!response.ok) {
       throw new Error("bookingUserLogin:" + response.statusText);
     } else {
-      /* response.json().then((data: ApiResponse<BookingUser>) => {
-        console.log("DATA:" + data.statusCode);
-        //return new Promise<BookingUser>
-        */
-      response.json().then((data: ApiResponse<BookingUser>) => {
-        console.log("DATA:" + data.statusCode);
-        return new Promise<BookingUser>((resolve, reject) => {
-          console.log("new promise:" + JSON.stringify(data));
-          console.log("new promise:" + data.response.userName);
-          resolve(data.response);
-        });
-      });
-
-      //const apiResponse:ApiResponse<BookingUser>=response.json() as ApiResponse<BookingUser>;
+      return response.json();
     }
-
-    //return response.json() as Promise<BookingUser>;
-  });
-  return new Promise<BookingUser>((resolve, reject) => {
-    console.log("new promise:" + JSON.stringify(data));
-    console.log("new promise:" + data.response.userName);
-    resolve(data.response);
   });
 }
 
