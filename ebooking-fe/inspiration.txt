@@ -5,3 +5,5 @@ https://dev.to/miracool/how-to-manage-user-authentication-with-react-js-3ic5
 https://blog.logrocket.com/authentication-react-router-v6/
 
 https://www.bezkoder.com/react-typescript-authentication-example/
+
+https://stackoverflow.com/questions/72163183/how-can-i-redirect-to-previous-page-after-login-in-react-router

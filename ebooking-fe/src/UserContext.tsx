@@ -22,7 +22,7 @@ export const UserContextProvider = ({ children }: any) => {
     localStorage.setItem("bookingUser", JSON.stringify(bookingUser));
   };
   const userContextlogout = () => {
-    setBookingUser({});
+    setBookingUser(undefined);
     localStorage.removeItem("bookingUser");
   };
   const value = {

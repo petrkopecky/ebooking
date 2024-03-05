@@ -17,9 +17,6 @@ const Login = () => {
   });
 
   const { state: locationState } = useLocation();
-  const location = useLocation();
-  console.log("lll:" + JSON.stringify(location));
-  console.log("login-user:" + userContext?.bookingUser?.userName);
 
   /*
   const XhandleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {

@@ -34,7 +34,8 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
-export async function XbookingUserLogin(
+/*
+async function XbookingUserLogin(
   userName: string,
   userPassword: string
 ): Promise<BookingUser> {
@@ -64,6 +65,7 @@ export async function XbookingUserLogin(
     throw new Error("bookingUserLogin:" + data?.statusCode);
   }
 }
+*/
 
 export function bookingUserLogin(
   userName: string,

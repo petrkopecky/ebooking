@@ -1,25 +1,9 @@
-import {
-  Navigate,
-  Outlet,
-  useLocation,
-  useNavigate,
-  createSearchParams,
-} from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUserContext } from "../../UserContext";
 
 const PrivateRoute = () => {
-  function login() {
-    navigate({
-      pathname: "/login",
-      search: createSearchParams({
-        foo: "bar",
-      }).toString(),
-    });
-  }
-
   const userContext = useUserContext();
   const location = useLocation();
-  const navigate = useNavigate();
   console.log("location:" + location.pathname);
   console.log("private route:" + userContext.bookingUser?.authtoken);
   if (!userContext.bookingUser?.authtoken) {
