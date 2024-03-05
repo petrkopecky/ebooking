@@ -17,6 +17,8 @@ const Login = () => {
   });
 
   const { state: locationState } = useLocation();
+  const location = useLocation();
+  console.log("lll:" + JSON.stringify(location));
   console.log("login-user:" + userContext?.bookingUser?.userName);
 
   /*
@@ -55,7 +57,6 @@ const Login = () => {
             userContext.userContextlogin(bookingUser);
 
             if (locationState) {
-              // state is any by default
               const { redirectTo } = locationState as RedirectLocationState;
               console.log("redirectTo.pathname:" + redirectTo.pathname);
               navigate(`${redirectTo.pathname}${redirectTo.search}`);
