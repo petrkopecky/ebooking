@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useUserContext } from "../../UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import bookingService from "../../service/BookingService.ts";
 import { BookingUser } from "../../types/bookingUser.ts";
+
+type RedirectLocationState = {
+  redirectTo: Location;
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,6 +16,7 @@ const Login = () => {
     password: "",
   });
 
+  const { state: locationState } = useLocation();
   console.log("login-user:" + userContext?.bookingUser?.userName);
 
   /*
@@ -44,19 +49,23 @@ const Login = () => {
         .bookingUserLogin(input.username, input.password)
         .then((apiResponse) => {
           console.log("handleSubmitEvent:" + JSON.stringify(apiResponse));
-          const bookingUser = apiResponse.response as BookingUser;
-          console.log("bookingUser:" + bookingUser?.userName);
-          if (
-            bookingUser?.authtoken?.length &&
-            bookingUser.authtoken.length > 0
-          ) {
+          if (apiResponse.statusCode === "OK") {
+            const bookingUser = apiResponse.response as BookingUser;
+            console.log("bookingUser:" + bookingUser?.userName);
             userContext.userContextlogin(bookingUser);
+
+            if (locationState) {
+              // state is any by default
+              const { redirectTo } = locationState as RedirectLocationState;
+              console.log("redirectTo.pathname:" + redirectTo.pathname);
+              navigate(`${redirectTo.pathname}${redirectTo.search}`);
+            } else {
+              navigate("/");
+            }
           } else {
             userContext.userContextlogout();
           }
         });
-      //&& input.password !== "") {
-      navigate("/");
     }
   };
 
