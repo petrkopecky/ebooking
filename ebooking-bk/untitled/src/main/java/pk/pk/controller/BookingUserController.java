@@ -12,6 +12,7 @@ import pk.modelDto.BookingUserDto;
 import pk.modelDto.LoginUserDto;
 import pk.service.BookingUserService;
 import pk.service.InactiveUserException;
+import pk.service.InvalidPasswordException;
 import pk.service.UserNotFoundException;
 
 import java.util.List;
@@ -54,14 +55,17 @@ public class BookingUserController {
 
         }else {
             try {
-                bookingUserLoginResponse.setStatusCode("OK");
                 bookingUserLoginResponse.setResponse( bookingUserService.loginUser(loginUserDto));
+                bookingUserLoginResponse.setStatusCode("OK");
             } catch (UserNotFoundException e) {
                 bookingUserLoginResponse.setStatusCode("USENAME_NOT_FOUND");
                 bookingUserLoginResponse.setStatusMessage("user not found");
             }catch (InactiveUserException e){
                 bookingUserLoginResponse.setStatusCode("INACTIVE_USER");
                 bookingUserLoginResponse.setStatusMessage("inactive user");
+            }catch (InvalidPasswordException e){
+                bookingUserLoginResponse.setStatusCode("INVALID_PASSWORD");
+                bookingUserLoginResponse.setStatusMessage("invalid password");
             }catch(Exception e){
                 bookingUserLoginResponse.setStatusCode("OTHER_EXCEPTION");
                 bookingUserLoginResponse.setStatusMessage(e.getMessage());

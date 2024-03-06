@@ -43,7 +43,7 @@ public class BookingUserServiceImpl implements BookingUserService {
         if (bookingUser == null) {
             throw new UserNotFoundException();
         }
-        if (verifyUserPassword(bookingUser.getPasswordHash(), loginUserDto.getUserPassword())) {
+        if (!verifyUserPassword(bookingUser.getPasswordHash(), loginUserDto.getUserPassword())) {
             throw new InvalidPasswordException();
         } else if (bookingUser.isActive() == null || !bookingUser.isActive()) {
             throw new InactiveUserException();
@@ -65,6 +65,6 @@ public class BookingUserServiceImpl implements BookingUserService {
     }
 
     boolean verifyUserPassword(String passwordHash, String password) {
-        return passwordHash == password;
+        return passwordHash.equals(password);
     }
 }
