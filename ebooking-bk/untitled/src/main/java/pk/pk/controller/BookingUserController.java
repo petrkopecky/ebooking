@@ -58,7 +58,7 @@ public class BookingUserController {
                 bookingUserLoginResponse.setResponse( bookingUserService.loginUser(loginUserDto));
                 bookingUserLoginResponse.setStatusCode("OK");
             } catch (UserNotFoundException e) {
-                bookingUserLoginResponse.setStatusCode("USENAME_NOT_FOUND");
+                bookingUserLoginResponse.setStatusCode("USERNAME_NOT_FOUND");
                 bookingUserLoginResponse.setStatusMessage("user not found");
             }catch (InactiveUserException e){
                 bookingUserLoginResponse.setStatusCode("INACTIVE_USER");
