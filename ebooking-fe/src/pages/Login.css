@@ -1,0 +1,9 @@
+.login-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loging-page-home-link {
+  margin-top: 20px;
+}

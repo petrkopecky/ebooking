@@ -1,3 +1,9 @@
-.txt_field input {
+.login-form-input label {
   display: block;
+  margin-top: 20px;
+}
+
+.login-form-btn-submit {
+  display: block;
+  margin-top: 20px;
 }

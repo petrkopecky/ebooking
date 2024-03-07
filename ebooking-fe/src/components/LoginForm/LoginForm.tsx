@@ -83,11 +83,11 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-form-container">
       <h1> Login</h1>
       <form onSubmit={handleSubmitEvent}>
         {error && <div>{errorMessage}</div>}
-        <div className="txt_field">
+        <div className="login-form-input">
           <label htmlFor="user-name">User:</label>
           <input
             type="text"
@@ -97,7 +97,7 @@ const Login = () => {
             onChange={handleInput}
           />
         </div>
-        <div className="txt_field">
+        <div className="login-form-input">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -106,7 +106,7 @@ const Login = () => {
             onChange={handleInput}
           />
         </div>
-        <button className="btn-submit">Submit</button>
+        <button className="login-form-btn-submit">Submit</button>
       </form>
     </div>
   );
