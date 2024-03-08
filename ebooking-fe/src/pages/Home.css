@@ -15,11 +15,3 @@
   text-align: right;
   text-decoration: underline;
 }
-
-.home-nav-bar a {
-  color: black;
-}
-
-.home-nav-bar a:hover {
-  color: gray;
-}

@@ -7,6 +7,7 @@ import { UserContextProvider } from "./UserContext";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import MyBookings from "./pages/MyBookings";
+import "./App.css";
 
 function App() {
   //const [bookingUser, setBookingUser] = useState<BookingUser>({});

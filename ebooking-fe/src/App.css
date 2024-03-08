@@ -1,2 +1,19 @@
-#root {
+html * {
+  font-size: 1em;
+  font-family: Arial;
+}
+
+button {
+  border-width: 1px;
+  border-radius: 1px;
+  color: black;
+  background-color: whitesmoke;
+}
+
+a {
+  color: black;
+}
+
+a:hover {
+  color: gray;
 }
