@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import DatePicker from "./components/DatePicker/DatePicker.tsx";
-import "./App.css";
-import { BookingTableStructure, BookingSlot } from "./types/bookingTable.ts";
-import bookingService from "./service/BookingService.ts";
-import BookingTable from "./components/BookingTable/BookingTable";
+import DatePicker from "../DatePicker/DatePicker.tsx";
+import {
+  BookingTableStructure,
+  BookingSlot,
+} from "../../types/bookingTable.ts";
+import bookingService from "../../service/BookingService.ts";
+import BookingTable from "../BookingTable/BookingTable.tsx";
 
-function App() {
+function Booking() {
   const [spin, setSpin] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -91,4 +93,4 @@ function App() {
   }
 }
 
-export default App;
+export default Booking;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext, UserContextType, useUserContext } from "../UserContext";
+import Booking from "../components/Booking/Booking";
 
 const Home = () => {
   const userContext = useUserContext();
@@ -39,6 +40,7 @@ const Home = () => {
       <p>
         <Link to="/my-bookings">My bookings</Link>
       </p>
+      <Booking></Booking>
     </div>
   );
 };
