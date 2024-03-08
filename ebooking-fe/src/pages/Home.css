@@ -1,8 +1,42 @@
-.home-nav-bar-x {
+.home-nav-bar ul {
+  width: 100%;
+  padding: 0;
   display: flex;
-  flex-direction: row;
+  list-style-type: none;
 }
 
 .home-nav-bar li {
-  color: aqua;
+  list-style-type: none;
+  margin-right: 20px;
+}
+
+.home-nav-bar li:last-child {
+  margin-left: auto;
+  text-align: right;
+  list-style-type: none;
+}
+
+.home-nav-bar button {
+  border: none;
+  background-color: inherit;
+
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.home-nav-bar button:hover {
+  color: gray;
+}
+
+.home-nav-bar a {
+  color: black;
+  text-decoration: none;
+}
+
+.home-nav-bar a:hover {
+  color: gray;
 }

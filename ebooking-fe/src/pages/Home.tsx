@@ -10,57 +10,33 @@ const Home = () => {
   return (
     <div>
       <div className="home-nav-bar">
-        <p>Here is another paragraph.</p>
-        <div>
-          <p>another p</p>
-        </div>
         <ul>
           <li>
-            <a href="default.asp">Home</a>
+            <Link to="/news">News</Link>
           </li>
           <li>
-            <a href="news.asp">News</a>
+            <Link to="/contact">Contact</Link>
           </li>
+          {userContext?.bookingUser && (
+            <li>
+              <Link to="/my-bookings">My bookings</Link>
+            </li>
+          )}
           <li>
-            <a href="contact.asp">Contact</a>
-          </li>
-          <li>
-            <a href="about.asp">About</a>
+            {!userContext?.bookingUser && <Link to="/login">Login</Link>}
+            {userContext?.bookingUser && (
+              <a
+                onClick={() => {
+                  userContext.userContextlogout();
+                }}
+              >
+                Logout-{userContext?.bookingUser?.userName}
+              </a>
+            )}
           </li>
         </ul>
       </div>
-      <p>Home</p>
-      <p>{userContext?.bookingUser?.userName}</p>
-      <p>{userContext?.bookingUser?.userRole}</p>
-      <p>{userContext?.bookingUser?.authtoken}</p>
-      {!userContext?.bookingUser && (
-        <p>
-          <Link to="/login">Login</Link>
-        </p>
-      )}
-      {userContext?.bookingUser && (
-        <button
-          className="link"
-          onClick={() => {
-            userContext.userContextlogout();
-          }}
-        >
-          Logout
-        </button>
-      )}
 
-      <button
-        className="link"
-        onClick={() => {
-          setRender(!render);
-          console.log("Refresh:" + JSON.stringify(userContext?.bookingUser));
-        }}
-      >
-        refresh
-      </button>
-      <p>
-        <Link to="/my-bookings">My bookings</Link>
-      </p>
       <Booking></Booking>
     </div>
   );
