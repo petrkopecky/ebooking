@@ -1,0 +1,8 @@
+.home-nav-bar-x {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-nav-bar li {
+  color: aqua;
+}
