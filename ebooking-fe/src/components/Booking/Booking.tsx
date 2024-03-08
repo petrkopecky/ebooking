@@ -6,6 +6,7 @@ import {
 } from "../../types/bookingTable.ts";
 import bookingService from "../../service/BookingService.ts";
 import BookingTable from "../BookingTable/BookingTable.tsx";
+import "./Booking.css";
 
 function Booking() {
   const [spin, setSpin] = useState<boolean>(false);
@@ -65,8 +66,8 @@ function Booking() {
     return (
       <>
         {error && <div>{errorMessage}</div>}
-        <div className="app">
-          <span>ebooking</span>
+        <div className="booking">
+          <p>ebooking</p>
           {spin && <p>Loading</p>}
 
           {ready && (

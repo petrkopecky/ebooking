@@ -13,28 +13,11 @@
 .home-nav-bar li:last-child {
   margin-left: auto;
   text-align: right;
-  list-style-type: none;
-}
-
-.home-nav-bar button {
-  border: none;
-  background-color: inherit;
-
-  /*optional*/
-  font-family: arial, sans-serif;
-  /*input has OS specific font-family*/
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.home-nav-bar button:hover {
-  color: gray;
+  text-decoration: underline;
 }
 
 .home-nav-bar a {
   color: black;
-  text-decoration: none;
 }
 
 .home-nav-bar a:hover {

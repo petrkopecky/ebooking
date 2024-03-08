@@ -1,8 +1,2 @@
 #root {
 }
-
-.app {
-  display: flex;
-  flex-direction: column;
-  xalign-items: center;
-}
