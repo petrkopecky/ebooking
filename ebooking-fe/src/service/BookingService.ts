@@ -20,6 +20,7 @@ export function getBookingTableStructure1(): Promise<BookingTableStructure> {
 export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   console.log("getBookingDateSlots" + bookingDate.toDateString());
   let authorization: string | undefined;
+  authorization = "u";
 
   const headers: Headers = new Headers();
   headers.append("Content-Type", "application/json");
