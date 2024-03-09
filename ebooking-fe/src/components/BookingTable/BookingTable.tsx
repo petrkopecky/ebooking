@@ -129,6 +129,27 @@ function getBookingSlotTd(
 
   return <div>{bookingSlot.slotValue}</div>;
 }
+function getBookingSlotClassName(
+  slotKey: string,
+  bookingSlots: bookingTableT.BookingSlot[]
+): string {
+  let className: string = "closed-slot";
+  let bookingSlot: bookingTableT.BookingSlot = getBookingDateSlot(
+    slotKey,
+    bookingSlots
+  );
+  if (bookingSlot.slotValue === "CLOSED") {
+    className = "closed-slot";
+  } else if (bookingSlot.slotValue === "FREE") {
+    className = "free-slot";
+  } else if (bookingSlot.slotValue === "BOOKED") {
+    className = "booked-slot";
+  } else if (bookingSlot.slotValue === "BOOKED-USER") {
+    className = "booked-user-slot";
+  }
+
+  return className;
+}
 
 function bookingArticleRow(
   bookingDate: Date,
@@ -147,7 +168,11 @@ function bookingArticleRow(
         "-" +
         slotPerHour.key;
       bookingSlotsE.push(
-        <td id={slotKey} key={slotKey}>
+        <td
+          id={slotKey}
+          key={slotKey}
+          className={getBookingSlotClassName(slotKey, bookingSlots)}
+        >
           {slotKey}
           {getBookingSlotTd(slotKey, bookingSlots)}
         </td>

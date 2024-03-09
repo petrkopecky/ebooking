@@ -7,3 +7,11 @@
   font-size: 0.8em;
   border: 1px solid;
 }
+
+.free-slot {
+  background-color: lightgreen;
+}
+
+.closed-slot {
+  background-color: whitesmoke;
+}
