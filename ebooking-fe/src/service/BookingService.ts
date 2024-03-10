@@ -37,10 +37,17 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
     body: utilsService.dateToYYYY_MM_DD(bookingDate),
   }).then((response) => {
     if (!response.ok) {
-      console.log(response.statusText);
-      throw new Error("getBookingDateSlots:" + response.statusText);
+      //console.log(response.statusText);
+      throw response;
+      response.text().then((text) => {
+        console.log("THROW");
+        throw "adfa";
+        //throw new Error(text);
+      });
+      //throw new Error("getBookingDateSlots:" + response.statusText);
+    } else {
+      return response.json() as Promise<BookingSlot[]>;
     }
-    return response.json() as Promise<BookingSlot[]>;
   });
 }
 

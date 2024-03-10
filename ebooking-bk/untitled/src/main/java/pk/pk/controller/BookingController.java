@@ -51,24 +51,30 @@ public class BookingController {
 
     @PostMapping("/booking-date-slots1")
     public List<BookingTableSlot> getBookingDateSlots1(@RequestHeader(value="Authorization", required = false) String authorizationToken,@RequestBody String bookingDate) {
-
-        log.info("getBookingDateSlots1.0:"+(bookingDate==null?"":bookingDate.toString()));
-        BookingUserDto bookingUserDto=null;
-        if(authorizationToken!=null){
-            bookingUserDto=bookingUserService.getBookinUserDtoFromAuthorizationToken(authorizationToken);
-        }
-        List<BookingTableSlot> bookingTableSlots= bookingSlotService.getBookingTableSlots(bookingDate,bookingUserDto);
-        //log.info("getBookingDateSlots1.1:"+(BookingTableSlots==null?"":BookingTableSlots.size()));
-        if(bookingDate==null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
-        }
+        try {
+            log.info("getBookingDateSlots1.0:" + (bookingDate == null ? "" : bookingDate.toString()));
+            BookingUserDto bookingUserDto = null;
+            if (authorizationToken != null) {
+                bookingUserDto = bookingUserService.getBookinUserDtoFromAuthorizationToken(authorizationToken);
+            }
+            List<BookingTableSlot> bookingTableSlots = bookingSlotService.getBookingTableSlots(bookingDate, bookingUserDto);
+            //log.info("getBookingDateSlots1.1:"+(BookingTableSlots==null?"":BookingTableSlots.size()));
+            if (bookingDate == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");
+            }
         /*
         if (bookingTableSlots==null ||bookingTableSlots.size()==0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "no slot for bookingDate "+bookingDate.toString());
         }
         */
+            return bookingTableSlots;
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 
-        return bookingTableSlots;
+        }
+
+
     }
 
     @GetMapping("/booking-article-date-slots")
