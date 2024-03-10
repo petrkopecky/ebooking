@@ -90,6 +90,11 @@ public class BookingUserServiceImpl implements BookingUserService {
         return bookingUserDto;
     }
 
+    @Override
+    public BookingUserDto getBookinUserDtoFromAuthorizationToken(String authorizationToken) {
+        return getBookingUserDto(authorizationToken);
+    }
+
     boolean verifyUserPassword(String passwordHash, String password) {
         return passwordHash.equals(password);
     }

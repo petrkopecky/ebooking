@@ -23,14 +23,18 @@ import java.util.List;
 public class BookingController {
     //@GetMapping("/booking-users")
     @Autowired
-    public BookingController(BookingTableStructureService bookingTableStructureService,BookingSlotService bookingSlotService) {
+    public BookingController(BookingTableStructureService bookingTableStructureService,BookingSlotService bookingSlotService,BookingUserService bookingUserService) {
         this.bookingTableStructureService = bookingTableStructureService;
         this.bookingSlotService=bookingSlotService;
+        this.bookingUserService=bookingUserService;
+
 
     }
 
     private BookingTableStructureService bookingTableStructureService;
     private BookingSlotService bookingSlotService;
+
+    private BookingUserService bookingUserService;
 
     @PostMapping("/booking-table-structure")
     public String getBookingTableStructure() {
@@ -49,7 +53,11 @@ public class BookingController {
     public List<BookingTableSlot> getBookingDateSlots1(@RequestHeader(value="Authorization", required = false) String authorizationToken,@RequestBody String bookingDate) {
 
         log.info("getBookingDateSlots1.0:"+(bookingDate==null?"":bookingDate.toString()));
-        List<BookingTableSlot> bookingTableSlots= bookingSlotService.getBookingTableSlots(bookingDate);
+        BookingUserDto bookingUserDto=null;
+        if(authorizationToken!=null){
+            bookingUserDto=bookingUserService.getBookinUserDtoFromAuthorizationToken(authorizationToken);
+        }
+        List<BookingTableSlot> bookingTableSlots= bookingSlotService.getBookingTableSlots(bookingDate,bookingUserDto);
         //log.info("getBookingDateSlots1.1:"+(BookingTableSlots==null?"":BookingTableSlots.size()));
         if(bookingDate==null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "bookingDate null");

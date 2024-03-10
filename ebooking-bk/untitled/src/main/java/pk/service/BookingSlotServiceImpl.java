@@ -8,6 +8,7 @@ import pk.entity.BookingArticleSlot;
 import pk.entity.BookingSlot;
 import pk.mapperDto.BookingSlotMapper;
 import pk.modelDto.BookingTableSlot;
+import pk.modelDto.BookingUserDto;
 import pk.repository.BookingArticleSlotJpaRepository;
 import pk.repository.BookingSlotJpaRepository;
 
@@ -45,7 +46,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     //</editor-fold>
 
     @Override
-    public List<BookingTableSlot> getBookingTableSlots(String bookingDate) {
+    public List<BookingTableSlot> getBookingTableSlots(String bookingDate, BookingUserDto bookingUserDto) {
         List<BookingTableSlot> bookingArticleTableSlots = getBookingArticleSlots(bookingDate);
         List<BookingTableSlot> bookingTableSlots = getBookingSlots(bookingDate);
         return combineBookingAndArticleSlots(bookingTableSlots, bookingArticleTableSlots);

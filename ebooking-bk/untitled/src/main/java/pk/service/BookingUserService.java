@@ -12,4 +12,6 @@ public interface BookingUserService {
 
     public BookingUserDto loginUser(LoginUserDto loginUserDto);
     public BookingUserDto getBookingUserDto(String userName);
+
+    public BookingUserDto getBookinUserDtoFromAuthorizationToken(String authorizationToken);
 }
