@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { BookingUser } from "./types/bookingUser";
+import authorizationService from "./service/AuthorizationService";
+import bookingService from "./service/BookingService";
 
 export type UserContextType = {
   bookingUser?: BookingUser;
@@ -19,21 +21,25 @@ export const UserContextProvider = ({ children }: any) => {
   const [bookingUser, setBookingUser] = useState<BookingUser>();
   const userContextlogin = (bookingUser: BookingUser) => {
     setBookingUser(bookingUser);
-    localStorage.setItem("bookingUser", JSON.stringify(bookingUser));
   };
   const userContextlogout = () => {
     setBookingUser(undefined);
-    localStorage.removeItem("bookingUser");
   };
   const value = {
     bookingUser,
     userContextlogin,
     userContextlogout,
   };
+
   if (!bookingUser) {
-    const bookingUserLocalStorage = localStorage.getItem("bookingUser");
-    if (bookingUserLocalStorage) {
-      setBookingUser(JSON.parse(bookingUserLocalStorage));
+    console.log("user context !bookingUser");
+    const bookingUserName =
+      authorizationService.getUserNameFromAthorizationToken();
+
+    if (bookingUserName) {
+      bookingService.bookingUserByUserName(bookingUserName).then((data) => {
+        setBookingUser(data.response as BookingUser);
+      });
     }
   }
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

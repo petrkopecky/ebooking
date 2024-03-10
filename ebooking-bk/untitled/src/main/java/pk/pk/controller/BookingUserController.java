@@ -73,4 +73,32 @@ public class BookingUserController {
         }
         return bookingUserLoginResponse;
     }
+
+    @PostMapping("/booking-user-by-username")
+    public RestApiResponse<BookingUserDto> getBookinkgUser(@RequestBody String userName) {
+        RestApiResponse<BookingUserDto> bookingUserLoginResponse=new RestApiResponse<BookingUserDto>();
+        if(userName==null){
+            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"xxx");
+            bookingUserLoginResponse.setStatusCode("NO_INPUT_PARAMETER");
+            bookingUserLoginResponse.setStatusMessage("no userName input parameter");
+
+        }else {
+            try {
+                bookingUserLoginResponse.setResponse( bookingUserService.getBookingUserDto(userName));
+                bookingUserLoginResponse.setStatusCode("OK");
+            } catch (UserNotFoundException e) {
+                bookingUserLoginResponse.setStatusCode("USERNAME_NOT_FOUND");
+                bookingUserLoginResponse.setStatusMessage("user not found");
+            }catch (InactiveUserException e){
+                bookingUserLoginResponse.setStatusCode("INACTIVE_USER");
+                bookingUserLoginResponse.setStatusMessage("inactive user");
+            }catch(Exception e){
+                bookingUserLoginResponse.setStatusCode("OTHER_EXCEPTION");
+                bookingUserLoginResponse.setStatusMessage(e.getMessage());
+            }
+        }
+        return bookingUserLoginResponse;
+    }
+
+
 }

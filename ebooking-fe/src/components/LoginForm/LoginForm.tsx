@@ -3,6 +3,7 @@ import { useUserContext } from "../../UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import bookingService from "../../service/BookingService.ts";
 import { BookingUser } from "../../types/bookingUser.ts";
+import authorizationService from "../../service/AuthorizationService.ts";
 import "./LoginForm.css";
 
 type RedirectLocationState = {
@@ -57,6 +58,7 @@ const Login = () => {
             const bookingUser = apiResponse.response as BookingUser;
             console.log("bookingUser:" + bookingUser?.userName);
             userContext.userContextlogin(bookingUser);
+            authorizationService.storeAuthorizationToken(bookingUser.authtoken);
 
             if (locationState) {
               const { redirectTo } = locationState as RedirectLocationState;
@@ -69,6 +71,7 @@ const Login = () => {
             setError(true);
             setErrorMessage(apiResponse.statusMessage);
             userContext.userContextlogout();
+            authorizationService.removeAuthorizationToken();
           }
         });
     }

@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext, UserContextType, useUserContext } from "../UserContext";
 import Booking from "../components/Booking/Booking";
+import authenticationService from "../service/AuthorizationService.ts";
 import "./Home.css";
 
 const Home = () => {
   const userContext = useUserContext();
-  const [render, setRender] = useState<Boolean>(true);
+  console.log("Home:" + userContext.bookingUser);
   return (
     <div>
       <div className="home-nav-bar">
@@ -28,6 +29,7 @@ const Home = () => {
               <a
                 onClick={() => {
                   userContext.userContextlogout();
+                  authenticationService.removeAuthorizationToken();
                 }}
               >
                 Logout-{userContext?.bookingUser?.userName}

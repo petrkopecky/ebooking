@@ -11,4 +11,5 @@ public interface BookingUserService {
     public List<BookingUserDto> getBookingUsersList();
 
     public BookingUserDto loginUser(LoginUserDto loginUserDto);
+    public BookingUserDto getBookingUserDto(String userName);
 }

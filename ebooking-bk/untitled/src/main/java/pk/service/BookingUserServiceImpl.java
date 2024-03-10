@@ -64,6 +64,32 @@ public class BookingUserServiceImpl implements BookingUserService {
         return bookingUserDto;
     }
 
+    @Override
+    public BookingUserDto getBookingUserDto(String userName) {
+        BookingUser bookingUser = bookingUserJpaRepository.findByUserName(userName);
+        BookingUserDto bookingUserDto = null;
+        if (bookingUser == null) {
+            throw new UserNotFoundException();
+        }
+        else if (bookingUser.isActive() == null || !bookingUser.isActive()) {
+            throw new InactiveUserException();
+        }
+        bookingUserDto = new BookingUserDto();
+        bookingUserDto.setUserName(bookingUser.getUserName());
+        bookingUserDto.setFirstName(bookingUser.getFirstName());
+        bookingUserDto.setSecondName(bookingUser.getSecondName());
+        bookingUserDto.setEmail(bookingUser.getEmail());
+        //bookingUserDto.setPasswordHash(bookingUser.getPasswordHash());
+        bookingUserDto.setTelefoneNumber(bookingUser.getTelefoneNumber());
+        bookingUserDto.setUserRole(bookingUser.getUserRole());
+        bookingUserDto.setActive(bookingUser.isActive());
+        bookingUserDto.setPin(bookingUser.getPin());
+        bookingUserDto.setAuthtoken(bookingUser.getUserName());
+
+
+        return bookingUserDto;
+    }
+
     boolean verifyUserPassword(String passwordHash, String password) {
         return passwordHash.equals(password);
     }

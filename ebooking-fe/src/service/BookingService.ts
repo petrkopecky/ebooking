@@ -2,6 +2,7 @@ import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
 import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 import { ApiResponse } from "../types/apiResponse.ts";
+import { useUserContext } from "../UserContext.tsx";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
@@ -19,6 +20,7 @@ export function getBookingTableStructure1(): Promise<BookingTableStructure> {
 
 export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   console.log("getBookingDateSlots" + bookingDate.toDateString());
+
   let authorization: string | undefined;
   authorization = "u";
 
@@ -41,39 +43,6 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
-/*
-async function XbookingUserLogin(
-  userName: string,
-  userPassword: string
-): Promise<BookingUser> {
-  const data: ApiResponse<BookingUser> | void = await fetch(
-    "/api/booking-user-login",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userName: userName, userPassword: userPassword }),
-    }
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error("bookingUserLogin:" + response.statusText);
-    } else {
-      return response.json();
-      //const apiResponse:ApiResponse<BookingUser>=response.json() as ApiResponse<BookingUser>;
-    }
-  });
-  console.log("fetch:" + JSON.stringify(data));
-  if (data?.statusCode === "OK") {
-    return new Promise<BookingUser>((resolve, reject) => {
-      resolve(data?.response as BookingUser);
-    });
-  } else {
-    throw new Error("bookingUserLogin:" + data?.statusCode);
-  }
-}
-*/
-
 export function bookingUserLogin(
   userName: string,
   userPassword: string
@@ -93,9 +62,28 @@ export function bookingUserLogin(
   });
 }
 
+export function bookingUserByUserName(
+  userName: string
+): Promise<ApiResponse<BookingUser>> {
+  return fetch("/api/booking-user-by-username", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: userName,
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("bookingUserByUserName:" + response.statusText);
+    } else {
+      return response.json();
+    }
+  });
+}
+
 const BookingService = {
   getBookingTableStructure1,
   getBookingDateSlots,
   bookingUserLogin,
+  bookingUserByUserName,
 };
 export default BookingService;
