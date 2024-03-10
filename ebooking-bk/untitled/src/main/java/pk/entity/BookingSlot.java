@@ -23,7 +23,12 @@ public class BookingSlot {
             joinColumns = @JoinColumn(name = "booking_slot_id"),
             inverseJoinColumns = @JoinColumn(name = "booing_user_id"))
 
+
     List<BookingUser> bookingUsers;
+    @ManyToOne
+    @JoinColumn(name="booked_by_user_id")
+    BookingUser bookedByUser;
+
     public Long getId() {
         return id;
     }
@@ -82,5 +87,11 @@ public class BookingSlot {
         this.bookingUsers = bookingUsers;
     }
 
+    public BookingUser getBookedByUser() {
+        return bookedByUser;
+    }
 
+    public void setBookedByUser(BookingUser bookedByUser) {
+        this.bookedByUser = bookedByUser;
+    }
 }
