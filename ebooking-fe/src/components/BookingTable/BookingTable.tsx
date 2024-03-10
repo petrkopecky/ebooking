@@ -145,9 +145,9 @@ function getBookingSlotClassName(
   } else if (bookingSlot.slotValue === "BOOKED") {
     className = "booked-slot";
   } else if (bookingSlot.slotValue === "BOOKED-BY-USER") {
-    className = "booked-user-by-slot";
+    className = "booked-by-user-slot";
   } else if (bookingSlot.slotValue === "BOOKED-FOR-USER") {
-    className = "booked-user-for-slot";
+    className = "booked-for-user-slot";
   }
 
   return className;

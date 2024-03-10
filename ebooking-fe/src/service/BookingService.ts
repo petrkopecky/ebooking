@@ -3,6 +3,7 @@ import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 import { ApiResponse } from "../types/apiResponse.ts";
 import { useUserContext } from "../UserContext.tsx";
+import authorizationService from "./AuthorizationService.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
@@ -21,13 +22,13 @@ export function getBookingTableStructure1(): Promise<BookingTableStructure> {
 export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   console.log("getBookingDateSlots" + bookingDate.toDateString());
 
-  let authorization: string | undefined;
-  authorization = "u";
+  const authorizationToken: string | undefined =
+    authorizationService.getAuthorizationToken();
 
   const headers: Headers = new Headers();
   headers.append("Content-Type", "application/json");
-  if (authorization !== undefined) {
-    headers.append("Authorization", authorization);
+  if (authorizationToken !== undefined) {
+    headers.append("Authorization", authorizationToken);
   }
 
   return fetch("/api/booking-date-slots1", {
