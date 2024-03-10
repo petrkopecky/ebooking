@@ -1,11 +1,13 @@
 package pk.modelDto;
 
+import java.util.List;
+
 public class BookingTableSlot {
     String articleKey;
     String slotKey;
     String slotValue;
     String info;
-    String[] userPins;
+    List<Integer> userPins;
 
     Integer priority;
 
@@ -41,11 +43,11 @@ public class BookingTableSlot {
         this.info = info;
     }
 
-    public String[] getUserPins() {
+    public List<Integer> getUserPins() {
         return userPins;
     }
 
-    public void setUserPins(String[] userPins) {
+    public void setUserPins(List<Integer> userPins) {
         this.userPins = userPins;
     }
 

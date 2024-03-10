@@ -5,19 +5,16 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pk.entity.BookingArticleSlot;
-import pk.entity.BookingSlot;
+import pk.entity.BookingUser;
 import pk.mapperDto.BookingSlotMapper;
 import pk.modelDto.BookingTableSlot;
 import pk.modelDto.BookingUserDto;
 import pk.repository.BookingArticleSlotJpaRepository;
 import pk.repository.BookingSlotJpaRepository;
 
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,28 +45,11 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     @Override
     public List<BookingTableSlot> getBookingTableSlots(String bookingDate, BookingUserDto bookingUserDto) {
         List<BookingTableSlot> bookingArticleTableSlots = getBookingArticleSlots(bookingDate);
-        List<BookingTableSlot> bookingTableSlots = getBookingSlots(bookingDate);
+        List<BookingTableSlot> bookingTableSlots = getBookingSlots(bookingDate, bookingUserDto);
         return combineBookingAndArticleSlots(bookingTableSlots, bookingArticleTableSlots);
     }
 
-    public List<BookingTableSlot> combineBookingAndArticleSlotsx(List<BookingTableSlot> bookingTableSlots, List<BookingTableSlot> bookingArticleTableSlots) {
-        List<BookingTableSlot> cBookingTableSlots;
-        if (bookingTableSlots == null || bookingTableSlots.size() == 0) {
-            cBookingTableSlots = bookingArticleTableSlots;
-        } else {
-            cBookingTableSlots = new ArrayList<BookingTableSlot>();
-            bookingArticleTableSlots.forEach(bookingArticleSlot -> {
-                log.info("bookingArticleSlot:" + bookingArticleSlot.getSlotKey());
-                Optional<BookingTableSlot> bookingTableSlot = bookingTableSlots.stream().filter(iBookingTableSlot -> (iBookingTableSlot.getSlotKey().equals(bookingArticleSlot.getSlotKey()))).findFirst();
-                if (bookingTableSlot.isPresent()) {
-                    cBookingTableSlots.add(bookingTableSlot.get());
-                } else {
-                    cBookingTableSlots.add(bookingArticleSlot);
-                }
-            });
-        }
-        return cBookingTableSlots;
-    }
+
 
     public List<BookingTableSlot> combineBookingAndArticleSlots(List<BookingTableSlot> bookingTableSlots, List<BookingTableSlot> bookingArticleTableSlots) {
         List<BookingTableSlot> cBookingTableSlots = new ArrayList<BookingTableSlot>(bookingTableSlots);
@@ -84,15 +64,22 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     }
 
     @Override
-    public List<BookingTableSlot> getBookingSlots(String bookingDate) {
+    public List<BookingTableSlot> getBookingSlots(String bookingDate, BookingUserDto bookingUserDto) {
 
         List<BookingTableSlot> bookingTableSlots = bookingSlotJpaRepository.findByBookingDate(bookingDate).stream().map(
                 bookingSlot -> {
                     BookingTableSlot bookingTableSlot = new BookingTableSlot();
                     bookingTableSlot.setSlotKey(getSlotKey(bookingSlot.getBookingArticle().getKey(), bookingDate, bookingSlot.getBookingTimeSlot()));
-                    bookingTableSlot.setSlotValue(bookingSlot.getSlotValue());
+                    if(bookingSlot.getSlotValue().equals("BOOKED") && bookingSlot.getBookedByUser().getUserName().equals(bookingUserDto.getUserName())){
+                        bookingTableSlot.setSlotValue("BOOKED-BY-USER");
+                    }else if(bookingSlot.getBookingUsers().es){
+                        bookingTableSlot.setSlotValue(bookingSlot.getSlotValue());
+                    }else{
+                        bookingTableSlot.setSlotValue(bookingSlot.getSlotValue());
+                    }
+
                     //bookingTableSlot.setInfo();
-                    //bookingTableSlot.setUserPins();
+                    bookingTableSlot.setUserPins(bookingSlot.getBookingUsers().stream().map(BookingUser::getPin).collect(Collectors.toList()));
                     bookingTableSlot.setPriority(10);
                     return bookingTableSlot;
                 }

@@ -9,7 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface BookingSlotService {
-    List<BookingTableSlot> getBookingSlots(String bookingDate);
+
+
+    List<BookingTableSlot> getBookingSlots(String bookingDate, BookingUserDto bookingUserDto);
 
     List<BookingTableSlot> getBookingArticleSlots(String bookingDate);
 

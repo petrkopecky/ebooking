@@ -15,3 +15,14 @@
 .closed-slot {
   background-color: whitesmoke;
 }
+
+.booked-slot {
+  background-color: yellow;
+}
+
+.booked-by-user-slot {
+  background-color: lightskyblue;
+}
+.booked-for-user-slot {
+  background-color: lightblue;
+}

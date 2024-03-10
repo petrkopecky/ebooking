@@ -21,12 +21,12 @@ public class BookingSlot {
     @JoinTable(
             name = "booking_slot_booking_user",
             joinColumns = @JoinColumn(name = "booking_slot_id"),
-            inverseJoinColumns = @JoinColumn(name = "booing_user_id"))
+            inverseJoinColumns = @JoinColumn(name = "booking_user_id"))
 
 
     List<BookingUser> bookingUsers;
     @ManyToOne
-    @JoinColumn(name="booked_by_user_id")
+    @JoinColumn(name="booked_by")
     BookingUser bookedByUser;
 
     public Long getId() {
