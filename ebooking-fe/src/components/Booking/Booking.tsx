@@ -45,7 +45,7 @@ function Booking() {
       .catch((error) => {
         console.log(error);
         setError(true);
-        setErrorMessage(error.message);
+        setErrorMessage(error);
       })
       .finally(() => {
         setSpin(false);
