@@ -2,7 +2,6 @@ import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
 import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 import { ApiResponse } from "../types/apiResponse.ts";
-import { useUserContext } from "../UserContext.tsx";
 import authorizationService from "./AuthorizationService.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");

@@ -10,6 +10,12 @@
 
 .free-slot {
   background-color: lightgreen;
+  cursor: pointer;
+}
+
+.free-slot:hover {
+  background-color: green;
+  cursor: pointer;
 }
 
 .closed-slot {

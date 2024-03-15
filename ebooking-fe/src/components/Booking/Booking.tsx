@@ -8,6 +8,11 @@ import bookingService from "../../service/BookingService.ts";
 import BookingTable from "../BookingTable/BookingTable.tsx";
 import "./Booking.css";
 
+enum editModes {
+  "TABLE",
+  "NEWBOOKING",
+}
+
 function Booking() {
   const [spin, setSpin] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
@@ -19,6 +24,7 @@ function Booking() {
   const [bookingTableStructure, setBookingTableStructure] =
     useState<BookingTableStructure>();
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();
+  const [editMode, setEditMode] = useState<editModes>(editModes.TABLE);
 
   useEffect(() => {
     console.log("use effect");
@@ -60,6 +66,11 @@ function Booking() {
     setBookingDate(date);
   }
 
+  function onFree() {
+    console.log("on Free");
+    setEditMode(editModes.NEWBOOKING);
+  }
+
   if (error) {
     return <div>{errorMessage}</div>;
   } else {
@@ -70,7 +81,7 @@ function Booking() {
           <p>ebooking</p>
           {spin && <p>Loading</p>}
 
-          {ready && (
+          {ready && editMode === editModes.TABLE && (
             <div>
               <DatePicker
                 onDateChange={(date) => {
@@ -84,10 +95,13 @@ function Booking() {
                   bookingDate={bookingDate}
                   bookingTableStructure={bookingTableStructure}
                   bookingSlots={bookingSlots}
+                  onFree={onFree}
                 ></BookingTable>
               </div>
             </div>
           )}
+
+          {ready && editMode === editModes.TABLE && <div> edit </div>}
         </div>
       </>
     );
