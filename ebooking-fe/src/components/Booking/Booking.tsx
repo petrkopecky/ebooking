@@ -6,6 +6,7 @@ import {
 } from "../../types/bookingTable.ts";
 import bookingService from "../../service/BookingService.ts";
 import BookingTable from "../BookingTable/BookingTable.tsx";
+import BookingSlotForm from "../BookingSlotForm/BookingSlotForm.tsx";
 import "./Booking.css";
 
 enum editModes {
@@ -101,7 +102,12 @@ function Booking() {
             </div>
           )}
 
-          {ready && editMode === editModes.TABLE && <div> edit </div>}
+          {ready && editMode === editModes.NEWBOOKING && (
+            <div>
+              {" "}
+              <BookingSlotForm />{" "}
+            </div>
+          )}
         </div>
       </>
     );
