@@ -7,5 +7,5 @@ export type BookingUser = {
   pin?: number;
   email?: string;
   telephoneNumber?: string;
-  authtoken?: string;
+  //authtoken?: string;
 };

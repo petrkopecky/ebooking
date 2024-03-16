@@ -9,11 +9,11 @@ public class BookingUserDto {
     private String secondName;
     private String email;
     private String telefoneNumber;
-    private String passwordHash;
+   // private String passwordHash;
     private String userRole;
     private Boolean isActive;
 
-    private String authtoken;
+    //private String authtoken;
 
     public Long getId() {
         return id;
@@ -71,13 +71,7 @@ public class BookingUserDto {
         this.telefoneNumber = telefoneNumber;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
 
     public String getUserRole() {
         return userRole;
@@ -95,11 +89,5 @@ public class BookingUserDto {
         isActive = active;
     }
 
-    public String getAuthtoken() {
-        return authtoken;
-    }
 
-    public void setAuthtoken(String authtoken) {
-        this.authtoken = authtoken;
-    }
 }

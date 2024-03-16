@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pk.modelDto.BookingUserDto;
+import pk.modelDto.LoggedUserDto;
 import pk.modelDto.LoginUserDto;
 import pk.service.BookingUserService;
 import pk.service.InactiveUserException;
@@ -46,8 +47,8 @@ public class BookingUserController {
     }
 
     @PostMapping("/booking-user-login")
-    public RestApiResponse<BookingUserDto> bookinkgUserLogin(@RequestBody LoginUserDto loginUserDto) {
-        RestApiResponse<BookingUserDto> bookingUserLoginResponse=new RestApiResponse<BookingUserDto>();
+    public RestApiResponse<LoggedUserDto> bookinkgUserLogin(@RequestBody LoginUserDto loginUserDto) {
+        RestApiResponse<LoggedUserDto> bookingUserLoginResponse=new RestApiResponse<LoggedUserDto>();
         if(loginUserDto==null){
             //throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"xxx");
             bookingUserLoginResponse.setStatusCode("NO_INPUT_PARAMETER");

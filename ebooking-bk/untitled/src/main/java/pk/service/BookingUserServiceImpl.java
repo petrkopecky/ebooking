@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pk.entity.BookingUser;
 import pk.mapperDto.BookingUserMapper;
 import pk.modelDto.BookingUserDto;
+import pk.modelDto.LoggedUserDto;
 import pk.modelDto.LoginUserDto;
 import pk.repository.BookingUserJpaRepository;
 
@@ -37,9 +38,9 @@ public class BookingUserServiceImpl implements BookingUserService {
     }
 
     @Override
-    public BookingUserDto loginUser(LoginUserDto loginUserDto) {
+    public LoggedUserDto loginUser(LoginUserDto loginUserDto) {
         BookingUser bookingUser = bookingUserJpaRepository.findByUserName(loginUserDto.getUserName());
-        BookingUserDto bookingUserDto = null;
+        LoggedUserDto loggedUserDto = null;
         if (bookingUser == null) {
             throw new UserNotFoundException();
         }
@@ -48,20 +49,20 @@ public class BookingUserServiceImpl implements BookingUserService {
         } else if (bookingUser.isActive() == null || !bookingUser.isActive()) {
             throw new InactiveUserException();
         }
-        bookingUserDto = new BookingUserDto();
-        bookingUserDto.setUserName(bookingUser.getUserName());
-        bookingUserDto.setFirstName(bookingUser.getFirstName());
-        bookingUserDto.setSecondName(bookingUser.getSecondName());
-        bookingUserDto.setEmail(bookingUser.getEmail());
+        loggedUserDto = new LoggedUserDto();
+        loggedUserDto.setUserName(bookingUser.getUserName());
+        loggedUserDto.setFirstName(bookingUser.getFirstName());
+        loggedUserDto.setSecondName(bookingUser.getSecondName());
+        loggedUserDto.setEmail(bookingUser.getEmail());
         //bookingUserDto.setPasswordHash(bookingUser.getPasswordHash());
-        bookingUserDto.setTelefoneNumber(bookingUser.getTelefoneNumber());
-        bookingUserDto.setUserRole(bookingUser.getUserRole());
-        bookingUserDto.setActive(bookingUser.isActive());
-        bookingUserDto.setPin(bookingUser.getPin());
-        bookingUserDto.setAuthtoken(bookingUser.getUserName());
+        loggedUserDto.setTelefoneNumber(bookingUser.getTelefoneNumber());
+        loggedUserDto.setUserRole(bookingUser.getUserRole());
+        loggedUserDto.setActive(bookingUser.isActive());
+        loggedUserDto.setPin(bookingUser.getPin());
+        loggedUserDto.setAuthtoken(bookingUser.getUserName());
 
 
-        return bookingUserDto;
+        return loggedUserDto;
     }
 
     @Override
@@ -84,7 +85,7 @@ public class BookingUserServiceImpl implements BookingUserService {
         bookingUserDto.setUserRole(bookingUser.getUserRole());
         bookingUserDto.setActive(bookingUser.isActive());
         bookingUserDto.setPin(bookingUser.getPin());
-        bookingUserDto.setAuthtoken(bookingUser.getUserName());
+        //bookingUserDto.setAuthtoken(bookingUser.getUserName());
 
 
         return bookingUserDto;
