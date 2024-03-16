@@ -8,6 +8,7 @@ import bookingService from "../../service/BookingService.ts";
 import BookingTable from "../BookingTable/BookingTable.tsx";
 import BookingSlotForm from "../BookingSlotForm/BookingSlotForm.tsx";
 import "./Booking.css";
+import { formModes } from "../../types/formMode.ts";
 
 enum editModes {
   "TABLE",
@@ -115,6 +116,7 @@ function Booking() {
               <BookingSlotForm
                 bookingSlotKey={editBookingSlotKey}
                 onDone={() => setEditMode(editModes.TABLE)}
+                formMode={formModes.NEW}
               />
             </div>
           )}

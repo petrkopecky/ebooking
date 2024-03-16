@@ -3,6 +3,7 @@ import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 import { ApiResponse } from "../types/apiResponse.ts";
 import authorizationService from "./AuthorizationService.ts";
+import { BookingSlotDto } from "../types/bookingSlotDto.ts";
 export function getBookingTableStructure1(): Promise<BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
@@ -45,9 +46,9 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
-export function getBookingDateSlot(
+export function getBookingSlot(
   bookingSlotKey: string
-): Promise<BookingSlot> {
+): Promise<BookingSlotDto> {
   console.log("getBookingDateSlot" + bookingSlotKey);
 
   const authorizationToken: string | undefined =
@@ -59,7 +60,7 @@ export function getBookingDateSlot(
     headers.append("Authorization", authorizationToken);
   }
 
-  return fetch("/api/booking-date-slot", {
+  return fetch("/api/booking-slot", {
     method: "POST",
     headers: headers,
     body: bookingSlotKey,
@@ -69,7 +70,7 @@ export function getBookingDateSlot(
         throw text;
       });
     } else {
-      return response.json() as Promise<BookingSlot>;
+      return response.json() as Promise<BookingSlotDto>;
     }
   });
 }
@@ -114,6 +115,7 @@ export function bookingUserByUserName(
 const BookingService = {
   getBookingTableStructure1,
   getBookingDateSlots,
+  getBookingSlot,
   bookingUserLogin,
   bookingUserByUserName,
 };
