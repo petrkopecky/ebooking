@@ -77,12 +77,14 @@ public class BookingController {
 
     }
 
-    @GetMapping("/booking-article-date-slots")
-    public String getBookingArticleDateStols(){
-        bookingSlotService.getBookingArticleSlots("2024-02-21");
+
+
+    @PostMapping("/booking-slot")
+    public String getBookingSlot(@RequestHeader(value="Authorization", required = false)String authorizationToken,@RequestBody String bookingSlotKey){
+
+        bookingSlotService.getBookingSlotDtoBySlotKey("2024-02-21");
         return "ok";
     }
-
 
 
 

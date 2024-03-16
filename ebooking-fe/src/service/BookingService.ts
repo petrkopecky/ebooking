@@ -45,6 +45,35 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
   });
 }
 
+export function getBookingDateSlot(
+  bookingSlotKey: string
+): Promise<BookingSlot> {
+  console.log("getBookingDateSlot" + bookingSlotKey);
+
+  const authorizationToken: string | undefined =
+    authorizationService.getAuthorizationToken();
+
+  const headers: Headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  if (authorizationToken !== undefined) {
+    headers.append("Authorization", authorizationToken);
+  }
+
+  return fetch("/api/booking-date-slot", {
+    method: "POST",
+    headers: headers,
+    body: bookingSlotKey,
+  }).then((response) => {
+    if (!response.ok) {
+      return response.text().then(function (text) {
+        throw text;
+      });
+    } else {
+      return response.json() as Promise<BookingSlot>;
+    }
+  });
+}
+
 export function bookingUserLogin(
   userName: string,
   userPassword: string

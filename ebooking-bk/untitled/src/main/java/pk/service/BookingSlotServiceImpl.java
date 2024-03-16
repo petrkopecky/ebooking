@@ -5,8 +5,11 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pk.entity.BookingArticleSlot;
+import pk.entity.BookingSlot;
 import pk.entity.BookingUser;
 import pk.mapperDto.BookingSlotMapper;
+import pk.modelDto.BookingSlotDto;
+import pk.modelDto.BookingSlotKey;
 import pk.modelDto.BookingTableSlot;
 import pk.modelDto.BookingUserDto;
 import pk.repository.BookingArticleSlotJpaRepository;
@@ -50,7 +53,6 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     }
 
 
-
     public List<BookingTableSlot> combineBookingAndArticleSlots(List<BookingTableSlot> bookingTableSlots, List<BookingTableSlot> bookingArticleTableSlots) {
         List<BookingTableSlot> cBookingTableSlots = new ArrayList<BookingTableSlot>(bookingTableSlots);
         bookingArticleTableSlots.forEach(bookingArticleSlot -> {
@@ -70,11 +72,11 @@ public class BookingSlotServiceImpl implements BookingSlotService {
                 bookingSlot -> {
                     BookingTableSlot bookingTableSlot = new BookingTableSlot();
                     bookingTableSlot.setSlotKey(getSlotKey(bookingSlot.getBookingArticle().getKey(), bookingDate, bookingSlot.getBookingTimeSlot()));
-                    if(bookingUserDto!=null && bookingSlot.getSlotValue().equals("BOOKED") && bookingSlot.getBookedByUser().getUserName().equals(bookingUserDto.getUserName())){
+                    if (bookingUserDto != null && bookingSlot.getSlotValue().equals("BOOKED") && bookingSlot.getBookedByUser().getUserName().equals(bookingUserDto.getUserName())) {
                         bookingTableSlot.setSlotValue("BOOKED-BY-USER");
-                    }else if(bookingUserDto!=null && bookingSlot.getBookingUsers().stream().filter(bookingUser->bookingUser.getUserName().equals(bookingUserDto.getUserName())).findAny().isPresent()){
+                    } else if (bookingUserDto != null && bookingSlot.getBookingUsers().stream().filter(bookingUser -> bookingUser.getUserName().equals(bookingUserDto.getUserName())).findAny().isPresent()) {
                         bookingTableSlot.setSlotValue("BOOKED-FOR-USER");
-                    }else{
+                    } else {
                         bookingTableSlot.setSlotValue(bookingSlot.getSlotValue());
                     }
 
@@ -157,5 +159,19 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         return timeSlot1.compareTo(timeSlot2);
     }
 
+    @Override
+    public BookingSlotDto getBookingSlotDtoBySlotKey(String bookingSlotKeyString) {
+        BookingSlotKey bookingSlotKey=parseBookingSlotKey(bookingSlotKeyString);
+        BookingSlot bookingSlot = bookingSlotJpaRepository.findByBookingKey(1L, "2024-03-06", "1100-1130");
+        return null;
+    }
 
+    BookingSlotKey parseBookingSlotKey(String bookingSlotKeyString){
+        BookingSlotKey bookingSlotKey=new BookingSlotKey();
+        String[] bookingSlotKeyParts=bookingSlotKeyString.split("-");
+        bookingSlotKey.setBookingArticleId(Long.parseLong(bookingSlotKeyParts[0]));
+        bookingSlotKey.setBookingDate(bookingSlotKeyParts[1]+"-"+bookingSlotKeyParts[2]+"-"+bookingSlotKeyParts[3]);
+        bookingSlotKey.setBookingTimeSlot(bookingSlotKeyParts[4]+"-"+bookingSlotKeyParts[5]);
+        return bookingSlotKey;
+    }
 }

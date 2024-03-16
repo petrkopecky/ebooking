@@ -1,6 +1,7 @@
 package pk.service;
 
 
+import pk.modelDto.BookingSlotDto;
 import pk.modelDto.BookingTableSlot;
 import pk.modelDto.BookingUserDto;
 
@@ -16,4 +17,6 @@ public interface BookingSlotService {
     List<BookingTableSlot> getBookingArticleSlots(String bookingDate);
 
     List<BookingTableSlot> getBookingTableSlots(String bookingDate, BookingUserDto bookingUserDto);
+
+    BookingSlotDto getBookingSlotDtoBySlotKey(String slotKey);
 }

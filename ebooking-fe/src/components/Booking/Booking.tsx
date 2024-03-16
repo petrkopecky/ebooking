@@ -26,10 +26,17 @@ function Booking() {
     useState<BookingTableStructure>();
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();
   const [editMode, setEditMode] = useState<editModes>(editModes.TABLE);
+  const [editBookingSlotKey, setEditBookingSlotKey] = useState<string>("");
 
   useEffect(() => {
     console.log("use effect");
   }, []);
+
+  /*
+  useEffect(() => {
+    console.log("use effect editBookingSlotKey");
+  }, [editBookingSlotKey, editMode]);
+*/
 
   useEffect(() => {
     console.log("use effect bookingDate:" + bookingDate.toDateString());
@@ -67,8 +74,9 @@ function Booking() {
     setBookingDate(date);
   }
 
-  function onFree() {
-    console.log("on Free");
+  function onFree(bookingSlotKey: string) {
+    console.log("on Free:" + bookingSlotKey);
+    setEditBookingSlotKey(bookingSlotKey);
     setEditMode(editModes.NEWBOOKING);
   }
 
@@ -104,8 +112,10 @@ function Booking() {
 
           {ready && editMode === editModes.NEWBOOKING && (
             <div>
-              {" "}
-              <BookingSlotForm />{" "}
+              <BookingSlotForm
+                bookingSlotKey={editBookingSlotKey}
+                onDone={() => setEditMode(editModes.TABLE)}
+              />
             </div>
           )}
         </div>

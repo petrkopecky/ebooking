@@ -2,6 +2,7 @@ package pk.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pk.entity.BookingSlot;
 
@@ -12,4 +13,6 @@ import java.util.List;
 @Repository
 public interface BookingSlotJpaRepository extends JpaRepository<BookingSlot,Long> {
     List<BookingSlot> findByBookingDate(String bookingDate);
+    @Query(value = "from BookingSlot t where bookingArticle.id = :bookingArticleId and bookingDate=:bookingDate and bookingTimeSlot=:bookingTimeSlot  ")
+    BookingSlot findByBookingKey(@Param("bookingArticleId")Long bookingArticleId,@Param("bookingDate") String bookingDate,@Param("bookingTimeSlot") String bookingTimeSlot);
 }

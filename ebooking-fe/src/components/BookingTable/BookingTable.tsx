@@ -6,7 +6,7 @@ interface BookingTableProps {
   bookingDate?: Date;
   bookingTableStructure?: bookingTableT.BookingTableStructure;
   bookingSlots?: bookingTableT.BookingSlot[];
-  onFree?(): void;
+  onFree?(bookingSlotKey: string): void;
 }
 
 function BookingTable({
@@ -15,8 +15,8 @@ function BookingTable({
   bookingSlots,
   onFree,
 }: BookingTableProps) {
-  function onFreeClick(): void {
-    onFree && onFree();
+  function onFreeClick(bookingSlotKey: string): void {
+    onFree && onFree(bookingSlotKey);
   }
 
   function hoursSlotsRow(
@@ -158,7 +158,7 @@ function BookingTable({
             id={slotKey}
             key={slotKey}
             className={getBookingSlotClassName(slotKey, bookingSlots)}
-            onClick={() => onFreeClick()}
+            onClick={() => onFreeClick(slotKey)}
           >
             {slotKey}
             {getBookingSlotTd(slotKey, bookingSlots)}
