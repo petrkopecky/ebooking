@@ -1,4 +1,6 @@
 package pk.modelDto;
+import pk.entity.BookingUser;
+
 import java.util.List;
 
 public class BookingSlotDto {
@@ -9,6 +11,8 @@ public class BookingSlotDto {
     String bookingDate; //20240406
     String bookingTimeSlot; //0800-0830
     List<BookingUserDto> bookingUsersDto;
+
+    BookingUserDto bookedByUserDto;
 
     public Long getId() {
         return id;
@@ -65,4 +69,14 @@ public class BookingSlotDto {
     public void setBookingUsersDto(List<BookingUserDto> bookingUsersDto) {
         this.bookingUsersDto = bookingUsersDto;
     }
+
+    public BookingUserDto getBookedByUserDto() {
+        return bookedByUserDto;
+    }
+
+    public void setBookedByUserDto(BookingUserDto bookedByUserDto) {
+        this.bookedByUserDto = bookedByUserDto;
+    }
+
+
 }

@@ -162,14 +162,15 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     @Override
     public BookingSlotDto getBookingSlotDtoBySlotKey(String bookingSlotKeyString) {
         BookingSlotKey bookingSlotKey=parseBookingSlotKey(bookingSlotKeyString);
-        BookingSlot bookingSlot = bookingSlotJpaRepository.findByBookingKey(1L, "2024-03-06", "1100-1130");
-        return null;
+        BookingSlot bookingSlot = bookingSlotJpaRepository.findByBookingKey(bookingSlotKey.getBookingArticleKey(), bookingSlotKey.getBookingDate(),bookingSlotKey.getBookingTimeSlot());
+        BookingSlotDto bookingSlotDto=bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlot);
+        return bookingSlotDto;
     }
 
     BookingSlotKey parseBookingSlotKey(String bookingSlotKeyString){
         BookingSlotKey bookingSlotKey=new BookingSlotKey();
         String[] bookingSlotKeyParts=bookingSlotKeyString.split("-");
-        bookingSlotKey.setBookingArticleId(Long.parseLong(bookingSlotKeyParts[0]));
+        bookingSlotKey.setBookingArticleKey(bookingSlotKeyParts[0]);
         bookingSlotKey.setBookingDate(bookingSlotKeyParts[1]+"-"+bookingSlotKeyParts[2]+"-"+bookingSlotKeyParts[3]);
         bookingSlotKey.setBookingTimeSlot(bookingSlotKeyParts[4]+"-"+bookingSlotKeyParts[5]);
         return bookingSlotKey;

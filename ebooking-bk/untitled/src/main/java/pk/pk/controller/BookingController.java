@@ -80,10 +80,12 @@ public class BookingController {
 
 
     @PostMapping("/booking-slot")
-    public String getBookingSlot(@RequestHeader(value="Authorization", required = false)String authorizationToken,@RequestBody String bookingSlotKey){
+    public RestApiResponse<BookingSlotDto> getBookingSlot(@RequestHeader(value="Authorization", required = false)String authorizationToken,@RequestBody String bookingSlotKey){
+        RestApiResponse<BookingSlotDto> restApiResponse=new RestApiResponse<BookingSlotDto>();
+        restApiResponse.setResponse(bookingSlotService.getBookingSlotDtoBySlotKey(bookingSlotKey));
+        restApiResponse.setStatusCode("OK");
+        return restApiResponse;
 
-        bookingSlotService.getBookingSlotDtoBySlotKey("2024-02-21");
-        return "ok";
     }
 
 

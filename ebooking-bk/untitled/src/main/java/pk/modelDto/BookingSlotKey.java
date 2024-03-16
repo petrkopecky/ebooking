@@ -1,16 +1,16 @@
 package pk.modelDto;
 
 public class BookingSlotKey {
-    Long bookingArticleId;
+    String getBookingArticleKey;
     String bookingTimeSlot;
     String bookingDate;
 
-    public Long getBookingArticleId() {
-        return bookingArticleId;
+    public String getBookingArticleKey() {
+        return getBookingArticleKey;
     }
 
-    public void setBookingArticleId(Long bookingArticleId) {
-        this.bookingArticleId = bookingArticleId;
+    public void setBookingArticleKey(String getBookingArticleKey) {
+        this.getBookingArticleKey = getBookingArticleKey;
     }
 
     public String getBookingTimeSlot() {

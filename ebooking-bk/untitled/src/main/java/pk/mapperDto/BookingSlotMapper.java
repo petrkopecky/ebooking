@@ -8,16 +8,17 @@ import pk.modelDto.BookingSlotDto;
 
 import java.util.List;
 
-//@Mapper
+@Mapper
 public interface BookingSlotMapper {
-   /* @Mapping(source="bookingArticle", target="bookingArticleDto")
-    @Mapping(source="bookingUser", target="bookingUserDto")
+    @Mapping(source="bookingArticle", target="bookingArticleDto")
+    @Mapping(source="bookedByUser", target="bookedByUserDto")
+    @Mapping(source="bookingUsers", target="bookingUsersDto")
     BookingSlotDto bookingSlotToBookingSlotDto( BookingSlot bookingSlot);
     @Mapping(source="bookingArticleDto", target="bookingArticle")
-    @Mapping(source="bookingUserDto", target="bookingUser")
+    @Mapping(source="bookedByUserDto", target="bookedByUser")
     BookingSlot bookingSlotDtoToBookingSlot( BookingSlotDto bookingSlotDto);
 
-
+/*
     List<BookingSlotDto> bookingSlotsToBookingSlotsDto(List<BookingSlot> bookingSlots);
     List<BookingSlot> bookingSlotsDtoToBookingSlots( List<BookingSlotDto> bookingSlotsDto);
 */
