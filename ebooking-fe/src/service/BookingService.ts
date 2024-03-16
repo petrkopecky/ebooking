@@ -1,10 +1,12 @@
-import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
+//import { BookingTableStructure, BookingSlot } from "../types/bookingTable.ts";
+import * as bookingTableT from "../types/bookingTable.ts";
+
 import { BookingUser } from "../types/bookingUser.ts";
 import utilsService from "./UtilsService.ts";
 import { ApiResponse } from "../types/apiResponse.ts";
 import authorizationService from "./AuthorizationService.ts";
 import { BookingSlotDto } from "../types/bookingSlotDto.ts";
-export function getBookingTableStructure1(): Promise<BookingTableStructure> {
+export function getBookingTableStructure1(): Promise<bookingTableT.BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
     method: "POST",
@@ -15,11 +17,13 @@ export function getBookingTableStructure1(): Promise<BookingTableStructure> {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    return response.json() as Promise<BookingTableStructure>;
+    return response.json() as Promise<bookingTableT.BookingTableStructure>;
   });
 }
 
-export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
+export function getBookingDateSlots(
+  bookingDate: Date
+): Promise<bookingTableT.BookingSlot[]> {
   console.log("getBookingDateSlots" + bookingDate.toDateString());
 
   const authorizationToken: string | undefined =
@@ -41,7 +45,7 @@ export function getBookingDateSlots(bookingDate: Date): Promise<BookingSlot[]> {
         throw text;
       });
     } else {
-      return response.json() as Promise<BookingSlot[]>;
+      return response.json() as Promise<bookingTableT.BookingSlot[]>;
     }
   });
 }

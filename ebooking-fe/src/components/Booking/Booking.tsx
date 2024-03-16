@@ -9,6 +9,7 @@ import BookingTable from "../BookingTable/BookingTable.tsx";
 import BookingSlotForm from "../BookingSlotForm/BookingSlotForm.tsx";
 import "./Booking.css";
 import { formModes } from "../../types/formMode.ts";
+import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
 
 enum editModes {
   "TABLE",
@@ -75,10 +76,18 @@ function Booking() {
     setBookingDate(date);
   }
 
-  function onFree(bookingSlotKey: string) {
-    console.log("on Free:" + bookingSlotKey);
+  function onBookingSlotClick(
+    bookingSlotKey: string,
+    bookingSlotValue: string
+  ) {
+    console.log("on onBookingSlotClick:" + bookingSlotKey);
     setEditBookingSlotKey(bookingSlotKey);
-    setEditMode(editModes.NEWBOOKING);
+
+    switch (bookingSlotValue) {
+      case BookingSlotTypes.FREE:
+        setEditMode(editModes.NEWBOOKING);
+        break;
+    }
   }
 
   if (error) {
@@ -105,7 +114,7 @@ function Booking() {
                   bookingDate={bookingDate}
                   bookingTableStructure={bookingTableStructure}
                   bookingSlots={bookingSlots}
-                  onFree={onFree}
+                  onBookingSlotClick={onBookingSlotClick}
                 ></BookingTable>
               </div>
             </div>

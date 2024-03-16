@@ -1,0 +1,7 @@
+export enum BookingSlotTypes {
+  FREE = "FREE",
+  CLOSED = "CLOSED",
+  BOOKED = "BOOKED",
+  BOOKEDBYUSER = "BOOKEDBYUSER",
+  BOOKEDFORUSER = "BOOKEDFORUSER",
+}

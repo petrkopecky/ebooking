@@ -73,9 +73,9 @@ public class BookingSlotServiceImpl implements BookingSlotService {
                     BookingTableSlot bookingTableSlot = new BookingTableSlot();
                     bookingTableSlot.setSlotKey(getSlotKey(bookingSlot.getBookingArticle().getKey(), bookingDate, bookingSlot.getBookingTimeSlot()));
                     if (bookingUserDto != null && bookingSlot.getSlotValue().equals("BOOKED") && bookingSlot.getBookedByUser().getUserName().equals(bookingUserDto.getUserName())) {
-                        bookingTableSlot.setSlotValue("BOOKED-BY-USER");
+                        bookingTableSlot.setSlotValue("BOOKEDBYUSER");
                     } else if (bookingUserDto != null && bookingSlot.getBookingUsers().stream().filter(bookingUser -> bookingUser.getUserName().equals(bookingUserDto.getUserName())).findAny().isPresent()) {
-                        bookingTableSlot.setSlotValue("BOOKED-FOR-USER");
+                        bookingTableSlot.setSlotValue("BOOKEDFORUSER");
                     } else {
                         bookingTableSlot.setSlotValue(bookingSlot.getSlotValue());
                     }

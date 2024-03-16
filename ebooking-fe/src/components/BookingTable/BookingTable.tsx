@@ -1,22 +1,25 @@
 import * as bookingTableT from "../../types/bookingTable.ts";
 import "./BookingTable.css";
 import utilsService from "../../service/UtilsService.ts";
+import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
 
 interface BookingTableProps {
   bookingDate?: Date;
   bookingTableStructure?: bookingTableT.BookingTableStructure;
   bookingSlots?: bookingTableT.BookingSlot[];
-  onFree?(bookingSlotKey: string): void;
+  onBookingSlotClick?(bookingSlotKey: string, slotValue: string): void;
 }
 
 function BookingTable({
   bookingDate,
   bookingTableStructure,
   bookingSlots,
-  onFree,
+  onBookingSlotClick,
 }: BookingTableProps) {
-  function onFreeClick(bookingSlotKey: string): void {
-    onFree && onFree(bookingSlotKey);
+  function onSlotClick(bookingSlot: bookingTableT.BookingSlot): void {
+    console.log("slot click" + bookingSlot.slotKey);
+    onBookingSlotClick &&
+      onBookingSlotClick(bookingSlot.slotKey, bookingSlot.slotValue);
   }
 
   function hoursSlotsRow(
@@ -122,15 +125,23 @@ function BookingTable({
       slotKey,
       bookingSlots
     );
-    if (bookingSlot.slotValue === "CLOSED") {
+    if (bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.CLOSED]) {
       className = "closed-slot";
-    } else if (bookingSlot.slotValue === "FREE") {
+    } else if (
+      bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.FREE]
+    ) {
       className = "free-slot";
-    } else if (bookingSlot.slotValue === "BOOKED") {
+    } else if (
+      bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.BOOKED]
+    ) {
       className = "booked-slot";
-    } else if (bookingSlot.slotValue === "BOOKED-BY-USER") {
+    } else if (
+      bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.BOOKEDBYUSER]
+    ) {
       className = "booked-by-user-slot";
-    } else if (bookingSlot.slotValue === "BOOKED-FOR-USER") {
+    } else if (
+      bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.BOOKEDFORUSER]
+    ) {
       className = "booked-for-user-slot";
     }
 
@@ -158,7 +169,9 @@ function BookingTable({
             id={slotKey}
             key={slotKey}
             className={getBookingSlotClassName(slotKey, bookingSlots)}
-            onClick={() => onFreeClick(slotKey)}
+            onClick={() =>
+              onSlotClick(getBookingDateSlot(slotKey, bookingSlots))
+            }
           >
             {slotKey}
             {getBookingSlotTd(slotKey, bookingSlots)}

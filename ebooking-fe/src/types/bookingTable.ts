@@ -1,3 +1,5 @@
+import { BookingSlotTypes } from "./bookingSlotTypes";
+
 export interface BookingTableStructure {
   articles: Article[];
   hourSlots: HourSlot[];
