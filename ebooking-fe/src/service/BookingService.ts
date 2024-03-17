@@ -52,7 +52,7 @@ export function getBookingDateSlots(
 
 export function getBookingSlot(
   bookingSlotKey: string
-): Promise<BookingSlotDto> {
+): Promise<ApiResponse<BookingSlotDto>> {
   console.log("getBookingDateSlot" + bookingSlotKey);
 
   const authorizationToken: string | undefined =
@@ -74,7 +74,7 @@ export function getBookingSlot(
         throw text;
       });
     } else {
-      return response.json() as Promise<BookingSlotDto>;
+      return response.json() as Promise<ApiResponse<BookingSlotDto>>;
     }
   });
 }

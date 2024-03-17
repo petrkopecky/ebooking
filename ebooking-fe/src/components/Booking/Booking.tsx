@@ -13,7 +13,8 @@ import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
 
 enum editModes {
   "TABLE",
-  "NEWBOOKING",
+  "FORMNEWBOOOKING",
+  "FORMVIEWBOOKING",
 }
 
 function Booking() {
@@ -85,7 +86,10 @@ function Booking() {
 
     switch (bookingSlotValue) {
       case BookingSlotTypes.FREE:
-        setEditMode(editModes.NEWBOOKING);
+        setEditMode(editModes.FORMNEWBOOOKING);
+        break;
+      case BookingSlotTypes.BOOKEDBYUSER:
+        setEditMode(editModes.FORMVIEWBOOKING);
         break;
     }
   }
@@ -120,12 +124,21 @@ function Booking() {
             </div>
           )}
 
-          {ready && editMode === editModes.NEWBOOKING && (
+          {ready && editMode === editModes.FORMNEWBOOOKING && (
             <div>
               <BookingSlotForm
                 bookingSlotKey={editBookingSlotKey}
                 onDone={() => setEditMode(editModes.TABLE)}
                 formMode={formModes.NEW}
+              />
+            </div>
+          )}
+          {ready && editMode === editModes.FORMVIEWBOOKING && (
+            <div>
+              <BookingSlotForm
+                bookingSlotKey={editBookingSlotKey}
+                onDone={() => setEditMode(editModes.TABLE)}
+                formMode={formModes.VIEW}
               />
             </div>
           )}
