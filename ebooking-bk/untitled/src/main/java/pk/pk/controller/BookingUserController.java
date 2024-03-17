@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pk.modelDto.BookingUserDto;
 import pk.modelDto.LoggedUserDto;
 import pk.modelDto.LoginUserDto;
@@ -34,8 +31,16 @@ public class BookingUserController {
     }
 
     @GetMapping("/booking-users")
-    List<BookingUserDto> bookingUsers() {
-        return bookingUserService.getBookingUsersList();
+    RestApiResponse<List<BookingUserDto>> bookingUsers(@RequestHeader(value="Authorization", required = false)String authorizationToken) {
+        RestApiResponse<List<BookingUserDto>> restApiResponse=new RestApiResponse<List<BookingUserDto>>();
+        if(authorizationToken==null){
+            //
+        }else{
+            //validate authorization
+        }
+        restApiResponse.setStatusCode("OK");
+        restApiResponse.setResponse(bookingUserService.getBookingUsersList());
+        return restApiResponse;
     }
 
 

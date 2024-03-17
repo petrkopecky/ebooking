@@ -98,6 +98,28 @@ export function bookingUserLogin(
   });
 }
 
+export function bookingUsers(): Promise<ApiResponse<BookingUser[]>> {
+  const authorizationToken: string | undefined =
+    authorizationService.getAuthorizationToken();
+
+  const headers: Headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  if (authorizationToken !== undefined) {
+    headers.append("Authorization", authorizationToken);
+  }
+
+  return fetch("/api/booking-users", {
+    method: "GET",
+    headers: headers,
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("bookingUsers:" + response.statusText);
+    } else {
+      return response.json();
+    }
+  });
+}
+
 export function bookingUserByUserName(
   userName: string
 ): Promise<ApiResponse<BookingUser>> {
@@ -122,5 +144,6 @@ const BookingService = {
   getBookingSlot,
   bookingUserLogin,
   bookingUserByUserName,
+  bookingUsers,
 };
 export default BookingService;

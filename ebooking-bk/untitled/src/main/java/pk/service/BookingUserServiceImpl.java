@@ -2,6 +2,7 @@ package pk.service;
 
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pk.entity.BookingUser;
 import pk.mapperDto.BookingUserMapper;
@@ -34,7 +35,10 @@ public class BookingUserServiceImpl implements BookingUserService {
 
     @Override
     public List<BookingUserDto> getBookingUsersList() {
-        return null;
+        Sort sort = Sort.by(
+                Sort.Order.asc("secondName"),
+                Sort.Order.asc("firstName"));
+        return bookingUserMapper.bookingUsersToBookingUsersDto(bookingUserJpaRepository.findAllActive(sort));
     }
 
     @Override

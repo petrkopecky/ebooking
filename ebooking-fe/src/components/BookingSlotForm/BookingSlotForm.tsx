@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BookingSlotDto } from "../../types/bookingSlotDto.ts";
 import bookingService from "../../service/BookingService.ts";
 import { formModes } from "../../types/formMode.ts";
+import { BookingUserDto } from "../../types/bookingUserDto.ts";
 
 interface BookingSlotFormProps {
   bookingSlotKey: string;
@@ -17,9 +18,22 @@ function BookingSlotForm({
   useEffect(() => {
     console.log("bookingSlotForm use effect");
     getBookingSlot();
+    getBookingUsers();
+    console.log("Booking users" + JSON.stringify(bookingUsers));
   }, []);
 
   const [bookingSlot, setBookingSlot] = useState<BookingSlotDto>();
+  const [bookingUsers, setBookingUsers] = useState<BookingUserDto[]>();
+
+  function getBookingUsers() {
+    bookingService.bookingUsers().then((data) => {
+      if (data.statusCode === "OK" && data.response) {
+        setBookingUsers(data.response as BookingUserDto[]);
+      } else {
+        //show error
+      }
+    });
+  }
 
   function getBookingSlot() {
     bookingService.getBookingSlot(bookingSlotKey).then((data) => {
@@ -59,12 +73,11 @@ function BookingSlotForm({
       <p>booking booked by: {getBookedBy()}</p>
 
       <select className="dropdown">
-        <option key="USDAED" value="3.6732">
-          bbb
-        </option>
-        <option key="USDAFN" value="77.588904">
-          aaaa
-        </option>
+        {bookingUsers?.map((bookingUser) => (
+          <option key={bookingUser.id} value={bookingUser.id}>
+            {bookingUser.secondName}
+          </option>
+        ))}
       </select>
       <button onClick={() => onDone()}> done</button>
     </div>
