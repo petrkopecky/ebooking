@@ -71,14 +71,17 @@ function BookingSlotForm({
       <p>booking slot form {bookingSlotKey}</p>
       <p>booking date: {getBookingDate()}</p>
       <p>booking booked by: {getBookedBy()}</p>
-
-      <select className="dropdown">
-        {bookingUsers?.map((bookingUser) => (
-          <option key={bookingUser.id} value={bookingUser.id}>
-            {bookingUser.secondName}
-          </option>
-        ))}
-      </select>
+      <label>
+        Pick a user(s):
+        <select>
+          <option value=""></option>
+          {bookingUsers?.map((bookingUser) => (
+            <option value={bookingUser.id}>
+              {bookingUser.secondName} {bookingUser.firstName}
+            </option>
+          ))}
+        </select>
+      </label>
       <button onClick={() => onDone()}> done</button>
     </div>
   );
