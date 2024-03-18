@@ -2,6 +2,7 @@ package pk.service;
 
 
 import pk.modelDto.BookingSlotDto;
+import pk.modelDto.BookingSlotSaveDto;
 import pk.modelDto.BookingTableSlot;
 import pk.modelDto.BookingUserDto;
 
@@ -19,4 +20,6 @@ public interface BookingSlotService {
     List<BookingTableSlot> getBookingTableSlots(String bookingDate, BookingUserDto bookingUserDto);
 
     BookingSlotDto getBookingSlotDtoBySlotKey(String slotKey);
+
+    BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto);
 }

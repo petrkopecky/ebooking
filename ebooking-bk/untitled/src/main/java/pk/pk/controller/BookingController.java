@@ -93,5 +93,18 @@ public class BookingController {
     }
 
 
+    @PutMapping("/booking-slot")
+    public RestApiResponse<BookingSlotDto> addBookingSlot(@RequestHeader(value="Authorization", required = false)String authorizationToken,@RequestBody BookingSlotDto bookingSlotDto){
+        RestApiResponse<BookingSlotDto> restApiResponse=new RestApiResponse<BookingSlotDto>();
+        try {
+            restApiResponse.setResponse(bookingSlotService.(BookingSlotDto));
+            restApiResponse.setStatusCode("OK");
+        }catch(Exception e){
+            restApiResponse.setStatusCode("OTHER_EXCEPTION");
+        }
+        return restApiResponse;
+
+    }
+
 
 }

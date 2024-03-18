@@ -6,6 +6,7 @@ import utilsService from "./UtilsService.ts";
 import { ApiResponse } from "../types/apiResponse.ts";
 import authorizationService from "./AuthorizationService.ts";
 import { BookingSlotDto } from "../types/bookingSlotDto.ts";
+import { BookingSlotSaveDto } from "../types/bookingSlotSaveDto.ts";
 export function getBookingTableStructure1(): Promise<bookingTableT.BookingTableStructure> {
   //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
@@ -138,6 +139,31 @@ export function bookingUserByUserName(
   });
 }
 
+export function bookingSlotSave(
+  bookingSlotSaveDto: BookingSlotSaveDto
+): Promise<ApiResponse<BookingSlotDto>> {
+  const authorizationToken: string | undefined =
+    authorizationService.getAuthorizationToken();
+
+  const headers: Headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  if (authorizationToken !== undefined) {
+    headers.append("Authorization", authorizationToken);
+  }
+
+  return fetch("/api/booking-slot", {
+    method: "PUT",
+    headers: headers,
+    body: JSON.stringify(bookingSlotSaveDto),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("bookingSlotSave:" + response.statusText);
+    } else {
+      return response.json();
+    }
+  });
+}
+
 const BookingService = {
   getBookingTableStructure1,
   getBookingDateSlots,
@@ -145,5 +171,6 @@ const BookingService = {
   bookingUserLogin,
   bookingUserByUserName,
   bookingUsers,
+  bookingSlotSave,
 };
 export default BookingService;

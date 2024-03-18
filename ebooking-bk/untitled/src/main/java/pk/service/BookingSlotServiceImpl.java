@@ -8,10 +8,7 @@ import pk.entity.BookingArticleSlot;
 import pk.entity.BookingSlot;
 import pk.entity.BookingUser;
 import pk.mapperDto.BookingSlotMapper;
-import pk.modelDto.BookingSlotDto;
-import pk.modelDto.BookingSlotKey;
-import pk.modelDto.BookingTableSlot;
-import pk.modelDto.BookingUserDto;
+import pk.modelDto.*;
 import pk.repository.BookingArticleSlotJpaRepository;
 import pk.repository.BookingSlotJpaRepository;
 
@@ -174,5 +171,11 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         bookingSlotKey.setBookingDate(bookingSlotKeyParts[1]+"-"+bookingSlotKeyParts[2]+"-"+bookingSlotKeyParts[3]);
         bookingSlotKey.setBookingTimeSlot(bookingSlotKeyParts[4]+"-"+bookingSlotKeyParts[5]);
         return bookingSlotKey;
+    }
+
+    @Override
+    public BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto){
+        BookingSlot bookingSlot =new BookingSlot();
+        return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotJpaRepository.save(bookingSlot));
     }
 }

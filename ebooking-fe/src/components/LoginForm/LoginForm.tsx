@@ -22,29 +22,6 @@ const Login = () => {
 
   const { state: locationState } = useLocation();
 
-  /*
-  const XhandleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (input.username !== "") {
-      bookingService
-        .bookingUserLogin(input.username, input.password)
-        .then((bookingUser) => {
-          console.log("bookingUser:" + bookingUser?.userName);
-          if (
-            bookingUser?.authtoken?.length &&
-            bookingUser.authtoken.length > 0
-          ) {
-            userContext.userContextlogin(bookingUser);
-          } else {
-            userContext.userContextlogout();
-          }
-        });
-      //&& input.password !== "") {
-      navigate("/");
-    }
-  };
-*/
-
   const handleSubmitEvent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.username !== "") {

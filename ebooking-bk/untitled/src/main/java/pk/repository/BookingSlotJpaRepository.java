@@ -15,4 +15,7 @@ public interface BookingSlotJpaRepository extends JpaRepository<BookingSlot,Long
     List<BookingSlot> findByBookingDate(String bookingDate);
     @Query(value = "from BookingSlot t where bookingArticle.key = :bookingArticleKey and bookingDate=:bookingDate and bookingTimeSlot=:bookingTimeSlot  ")
     BookingSlot findByBookingKey(@Param("bookingArticleKey")String bookingArticleKey,@Param("bookingDate") String bookingDate,@Param("bookingTimeSlot") String bookingTimeSlot);
+
+
+    BookingSlot save(BookingSlot bookingSlot);
 }
