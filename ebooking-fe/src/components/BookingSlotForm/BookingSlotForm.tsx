@@ -6,6 +6,11 @@ import bookingService, {
 import { formModes } from "../../types/formMode.ts";
 import { BookingUserDto } from "../../types/bookingUserDto.ts";
 import { BookingSlotSaveDto } from "../../types/bookingSlotSaveDto.ts";
+import {
+  UserContext,
+  UserContextType,
+  useUserContext,
+} from "../../UserContext";
 
 interface BookingSlotFormProps {
   bookingSlotKey: string;
@@ -18,6 +23,7 @@ function BookingSlotForm({
   formMode,
   onDone,
 }: BookingSlotFormProps) {
+  const userContext = useUserContext();
   const [bookingUser1, setBookingUser1] = useState<number>();
   const [bookingNote, setBookingNote] = useState<string>();
 
@@ -46,6 +52,9 @@ function BookingSlotForm({
   };
 
   function onSave() {
+    if (userContext.bookingUser === undefined) {
+      throw "not logged in";
+    }
     const bookingSlotSaveDto: BookingSlotSaveDto = {};
     bookingSlotSaveDto.bookingSlotKey = bookingSlotKey;
     if (bookingUser1) {
@@ -53,6 +62,7 @@ function BookingSlotForm({
         bookingSlotSaveDto.bookingUsersIds = [] as Array<number>;
       }
       bookingSlotSaveDto.bookingUsersIds.push(bookingUser1);
+      bookingSlotSaveDto.bookedByBookingUserId = userContext.bookingUser.id;
     }
     saveBookingSlot(bookingSlotSaveDto);
   }

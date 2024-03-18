@@ -2,6 +2,11 @@ import * as bookingTableT from "../../types/bookingTable.ts";
 import "./BookingTable.css";
 import utilsService from "../../service/UtilsService.ts";
 import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
+import {
+  UserContext,
+  UserContextType,
+  useUserContext,
+} from "../../UserContext";
 
 interface BookingTableProps {
   bookingDate?: Date;
@@ -16,6 +21,7 @@ function BookingTable({
   bookingSlots,
   onBookingSlotClick,
 }: BookingTableProps) {
+  const userContext = useUserContext();
   function onSlotClick(bookingSlot: bookingTableT.BookingSlot): void {
     console.log("slot click" + bookingSlot.slotKey);
     onBookingSlotClick &&
@@ -130,7 +136,7 @@ function BookingTable({
     } else if (
       bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.FREE]
     ) {
-      className = "free-slot";
+      className = userContext.bookingUser ? "free-slot" : "free-slot-no-user";
     } else if (
       bookingSlot.slotValue === BookingSlotTypes[BookingSlotTypes.BOOKED]
     ) {

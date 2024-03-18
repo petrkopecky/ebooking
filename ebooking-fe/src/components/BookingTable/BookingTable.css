@@ -13,6 +13,10 @@
   cursor: pointer;
 }
 
+.free-slot-no-user {
+  background-color: lightgreen;
+}
+
 .free-slot:hover {
   background-color: green;
   cursor: pointer;
@@ -31,4 +35,7 @@
 }
 .booked-for-user-slot {
   background-color: lightblue;
+}
+
+.slot-selectable {
 }

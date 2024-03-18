@@ -10,6 +10,11 @@ import BookingSlotForm from "../BookingSlotForm/BookingSlotForm.tsx";
 import "./Booking.css";
 import { formModes } from "../../types/formMode.ts";
 import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
+import {
+  UserContext,
+  UserContextType,
+  useUserContext,
+} from "../../UserContext";
 
 enum editModes {
   "TABLE",
@@ -18,6 +23,7 @@ enum editModes {
 }
 
 function Booking() {
+  const userContext = useUserContext();
   const [spin, setSpin] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -83,14 +89,17 @@ function Booking() {
   ) {
     console.log("on onBookingSlotClick:" + bookingSlotKey);
     setEditBookingSlotKey(bookingSlotKey);
-
-    switch (bookingSlotValue) {
-      case BookingSlotTypes.FREE:
-        setEditMode(editModes.FORMNEWBOOOKING);
-        break;
-      case BookingSlotTypes.BOOKEDBYUSER:
-        setEditMode(editModes.FORMVIEWBOOKING);
-        break;
+    if (userContext.bookingUser) {
+      switch (bookingSlotValue) {
+        case BookingSlotTypes.FREE:
+          setEditMode(editModes.FORMNEWBOOOKING);
+          break;
+        case BookingSlotTypes.BOOKEDBYUSER:
+          setEditMode(editModes.FORMVIEWBOOKING);
+          break;
+      }
+    } else {
+      alert("You have to be logged in.");
     }
   }
 
