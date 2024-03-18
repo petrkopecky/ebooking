@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pk.modelDto.BookingSlotDto;
-import pk.modelDto.BookingTableSlot;
-import pk.modelDto.BookingUserDto;
-import pk.modelDto.LoginUserDto;
+import pk.modelDto.*;
 import pk.service.BookingSlotService;
 import pk.service.BookingTableStructureService;
 import pk.service.BookingUserService;
@@ -94,10 +91,10 @@ public class BookingController {
 
 
     @PutMapping("/booking-slot")
-    public RestApiResponse<BookingSlotDto> addBookingSlot(@RequestHeader(value="Authorization", required = false)String authorizationToken,@RequestBody BookingSlotDto bookingSlotDto){
+    public RestApiResponse<BookingSlotDto> addBookingSlot(@RequestHeader(value="Authorization", required = false)String authorizationToken,@RequestBody BookingSlotSaveDto bookingSlotSaveDto){
         RestApiResponse<BookingSlotDto> restApiResponse=new RestApiResponse<BookingSlotDto>();
         try {
-            restApiResponse.setResponse(bookingSlotService.(BookingSlotDto));
+            restApiResponse.setResponse(bookingSlotService.addNew(bookingSlotSaveDto));
             restApiResponse.setStatusCode("OK");
         }catch(Exception e){
             restApiResponse.setStatusCode("OTHER_EXCEPTION");

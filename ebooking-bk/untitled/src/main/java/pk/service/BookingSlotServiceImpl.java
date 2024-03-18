@@ -175,7 +175,9 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
     @Override
     public BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto){
-        BookingSlot bookingSlot =new BookingSlot();
-        return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotJpaRepository.save(bookingSlot));
+        log.info("addNew:"+ bookingSlotSaveDto.getBookingSlotKey());
+        return null;
+        //BookingSlot bookingSlot =new BookingSlot();
+        //return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotJpaRepository.save(bookingSlot));
     }
 }

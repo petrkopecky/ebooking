@@ -18,9 +18,8 @@ function BookingSlotForm({
   formMode,
   onDone,
 }: BookingSlotFormProps) {
-  const [input, setInput] = useState({
-    bookingUser1: "",
-  });
+  const [bookingUser1, setBookingUser1] = useState<number>();
+  const [bookingNote, setBookingNote] = useState<string>();
 
   const [bookingSlot, setBookingSlot] = useState<BookingSlotDto>();
   const [bookingUsers, setBookingUsers] = useState<BookingUserDto[]>();
@@ -32,35 +31,29 @@ function BookingSlotForm({
     console.log("Booking users" + JSON.stringify(bookingUsers));
   }, []);
 
-  const handleInputElement = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBookingNoteElement = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    console.log("handle input:" + name + " " + value);
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setBookingNote(value);
   };
 
-  const handleTextAreElement = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleBookingUser1Element = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    console.log("handle input:" + name + " " + value);
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSelectElement = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    console.log("handle input:" + name + " " + value);
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setBookingUser1(parseInt(value));
   };
 
   function onSave() {
     const bookingSlotSaveDto: BookingSlotSaveDto = {};
+    bookingSlotSaveDto.bookingSlotKey = bookingSlotKey;
+    if (bookingUser1) {
+      if (bookingSlotSaveDto.bookingUsersIds === undefined) {
+        bookingSlotSaveDto.bookingUsersIds = [] as Array<number>;
+      }
+      bookingSlotSaveDto.bookingUsersIds.push(bookingUser1);
+    }
     saveBookingSlot(bookingSlotSaveDto);
   }
 
@@ -76,10 +69,9 @@ function BookingSlotForm({
 
   function saveBookingSlot(bookingSlotSaveDto: BookingSlotSaveDto) {
     bookingService.bookingSlotSave(bookingSlotSaveDto).then((data) => {
-      console.log("saveBookingSlot" + data.statusCode);
+      console.log("saveBookingSlot " + data.statusCode);
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
-        console.log("saveBookingSlot");
         setBookingSlot(bookingSlotDto);
       } else {
         //show error
@@ -125,7 +117,7 @@ function BookingSlotForm({
       <p>booking booked by: {getBookedBy()}</p>
       <label>
         Pick a user(s):
-        <select name="boookingUser1" onChange={handleSelectElement}>
+        <select name="boookingUser1" onChange={handleBookingUser1Element}>
           <option value=""></option>
           {bookingUsers?.map((bookingUser) => (
             <option key={bookingUser.id} value={bookingUser.id}>
@@ -134,7 +126,7 @@ function BookingSlotForm({
           ))}
         </select>
       </label>
-      <textarea name="note" onChange={handleTextAreElement}></textarea>
+      <textarea name="note" onChange={handleBookingNoteElement}></textarea>
       <button onClick={() => onDone()}> done</button>
       <button onClick={() => onSave()}> save</button>
     </div>
