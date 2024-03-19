@@ -23,7 +23,6 @@ function BookingTable({
 }: BookingTableProps) {
   const userContext = useUserContext();
   function onSlotClick(bookingSlot: bookingTableT.BookingSlot): void {
-    console.log("slot click" + bookingSlot.slotKey);
     onBookingSlotClick &&
       onBookingSlotClick(bookingSlot.slotKey, bookingSlot.slotValue);
   }

@@ -33,7 +33,7 @@ const Login = () => {
             setError(false);
             setErrorMessage("");
             const bookingUser = apiResponse.response as BookingUser;
-            console.log("bookingUser:" + bookingUser?.userName);
+            console.log("bookingUser:" + JSON.stringify(bookingUser));
             userContext.userContextlogin(bookingUser);
             authorizationService.storeAuthorizationToken(bookingUser.authtoken);
 

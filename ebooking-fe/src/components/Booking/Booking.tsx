@@ -37,18 +37,9 @@ function Booking() {
   const [editMode, setEditMode] = useState<editModes>(editModes.TABLE);
   const [editBookingSlotKey, setEditBookingSlotKey] = useState<string>("");
 
-  useEffect(() => {
-    console.log("use effect");
-  }, []);
-
-  /*
-  useEffect(() => {
-    console.log("use effect editBookingSlotKey");
-  }, [editBookingSlotKey, editMode]);
-*/
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    console.log("use effect bookingDate:" + bookingDate.toDateString());
     setDate(bookingDate);
   }, [bookingDate]);
   function setDate(date: Date) {
@@ -57,16 +48,13 @@ function Booking() {
     setSpin(true);
     Promise.all([
       bookingService.getBookingTableStructure1().then((data) => {
-        console.log("getBookingTableStructure1 data:" + data);
         setBookingTableStructure(data);
       }),
       bookingService.getBookingDateSlots(bookingDate).then((data) => {
-        console.log("getBookingDateSlots data:" + data);
         setBookingSlots(data);
       }),
     ])
       .catch((error) => {
-        console.log(error);
         setError(true);
         setErrorMessage(error);
       })
@@ -77,9 +65,6 @@ function Booking() {
   }
 
   function onDateChange(date: Date) {
-    console.log(
-      "onDateChange" + bookingDate.toDateString() + "  " + date.toDateString()
-    );
     setBookingDate(date);
   }
 
@@ -99,7 +84,7 @@ function Booking() {
           break;
       }
     } else {
-      alert("You have to be logged in.");
+      //alert("You have to be logged in.");
     }
   }
 

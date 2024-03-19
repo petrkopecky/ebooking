@@ -15,6 +15,7 @@ import pk.repository.BookingSlotJpaRepository;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,7 +98,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
             String bookingArticleEndTimeSlot = timeSlots[1];
             String iStartTimeSlot = bookingArticleStartTimeSlot;
             DayOfWeek bookingDayOfWeek = bookingDate.getDayOfWeek();
-            if ((bookingArticleSlot.getRepeatDay().equals(bookingDayOfWeek.name()) || bookingArticleSlot.getRepeatDay().equals("ONCE-" + bookingDateString))) {
+            if (testReapedDay(bookingArticleSlot.getRepeatDay(),bookingDayOfWeek.name()) || bookingArticleSlot.getRepeatDay().equals("ONCE-" + bookingDateString)) {
                 while (compareTimeStols(iStartTimeSlot, bookingArticleEndTimeSlot) < 0) {
                     String iEndTimeSlot = getEndTimeSlot2pH(iStartTimeSlot);
                     //String slotKey = bookingArticleSlot.getBookingArticle().getKey() + "-" + bookingDate + "-" + iStartTimeSlot + "-" + iEndTimeSlot;
@@ -114,6 +115,12 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         });
         return bookingTableSlots;
 
+    }
+
+    boolean testReapedDay(String repeadDay, String bookingDayOfWeekName){
+        String[] repeatdDays=repeadDay.split(",");
+        Optional<String> foundDay=Arrays.stream(repeatdDays).filter(day->day.equals((bookingDayOfWeekName))).findAny();
+        return foundDay.isPresent();
     }
 
     String getSlotKey(String articleKey, String bookingDate, String timeSlot) {

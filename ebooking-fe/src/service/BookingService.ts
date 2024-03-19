@@ -8,7 +8,6 @@ import authorizationService from "./AuthorizationService.ts";
 import { BookingSlotDto } from "../types/bookingSlotDto.ts";
 import { BookingSlotSaveDto } from "../types/bookingSlotSaveDto.ts";
 export function getBookingTableStructure1(): Promise<bookingTableT.BookingTableStructure> {
-  //console.log("geBookingTableStructure");
   return fetch("/api/booking-table-structure", {
     method: "POST",
     headers: {
@@ -25,8 +24,6 @@ export function getBookingTableStructure1(): Promise<bookingTableT.BookingTableS
 export function getBookingDateSlots(
   bookingDate: Date
 ): Promise<bookingTableT.BookingSlot[]> {
-  console.log("getBookingDateSlots" + bookingDate.toDateString());
-
   const authorizationToken: string | undefined =
     authorizationService.getAuthorizationToken();
 
@@ -54,8 +51,6 @@ export function getBookingDateSlots(
 export function getBookingSlot(
   bookingSlotKey: string
 ): Promise<ApiResponse<BookingSlotDto>> {
-  console.log("getBookingDateSlot" + bookingSlotKey);
-
   const authorizationToken: string | undefined =
     authorizationService.getAuthorizationToken();
 

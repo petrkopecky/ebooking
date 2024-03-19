@@ -1,5 +1,5 @@
 export enum formModes {
-  "VIEW",
-  "EDIT",
-  "NEW",
+  VIEW = "VIEW",
+  EDIT = "EDIT",
+  NEW = "NEW",
 }
