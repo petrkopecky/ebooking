@@ -38,23 +38,19 @@ function BookingSlotForm({
 
   useEffect(() => {
     if (loaded) {
-      console.log("input controls s");
       setInputControls();
       setReady(true);
     }
   }, [loaded]);
 
   function initLoad() {
-    console.log("init load start");
     Promise.all([getBookingUsersP(), getBookingSlotP()])
       .then(([bookingUserDtos, bookingSlotDto]) => {
         setBookingUsers(bookingUserDtos);
         setBookingSlot(bookingSlotDto);
         setLoaded(true);
       })
-      .then(() => {
-        console.log("init load done done");
-      });
+      .then(() => {});
   }
 
   function getBookingUsersP(): Promise<BookingUserDto[]> {
@@ -62,7 +58,6 @@ function BookingSlotForm({
       bookingService.bookingUsers().then((data) => {
         if (data.statusCode === "OK" && data.response) {
           resolve(data.response as BookingUserDto[]);
-          console.log("getBookingUsers done");
         } else {
           reject(data.statusMessage);
         }
@@ -87,7 +82,13 @@ function BookingSlotForm({
       });
     });
   }
-
+  function setInputControls() {
+    if (formMode == formModes.NEW) {
+      setBookingUser1Id(userContext.bookingUser?.id);
+    } else {
+      setBookingUser1Id(bookingSlot?.bookingUsersDto[0].id);
+    }
+  }
   const handleBookingNoteElement = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -127,14 +128,6 @@ function BookingSlotForm({
         //show error
       }
     });
-  }
-
-  function setInputControls() {
-    if (formMode == formModes.NEW) {
-      setBookingUser1Id(userContext.bookingUser?.id);
-    } else {
-      setBookingUser1Id(bookingSlot?.bookingUsersDto[0].id);
-    }
   }
 
   function getBookingDate(): string | undefined {
