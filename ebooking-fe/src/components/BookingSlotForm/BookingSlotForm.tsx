@@ -44,41 +44,50 @@ function BookingSlotForm({
     }
   }, [loaded]);
 
-  async function initLoad() {
+  function initLoad() {
     console.log("init load start");
-    await Promise.all([getBookingUsers(), getBookingSlot()]).then(() => {
-      setLoaded(true);
-    });
-
-    console.log("init load done done");
+    Promise.all([getBookingUsersP(), getBookingSlotP()])
+      .then(([bookingUserDtos, bookingSlotDto]) => {
+        setBookingUsers(bookingUserDtos);
+        setBookingSlot(bookingSlotDto);
+        setLoaded(true);
+      })
+      .then(() => {
+        console.log("init load done done");
+      });
   }
 
-  async function getBookingUsers() {
-    await bookingService.bookingUsers().then((data) => {
-      if (data.statusCode === "OK" && data.response) {
-        setBookingUsers(data.response as BookingUserDto[]);
-        console.log("getBookingUsers done");
-      } else {
-        //throw error
-      }
-    });
-  }
-
-  async function getBookingSlot() {
-    await bookingService.getBookingSlot(bookingSlotKey).then((data) => {
-      if (data.statusCode === "OK") {
-        const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
-        if (formMode === formModes.NEW && bookingSlot) {
-          //throw error
+  function getBookingUsersP(): Promise<BookingUserDto[]> {
+    return new Promise((resolve, reject) => {
+      bookingService.bookingUsers().then((data) => {
+        if (data.statusCode === "OK" && data.response) {
+          resolve(data.response as BookingUserDto[]);
+          console.log("getBookingUsers done");
         } else {
-          console.log("getBookingSlot done");
-          setBookingSlot(bookingSlotDto);
+          reject(data.statusMessage);
         }
-      } else {
-        //throw error
-      }
+      });
     });
   }
+
+  function getBookingSlotP(): Promise<BookingSlotDto> {
+    return new Promise((resolve, reject) => {
+      bookingService.getBookingSlot(bookingSlotKey).then((data) => {
+        if (data.statusCode === "OK") {
+          const bookingSlotDto: BookingSlotDto =
+            data.response as BookingSlotDto;
+          if (formMode === formModes.NEW && bookingSlot) {
+            reject("New but slot already booked.");
+          } else {
+            resolve(bookingSlotDto);
+          }
+        } else {
+          reject(data.statusMessage);
+        }
+      });
+    });
+  }
+
   const handleBookingNoteElement = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
