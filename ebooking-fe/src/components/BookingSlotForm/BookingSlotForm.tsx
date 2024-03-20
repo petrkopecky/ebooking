@@ -30,7 +30,7 @@ function BookingSlotForm({
   useEffect(() => {
     console.log(JSON.stringify(userContext.bookingUser));
     initLoad();
-  }, []);
+  }, [bookingSlot]);
 
   useEffect(() => {
     if (loaded) {
@@ -82,7 +82,7 @@ function BookingSlotForm({
     if (formMode == formModes.NEW) {
       setBookingUser1Id(userContext.bookingUser?.id);
     } else {
-      setBookingUser1Id(bookingSlot?.bookingUsersDto[0].id);
+      setBookingUser1Id(bookingSlot?.bookingUsersDto[0]?.id);
     }
   }
   const handleBookingNoteElement = (
@@ -125,6 +125,7 @@ function BookingSlotForm({
       bookingSlotSaveDto.bookingUsersIds.push(bookingUser2Id);
     }
     bookingSlotSaveDto.bookedByBookingUserId = userContext.bookingUser.id;
+    bookingSlotSaveDto.bookingSlotValue = "BOOKED";
     bookingSlotSaveDto.note = bookingNote;
     saveBookingSlot(bookingSlotSaveDto);
   }
@@ -134,6 +135,7 @@ function BookingSlotForm({
     bookingService.bookingSlotSave(bookingSlotSaveDto).then((data) => {
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
+        console.log("save result:" + JSON.stringify(bookingSlotDto));
         setBookingSlot(bookingSlotDto);
       } else {
         //show error

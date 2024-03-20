@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pk.entity.BookingArticle;
 import pk.entity.BookingArticleSlot;
 import pk.entity.BookingSlot;
 import pk.entity.BookingUser;
@@ -182,8 +183,25 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
     @Override
     public BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto){
-        log.info("addNew:"+ bookingSlotSaveDto.getBookingSlotKey());
-        return null;
+        log.info("save");
+        BookingSlotKey bookingSlotKey=parseBookingSlotKey(bookingSlotSaveDto.getBookingSlotKey());
+        BookingSlot bookingSlot=new BookingSlot();
+        bookingSlot.setId(bookingSlotSaveDto.getBookingSlotId());
+        BookingArticle bookingArticle=new BookingArticle();
+        bookingArticle.setId(1L);
+        bookingSlot.setBookingArticle(bookingArticle);
+        bookingSlot.setBookingDate(bookingSlotKey.getBookingDate());
+        bookingSlot.setBookingTimeSlot(bookingSlotKey.getBookingTimeSlot());
+        BookingUser bookedByUser =new BookingUser();
+        bookedByUser.setId(bookingSlotSaveDto.getBookedByBookingUserId());
+        bookingSlot.setBookedByUser(bookedByUser);
+        bookingSlot.setSlotValue(bookingSlotSaveDto.getBookingSlotValue());
+        bookingSlot.setNote(bookingSlotSaveDto.getNote());
+
+        BookingSlot bookingSlotSaved= bookingSlotJpaRepository.save(bookingSlot);
+
+        return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotSaved);
+
         //BookingSlot bookingSlot =new BookingSlot();
         //return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotJpaRepository.save(bookingSlot));
     }
