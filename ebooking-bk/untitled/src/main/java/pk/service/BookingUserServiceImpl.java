@@ -81,6 +81,7 @@ public class BookingUserServiceImpl implements BookingUserService {
             throw new InactiveUserException();
         }
         bookingUserDto = new BookingUserDto();
+        bookingUserDto.setId(bookingUser.getId());
         bookingUserDto.setUserName(bookingUser.getUserName());
         bookingUserDto.setFirstName(bookingUser.getFirstName());
         bookingUserDto.setSecondName(bookingUser.getSecondName());

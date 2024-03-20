@@ -19,6 +19,7 @@ function BookingSlotForm({
 }: BookingSlotFormProps) {
   const userContext = useUserContext();
   const [bookingUser1Id, setBookingUser1Id] = useState<number>();
+  const [bookingUser2Id, setBookingUser2Id] = useState<number>();
   const [bookingNote, setBookingNote] = useState<string>();
 
   const [bookingSlot, setBookingSlot] = useState<BookingSlotDto>();
@@ -27,6 +28,7 @@ function BookingSlotForm({
   const [ready, setReady] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(JSON.stringify(userContext.bookingUser));
     initLoad();
   }, []);
 
@@ -97,6 +99,13 @@ function BookingSlotForm({
     setBookingUser1Id(parseInt(value));
   };
 
+  const handleBookingUser2Element = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setBookingUser2Id(parseInt(value));
+  };
+
   function onSave() {
     if (userContext.bookingUser === undefined) {
       throw "not logged in";
@@ -108,12 +117,20 @@ function BookingSlotForm({
         bookingSlotSaveDto.bookingUsersIds = [] as Array<number>;
       }
       bookingSlotSaveDto.bookingUsersIds.push(bookingUser1Id);
-      bookingSlotSaveDto.bookedByBookingUserId = userContext.bookingUser.id;
     }
+    if (bookingUser2Id) {
+      if (bookingSlotSaveDto.bookingUsersIds === undefined) {
+        bookingSlotSaveDto.bookingUsersIds = [] as Array<number>;
+      }
+      bookingSlotSaveDto.bookingUsersIds.push(bookingUser2Id);
+    }
+    bookingSlotSaveDto.bookedByBookingUserId = userContext.bookingUser.id;
+    bookingSlotSaveDto.note = bookingNote;
     saveBookingSlot(bookingSlotSaveDto);
   }
 
   function saveBookingSlot(bookingSlotSaveDto: BookingSlotSaveDto) {
+    console.log("save:" + JSON.stringify(bookingSlotSaveDto));
     bookingService.bookingSlotSave(bookingSlotSaveDto).then((data) => {
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
@@ -161,7 +178,7 @@ function BookingSlotForm({
                 </option>
               ))}
             </select>
-            <select name="boookingUser2" onChange={handleBookingUser1Element}>
+            <select name="boookingUser2" onChange={handleBookingUser2Element}>
               <option></option>
               {bookingUsers?.map((bookingUser) => (
                 <option key={bookingUser.id} value={bookingUser.id}>
