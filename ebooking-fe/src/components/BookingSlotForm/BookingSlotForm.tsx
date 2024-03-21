@@ -5,6 +5,7 @@ import { formModes } from "../../types/formMode.ts";
 import { BookingUserDto } from "../../types/bookingUserDto.ts";
 import { BookingSlotSaveDto } from "../../types/bookingSlotSaveDto.ts";
 import { useUserContext } from "../../UserContext";
+import UtilsService from "../../service/UtilsService.ts";
 
 interface BookingSlotFormProps {
   bookingSlotKey: string;
@@ -98,6 +99,14 @@ function BookingSlotForm({
       ) {
         setBookingUser1Id(bookingSlot.bookingUsersDto[0].id);
       }
+
+      if (
+        bookingSlot &&
+        bookingSlot.bookingUsersDto &&
+        bookingSlot.bookingUsersDto[1]
+      ) {
+        setBookingUser2Id(bookingSlot.bookingUsersDto[1].id);
+      }
       if (bookingSlot && bookingSlot.note) {
         setBookingNote(bookingSlot.note);
       }
@@ -164,16 +173,27 @@ function BookingSlotForm({
   }
 
   function getBookingDate(): string | undefined {
-    const bookingDate = bookingSlot?.bookingDate;
-    return bookingDate;
+    if (mode === formModes.NEW) {
+      return bookingSlot?.bookingDate;
+    } else {
+      return UtilsService.getDateFromBookingSlotKey(bookingSlotKey);
+    }
   }
 
   function getBookedBy(): string | undefined {
-    const userFirstSecondName =
-      bookingSlot?.bookedByUserDto.firstName +
-      " " +
-      bookingSlot?.bookedByUserDto.secondName;
-    return userFirstSecondName;
+    if (mode === formModes.NEW) {
+      return (
+        userContext.bookingUser?.firstName +
+        " " +
+        userContext.bookingUser?.secondName
+      );
+    } else {
+      const userFirstSecondName =
+        bookingSlot?.bookedByUserDto.firstName +
+        " " +
+        bookingSlot?.bookedByUserDto.secondName;
+      return userFirstSecondName;
+    }
   }
 
   return (
@@ -200,7 +220,11 @@ function BookingSlotForm({
                 </option>
               ))}
             </select>
-            <select name="boookingUser2" onChange={handleBookingUser2Element}>
+            <select
+              name="boookingUser2"
+              onChange={handleBookingUser2Element}
+              value={bookingUser2Id}
+            >
               <option></option>
               {bookingUsers?.map((bookingUser) => (
                 <option key={bookingUser.id} value={bookingUser.id}>

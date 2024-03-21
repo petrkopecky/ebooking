@@ -12,8 +12,13 @@ function dateToYYYY_MM_DD(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+function getDateFromBookingSlotKey(bookingSlotKey: string): string {
+  //dodelat;
+  return "dodelat";
+}
 const UtilsService = {
   dateToYYYYMMDD,
   dateToYYYY_MM_DD,
+  getDateFromBookingSlotKey,
 };
 export default UtilsService;
