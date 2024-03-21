@@ -5,7 +5,7 @@ import java.util.List;
 public class BookingSlotSaveDto {
     Long bookingSlotId;
     String bookingSlotKey;
-    List<Long> bookingUsersId;
+    Long[] bookingUsersIds;
 
     Long bookedByBookingUserId;
 
@@ -29,13 +29,6 @@ public class BookingSlotSaveDto {
         this.bookingSlotKey = bookingSlotKey;
     }
 
-    public List<Long> getBookingUsersId() {
-        return bookingUsersId;
-    }
-
-    public void setBookingUsersId(List<Long> bookingUsersId) {
-        this.bookingUsersId = bookingUsersId;
-    }
 
     public Long getBookedByBookingUserId() {
         return bookedByBookingUserId;
@@ -59,5 +52,13 @@ public class BookingSlotSaveDto {
 
     public void setBookingSlotValue(String bookingSlotValue) {
         this.bookingSlotValue = bookingSlotValue;
+    }
+
+    public Long[] getBookingUsersIds() {
+        return bookingUsersIds;
+    }
+
+    public void setBookingUsersIds(Long[] bookingUsersIds) {
+        this.bookingUsersIds = bookingUsersIds;
     }
 }

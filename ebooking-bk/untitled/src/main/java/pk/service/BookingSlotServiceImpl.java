@@ -197,13 +197,15 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         bookingSlot.setBookedByUser(bookedByUser);
         bookingSlot.setSlotValue(bookingSlotSaveDto.getBookingSlotValue());
         bookingSlot.setNote(bookingSlotSaveDto.getNote());
-        List<BookingUser> bookingUsers=bookingSlotSaveDto.getBookingUsersId().stream().map(bookingUserId -> {
-            BookingUser bookingUser = new BookingUser();
-            bookingUser.setId(bookingUserId);
-            return bookingUser;
-        }).collect(Collectors.toList());
+        if(bookingSlotSaveDto.getBookingUsersIds()!=null) {
+            List<BookingUser> bookingUsers = Arrays.stream(bookingSlotSaveDto.getBookingUsersIds()).map(bookingUserId -> {
+                BookingUser bookingUser = new BookingUser();
+                bookingUser.setId(bookingUserId);
+                return bookingUser;
+            }).collect(Collectors.toList());
+            bookingSlot.setBookingUsers(bookingUsers);
+        }
 
-        bookingSlot.setBookingUsers(bookingUsers);
 
         BookingSlot bookingSlotSaved = bookingSlotJpaRepository.save(bookingSlot);
 
