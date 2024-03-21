@@ -49,10 +49,27 @@ function BookingSlotForm({
   }, [loaded]);
 
   function initLoad() {
+    if (mode === formModes.NEW) {
+      initLoadNew();
+    } else {
+      initLoadViewEdit();
+    }
+  }
+
+  function initLoadViewEdit() {
     Promise.all([getBookingUsersP(), getBookingSlotP()])
       .then(([bookingUserDtos, bookingSlotDto]) => {
         setBookingUsers(bookingUserDtos);
         setBookingSlot(bookingSlotDto);
+        setLoaded(true);
+      })
+      .then(() => {});
+  }
+
+  function initLoadNew() {
+    Promise.all([getBookingUsersP()])
+      .then(([bookingUserDtos]) => {
+        setBookingUsers(bookingUserDtos);
         setLoaded(true);
       })
       .then(() => {});
@@ -161,6 +178,7 @@ function BookingSlotForm({
   function saveBookingSlot(bookingSlotSaveDto: BookingSlotSaveDto) {
     console.log("save:" + JSON.stringify(bookingSlotSaveDto));
     setReady(false);
+    setLoaded(false);
     bookingService.bookingSlotSave(bookingSlotSaveDto).then((data) => {
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;

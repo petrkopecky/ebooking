@@ -75,6 +75,8 @@ function Booking() {
     console.log("on onBookingSlotClick:" + bookingSlotKey);
     setEditBookingSlotKey(bookingSlotKey);
     if (userContext.bookingUser) {
+      //dodelat kontrolu, zda jiz neni slot vytvoren, ci zmenen
+
       switch (bookingSlotValue) {
         case BookingSlotTypes.FREE:
           setEditMode(editModes.FORMNEWBOOOKING);
