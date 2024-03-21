@@ -18,6 +18,7 @@ function BookingSlotForm({
   onDone,
 }: BookingSlotFormProps) {
   const userContext = useUserContext();
+  //const [bookingSlotId, setBookingSlotId] = useState<string>();
   const [bookingUser1Id, setBookingUser1Id] = useState<number>();
   const [bookingUser2Id, setBookingUser2Id] = useState<number>();
   const [bookingNote, setBookingNote] = useState<string>();
@@ -26,10 +27,17 @@ function BookingSlotForm({
   const [bookingUsers, setBookingUsers] = useState<BookingUserDto[]>();
   const [loaded, setLoaded] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
+  const [mode, setMode] = useState<formModes>();
 
   useEffect(() => {
     console.log(JSON.stringify(userContext.bookingUser));
+    setMode(formMode);
     initLoad();
+  }, []);
+
+  useEffect(() => {
+    console.log(JSON.stringify(userContext.bookingUser));
+    setInputControls();
   }, [bookingSlot]);
 
   useEffect(() => {
@@ -67,7 +75,7 @@ function BookingSlotForm({
         if (data.statusCode === "OK") {
           const bookingSlotDto: BookingSlotDto =
             data.response as BookingSlotDto;
-          if (formMode === formModes.NEW && bookingSlot) {
+          if (mode === formModes.NEW && bookingSlot) {
             reject("New but slot already booked.");
           } else {
             resolve(bookingSlotDto);
@@ -79,10 +87,20 @@ function BookingSlotForm({
     });
   }
   function setInputControls() {
-    if (formMode == formModes.NEW) {
+    console.log(JSON.stringify(bookingSlot));
+    if (mode == formModes.NEW) {
       setBookingUser1Id(userContext.bookingUser?.id);
     } else {
-      setBookingUser1Id(bookingSlot?.bookingUsersDto[0]?.id);
+      if (
+        bookingSlot &&
+        bookingSlot.bookingUsersDto &&
+        bookingSlot.bookingUsersDto[0]
+      ) {
+        setBookingUser1Id(bookingSlot.bookingUsersDto[0].id);
+      }
+      if (bookingSlot && bookingSlot.note) {
+        setBookingNote(bookingSlot.note);
+      }
     }
   }
   const handleBookingNoteElement = (
@@ -111,6 +129,7 @@ function BookingSlotForm({
       throw "not logged in";
     }
     const bookingSlotSaveDto: BookingSlotSaveDto = {};
+    bookingSlotSaveDto.bookingSlotId = bookingSlot?.id;
     bookingSlotSaveDto.bookingSlotKey = bookingSlotKey;
     if (bookingUser1Id) {
       if (bookingSlotSaveDto.bookingUsersIds === undefined) {
@@ -136,6 +155,7 @@ function BookingSlotForm({
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
         console.log("save result:" + JSON.stringify(bookingSlotDto));
+        setMode(formModes.VIEW);
         setBookingSlot(bookingSlotDto);
       } else {
         //show error
@@ -161,7 +181,7 @@ function BookingSlotForm({
       {!ready && <p>Loading</p>}
       {ready && (
         <div>
-          <p>form mode {formMode}</p>
+          <p>form mode {mode}</p>
           <p>booking slot form {bookingSlotKey}</p>
           <p>booking date: {getBookingDate()}</p>
           <p>booking booked by: {getBookedBy()}</p>
@@ -190,7 +210,11 @@ function BookingSlotForm({
               ))}
             </select>
           </label>
-          <textarea name="note" onChange={handleBookingNoteElement}></textarea>
+          <textarea
+            name="note"
+            onChange={handleBookingNoteElement}
+            value={bookingNote}
+          ></textarea>
           <button onClick={() => onDone()}> done</button>
           <button onClick={() => onSave()}> save</button>
         </div>

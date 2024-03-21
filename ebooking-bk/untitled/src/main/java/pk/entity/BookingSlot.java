@@ -7,6 +7,10 @@ import java.util.List;
 
 @Entity
 
+
+@Table(uniqueConstraints =
+        {
+                @UniqueConstraint(name = "UniqueSlot", columnNames = { "bookingArticleId", "bookingDate","bookingTimeSlot" })})
 public class BookingSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

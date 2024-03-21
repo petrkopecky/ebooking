@@ -99,7 +99,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
             String bookingArticleEndTimeSlot = timeSlots[1];
             String iStartTimeSlot = bookingArticleStartTimeSlot;
             DayOfWeek bookingDayOfWeek = bookingDate.getDayOfWeek();
-            if (testReapedDay(bookingArticleSlot.getRepeatDay(),bookingDayOfWeek.name()) || bookingArticleSlot.getRepeatDay().equals("ONCE-" + bookingDateString)) {
+            if (testReapedDay(bookingArticleSlot.getRepeatDay(), bookingDayOfWeek.name()) || bookingArticleSlot.getRepeatDay().equals("ONCE-" + bookingDateString)) {
                 while (compareTimeStols(iStartTimeSlot, bookingArticleEndTimeSlot) < 0) {
                     String iEndTimeSlot = getEndTimeSlot2pH(iStartTimeSlot);
                     //String slotKey = bookingArticleSlot.getBookingArticle().getKey() + "-" + bookingDate + "-" + iStartTimeSlot + "-" + iEndTimeSlot;
@@ -118,9 +118,9 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
     }
 
-    boolean testReapedDay(String repeadDay, String bookingDayOfWeekName){
-        String[] repeatdDays=repeadDay.split(",");
-        Optional<String> foundDay=Arrays.stream(repeatdDays).filter(day->day.equals((bookingDayOfWeekName))).findAny();
+    boolean testReapedDay(String repeadDay, String bookingDayOfWeekName) {
+        String[] repeatdDays = repeadDay.split(",");
+        Optional<String> foundDay = Arrays.stream(repeatdDays).filter(day -> day.equals((bookingDayOfWeekName))).findAny();
         return foundDay.isPresent();
     }
 
@@ -166,39 +166,46 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
     @Override
     public BookingSlotDto getBookingSlotDtoBySlotKey(String bookingSlotKeyString) {
-        BookingSlotKey bookingSlotKey=parseBookingSlotKey(bookingSlotKeyString);
-        BookingSlot bookingSlot = bookingSlotJpaRepository.findByBookingKey(bookingSlotKey.getBookingArticleKey(), bookingSlotKey.getBookingDate(),bookingSlotKey.getBookingTimeSlot());
-        BookingSlotDto bookingSlotDto=bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlot);
+        BookingSlotKey bookingSlotKey = parseBookingSlotKey(bookingSlotKeyString);
+        BookingSlot bookingSlot = bookingSlotJpaRepository.findByBookingKey(bookingSlotKey.getBookingArticleKey(), bookingSlotKey.getBookingDate(), bookingSlotKey.getBookingTimeSlot());
+        BookingSlotDto bookingSlotDto = bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlot);
         return bookingSlotDto;
     }
 
-    BookingSlotKey parseBookingSlotKey(String bookingSlotKeyString){
-        BookingSlotKey bookingSlotKey=new BookingSlotKey();
-        String[] bookingSlotKeyParts=bookingSlotKeyString.split("-");
+    BookingSlotKey parseBookingSlotKey(String bookingSlotKeyString) {
+        BookingSlotKey bookingSlotKey = new BookingSlotKey();
+        String[] bookingSlotKeyParts = bookingSlotKeyString.split("-");
         bookingSlotKey.setBookingArticleKey(bookingSlotKeyParts[0]);
-        bookingSlotKey.setBookingDate(bookingSlotKeyParts[1]+"-"+bookingSlotKeyParts[2]+"-"+bookingSlotKeyParts[3]);
-        bookingSlotKey.setBookingTimeSlot(bookingSlotKeyParts[4]+"-"+bookingSlotKeyParts[5]);
+        bookingSlotKey.setBookingDate(bookingSlotKeyParts[1] + "-" + bookingSlotKeyParts[2] + "-" + bookingSlotKeyParts[3]);
+        bookingSlotKey.setBookingTimeSlot(bookingSlotKeyParts[4] + "-" + bookingSlotKeyParts[5]);
         return bookingSlotKey;
     }
 
     @Override
-    public BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto){
+    public BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto) {
         log.info("save");
-        BookingSlotKey bookingSlotKey=parseBookingSlotKey(bookingSlotSaveDto.getBookingSlotKey());
-        BookingSlot bookingSlot=new BookingSlot();
+        BookingSlotKey bookingSlotKey = parseBookingSlotKey(bookingSlotSaveDto.getBookingSlotKey());
+        BookingSlot bookingSlot = new BookingSlot();
         bookingSlot.setId(bookingSlotSaveDto.getBookingSlotId());
-        BookingArticle bookingArticle=new BookingArticle();
+        BookingArticle bookingArticle = new BookingArticle();
         bookingArticle.setId(1L);
         bookingSlot.setBookingArticle(bookingArticle);
         bookingSlot.setBookingDate(bookingSlotKey.getBookingDate());
         bookingSlot.setBookingTimeSlot(bookingSlotKey.getBookingTimeSlot());
-        BookingUser bookedByUser =new BookingUser();
+        BookingUser bookedByUser = new BookingUser();
         bookedByUser.setId(bookingSlotSaveDto.getBookedByBookingUserId());
         bookingSlot.setBookedByUser(bookedByUser);
         bookingSlot.setSlotValue(bookingSlotSaveDto.getBookingSlotValue());
         bookingSlot.setNote(bookingSlotSaveDto.getNote());
+        List<BookingUser> bookingUsers=bookingSlotSaveDto.getBookingUsersId().stream().map(bookingUserId -> {
+            BookingUser bookingUser = new BookingUser();
+            bookingUser.setId(bookingUserId);
+            return bookingUser;
+        }).collect(Collectors.toList());
 
-        BookingSlot bookingSlotSaved= bookingSlotJpaRepository.save(bookingSlot);
+        bookingSlot.setBookingUsers(bookingUsers);
+
+        BookingSlot bookingSlotSaved = bookingSlotJpaRepository.save(bookingSlot);
 
         return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotSaved);
 
