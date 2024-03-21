@@ -36,11 +36,11 @@ function BookingSlotForm({
     initLoad();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(JSON.stringify(userContext.bookingUser));
     setInputControls();
   }, [bookingSlot]);
-
+*/
   useEffect(() => {
     if (loaded) {
       setInputControls();
@@ -160,12 +160,14 @@ function BookingSlotForm({
 
   function saveBookingSlot(bookingSlotSaveDto: BookingSlotSaveDto) {
     console.log("save:" + JSON.stringify(bookingSlotSaveDto));
+    setReady(false);
     bookingService.bookingSlotSave(bookingSlotSaveDto).then((data) => {
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
         console.log("save result:" + JSON.stringify(bookingSlotDto));
         setMode(formModes.VIEW);
         setBookingSlot(bookingSlotDto);
+        setLoaded(true);
       } else {
         //show error
       }
