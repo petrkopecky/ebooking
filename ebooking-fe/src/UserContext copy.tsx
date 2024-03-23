@@ -5,23 +5,27 @@ import bookingService from "./service/BookingService";
 
 export type UserContextType = {
   bookingUser?: BookingUser;
-  userContextlogin?: (c: BookingUser) => void;
-  userContextlogout?: () => void;
+  userContextlogin: (c: BookingUser) => void;
+  userContextlogout: () => void;
 };
-export const UserContext = createContext<UserContextType>({});
-export function useUserContext() {
+export const UserContext = createContext<UserContextType>({
+  bookingUser: {},
+  userContextlogin: () => {},
+  userContextlogout: () => {},
+});
+export const useUserContext = () => {
   return useContext(UserContext);
-}
+};
 
-export function UserContextProvider({ children }: any) {
+export const UserContextProvider = ({ children }: any) => {
   const [bookingUser, setBookingUser] = useState<BookingUser>();
-  function userContextlogin(bookingUser: BookingUser) {
+  const userContextlogin = (bookingUser: BookingUser) => {
     setBookingUser(bookingUser);
-  }
-  function userContextlogout() {
+  };
+  const userContextlogout = () => {
     setBookingUser(undefined);
-  }
-  const value: UserContextType = {
+  };
+  const value = {
     bookingUser,
     userContextlogin,
     userContextlogout,
@@ -39,4 +43,4 @@ export function UserContextProvider({ children }: any) {
     }
   }
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-}
+};

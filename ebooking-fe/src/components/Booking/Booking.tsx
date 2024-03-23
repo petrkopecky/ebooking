@@ -10,11 +10,8 @@ import BookingSlotForm from "../BookingSlotForm/BookingSlotForm.tsx";
 import "./Booking.css";
 import { formModes } from "../../types/formMode.ts";
 import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
-import {
-  UserContext,
-  UserContextType,
-  useUserContext,
-} from "../../UserContext";
+import { useUserContext } from "../../UserContext";
+import { useApplicationContext } from "../../ApplicationContext.tsx";
 
 enum editModes {
   "TABLE",
@@ -36,13 +33,21 @@ function Booking() {
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();
   const [editMode, setEditMode] = useState<editModes>(editModes.TABLE);
   const [editBookingSlotKey, setEditBookingSlotKey] = useState<string>("");
+  const [refreshState, setRefreshState] = useState<number>(0);
 
-  useEffect(() => {}, []);
+  const applicationContext = useApplicationContext();
+
+  useEffect(() => {
+    if (applicationContext.bookingDate) {
+      setBookingDate(applicationContext.bookingDate);
+    }
+  }, []);
 
   useEffect(() => {
     setDate(bookingDate);
-  }, [bookingDate]);
+  }, [bookingDate, refreshState]);
   function setDate(date: Date) {
+    applicationContext.setBookingDate(date);
     setError(false);
     setReady(false);
     setSpin(true);
@@ -62,6 +67,9 @@ function Booking() {
         setSpin(false);
         setReady(!error);
       });
+  }
+  function refresh() {
+    setRefreshState(refreshState + 1);
   }
 
   function onDateChange(date: Date) {
@@ -90,6 +98,10 @@ function Booking() {
     }
   }
 
+  function onDoneBookingFormSlot() {
+    refresh();
+    setEditMode(editModes.TABLE);
+  }
   if (error) {
     return <div>{errorMessage}</div>;
   } else {
@@ -124,7 +136,7 @@ function Booking() {
             <div>
               <BookingSlotForm
                 bookingSlotKey={editBookingSlotKey}
-                onDone={() => setEditMode(editModes.TABLE)}
+                onDone={() => onDoneBookingFormSlot()}
                 formMode={formModes.NEW}
               />
             </div>
@@ -133,7 +145,7 @@ function Booking() {
             <div>
               <BookingSlotForm
                 bookingSlotKey={editBookingSlotKey}
-                onDone={() => setEditMode(editModes.TABLE)}
+                onDone={() => onDoneBookingFormSlot()}
                 formMode={formModes.VIEW}
               />
             </div>

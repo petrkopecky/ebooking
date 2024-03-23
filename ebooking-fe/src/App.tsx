@@ -8,6 +8,7 @@ import { UserContextProvider } from "./UserContext";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import MyBookings from "./pages/MyBookings";
 import "./App.css";
+import { ApplicationContextProvider } from "./ApplicationContext";
 
 function App() {
   //const [bookingUser, setBookingUser] = useState<BookingUser>({});
@@ -15,14 +16,16 @@ function App() {
     <>
       <div className="App">
         <UserContextProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/my-bookings" element={<MyBookings />} />
-            </Route>
-          </Routes>
+          <ApplicationContextProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/my-bookings" element={<MyBookings />} />
+              </Route>
+            </Routes>
+          </ApplicationContextProvider>
         </UserContextProvider>
       </div>
     </>
