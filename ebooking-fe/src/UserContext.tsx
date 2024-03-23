@@ -5,10 +5,13 @@ import bookingService from "./service/BookingService";
 
 export type UserContextType = {
   bookingUser?: BookingUser;
-  userContextlogin?: (c: BookingUser) => void;
-  userContextlogout?: () => void;
+  userContextlogin: (c: BookingUser) => void;
+  userContextlogout: () => void;
 };
-export const UserContext = createContext<UserContextType>({});
+export const UserContext = createContext<UserContextType>({
+  userContextlogin: (c: BookingUser) => {},
+  userContextlogout: () => {},
+});
 export function useUserContext() {
   return useContext(UserContext);
 }

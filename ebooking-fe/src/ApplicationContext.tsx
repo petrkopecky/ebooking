@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
-export const ApplicationContext = createContext<ApplicationContextType>({});
+export const ApplicationContext = createContext<ApplicationContextType>({
+  setBookingDate: (c: Date) => {},
+});
 export type ApplicationContextType = {
   bookingDate?: Date;
   setBookingDate: (c: Date) => void;
