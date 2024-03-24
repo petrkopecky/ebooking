@@ -19,15 +19,17 @@ enum editModes {
   "FORMVIEWBOOKING",
 }
 
-function Booking() {
+interface BookingProps {
+  refresh?: number;
+}
+
+function Booking({ refresh }: BookingProps) {
   const userContext = useUserContext();
   const [spin, setSpin] = useState<boolean>(false);
   const [ready, setReady] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [bookingDate, setBookingDate] = useState<Date>(
-    new Date(new Date().setHours(0, 0, 0, 0))
-  );
+  const [bookingDate, setBookingDate] = useState<Date>();
   const [bookingTableStructure, setBookingTableStructure] =
     useState<BookingTableStructure>();
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();
@@ -39,13 +41,25 @@ function Booking() {
 
   useEffect(() => {
     if (applicationContext.bookingDate) {
+      console.log("use effect ac []:" + bookingDate);
       setBookingDate(applicationContext.bookingDate);
+    } else {
+      console.log("use effect init []:" + bookingDate);
+      setBookingDate(new Date(new Date().setHours(0, 0, 0, 0)));
     }
   }, []);
 
   useEffect(() => {
-    setDate(bookingDate);
-  }, [bookingDate, refreshState]);
+    console.log("use effect [bookingDate,]:" + bookingDate);
+    if (bookingDate) {
+      setDate(bookingDate);
+    }
+  }, [bookingDate]);
+
+  useEffect(() => {
+    doRefresh();
+  }, [refresh]);
+
   function setDate(date: Date) {
     applicationContext.setBookingDate(date);
     setError(false);
@@ -55,7 +69,7 @@ function Booking() {
       bookingService.getBookingTableStructure1().then((data) => {
         setBookingTableStructure(data);
       }),
-      bookingService.getBookingDateSlots(bookingDate).then((data) => {
+      bookingService.getBookingDateSlots(date).then((data) => {
         setBookingSlots(data);
       }),
     ])
@@ -68,11 +82,15 @@ function Booking() {
         setReady(!error);
       });
   }
-  function refresh() {
+  function doRefresh() {
     setRefreshState(refreshState + 1);
+    if (bookingDate) {
+      setBookingDate(new Date(bookingDate.getTime()));
+    }
   }
 
   function onDateChange(date: Date) {
+    console.log("on date change");
     setBookingDate(date);
   }
 
@@ -99,7 +117,7 @@ function Booking() {
   }
 
   function onDoneBookingFormSlot() {
-    refresh();
+    doRefresh();
     setEditMode(editModes.TABLE);
   }
   if (error) {

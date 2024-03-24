@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { UserContext, UserContextType, useUserContext } from "../UserContext";
 import Booking from "../components/Booking/Booking";
@@ -7,15 +7,22 @@ import "./Home.css";
 
 const Home = () => {
   const userContext = useUserContext();
-  const [refreshState, setRefreshState] = useState<number>(0);
-  function refresh() {
+  const [refreshState, setRefreshState] = useState<number>(1);
+
+  const [, updateState] = useState<number>();
+  const forceUpdate = useCallback(() => updateState(1), []);
+
+  function doRefresh() {
     setRefreshState(refreshState + 1);
+    //forceUpdate();
   }
-  useEffect(() => {}, [refreshState]);
+  useEffect(() => {
+    console.log("home use ef refr state" + refreshState);
+  }, [refreshState]);
+
   console.log("Home:" + userContext.bookingUser);
   return (
     <>
-      {refreshState}
       {refreshState && (
         <div>
           <div className="home-nav-bar">
@@ -38,6 +45,7 @@ const Home = () => {
                     onClick={() => {
                       userContext.userContextlogout();
                       authenticationService.removeAuthorizationToken();
+                      doRefresh();
                     }}
                   >
                     Logout-{userContext?.bookingUser?.userName}
@@ -47,7 +55,7 @@ const Home = () => {
             </ul>
           </div>
 
-          <Booking></Booking>
+          <Booking refresh={refreshState}></Booking>
         </div>
       )}
     </>
