@@ -9,16 +9,9 @@ const Home = () => {
   const userContext = useUserContext();
   const [refreshState, setRefreshState] = useState<number>(1);
 
-  const [, updateState] = useState<number>();
-  const forceUpdate = useCallback(() => updateState(1), []);
-
   function doRefresh() {
     setRefreshState(refreshState + 1);
-    //forceUpdate();
   }
-  useEffect(() => {
-    console.log("home use ef refr state" + refreshState);
-  }, [refreshState]);
 
   console.log("Home:" + userContext.bookingUser);
   return (
