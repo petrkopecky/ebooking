@@ -7,5 +7,7 @@ import pk.entity.BookingArticle;
 
 @Repository
 public interface BookingArticleJpaRepository extends JpaRepository<BookingArticle,Long> {
+
+    public BookingArticle getByKey(String key);
 }
 

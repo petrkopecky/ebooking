@@ -14,6 +14,8 @@ public interface BookingUserJpaRepository extends JpaRepository<BookingUser,Long
 
 
     public BookingUser findByUserName(String userName);
+
+    public BookingUser getById(Long id);
     @Query(value = "from BookingUser t where isActive=true")
     List<BookingUser> findAllActive(Sort sort);
 }

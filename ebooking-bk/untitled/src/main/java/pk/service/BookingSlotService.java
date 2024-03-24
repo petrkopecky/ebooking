@@ -21,5 +21,5 @@ public interface BookingSlotService {
 
     BookingSlotDto getBookingSlotDtoBySlotKey(String slotKey);
 
-    BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto);
+    BookingSlotDto saveBookingSlot(BookingSlotSaveDto bookingSlotSaveDto);
 }

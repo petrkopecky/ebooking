@@ -33,9 +33,15 @@
 .booked-by-user-slot {
   background-color: lightskyblue;
 }
-.booked-for-user-slot {
+.booked-by-user-slot:hover {
   background-color: lightblue;
+  cursor: pointer;
+}
+.booked-for-user-slot {
+  background-color: lightcyan;
 }
 
-.slot-selectable {
+.booked-for-user-slot:hover {
+  background-color: cyan;
+  cursor: pointer;
 }

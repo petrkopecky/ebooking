@@ -159,6 +159,31 @@ export function bookingSlotSave(
   });
 }
 
+export function bookingSlotCreate(
+  bookingSlotSaveDto: BookingSlotSaveDto
+): Promise<ApiResponse<BookingSlotDto>> {
+  const authorizationToken: string | undefined =
+    authorizationService.getAuthorizationToken();
+
+  const headers: Headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  if (authorizationToken !== undefined) {
+    headers.append("Authorization", authorizationToken);
+  }
+
+  return fetch("/api/booking-slot", {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(bookingSlotSaveDto),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("bookingSlotSave:" + response.statusText);
+    } else {
+      return response.json();
+    }
+  });
+}
+
 const BookingService = {
   getBookingTableStructure1,
   getBookingDateSlots,

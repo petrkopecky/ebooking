@@ -10,8 +10,10 @@ import pk.entity.BookingSlot;
 import pk.entity.BookingUser;
 import pk.mapperDto.BookingSlotMapper;
 import pk.modelDto.*;
+import pk.repository.BookingArticleJpaRepository;
 import pk.repository.BookingArticleSlotJpaRepository;
 import pk.repository.BookingSlotJpaRepository;
+import pk.repository.BookingUserJpaRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -27,14 +29,19 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
 
     @Autowired
-    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository) {
+    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository, BookingUserJpaRepository bookingUserJpaRepository, BookingArticleJpaRepository bookingArticleJpaRepository) {
         this.bookingSlotJpaRepository = bookingSlotJpaRepository;
         this.bookingArticleSlotJpaRepository = bookingArticleSlotJpaRepository;
+        this.bookingUserJpaRepository=bookingUserJpaRepository;
+        this.bookingArticleJpaRepository=bookingArticleJpaRepository;
     }
 
     private final BookingSlotJpaRepository bookingSlotJpaRepository;
     private final BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository;
+    private final BookingUserJpaRepository bookingUserJpaRepository;
+    private final BookingArticleJpaRepository bookingArticleJpaRepository;
     private final BookingSlotMapper bookingSlotMapper = Mappers.getMapper(BookingSlotMapper.class);
+
 
 
    /* public List<BookingSlotDto> getBookingSlots(Date bookingDate) {
@@ -182,25 +189,22 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     }
 
     @Override
-    public BookingSlotDto addNew(BookingSlotSaveDto bookingSlotSaveDto) {
+    public BookingSlotDto saveBookingSlot(BookingSlotSaveDto bookingSlotSaveDto) {
         log.info("save");
         BookingSlotKey bookingSlotKey = parseBookingSlotKey(bookingSlotSaveDto.getBookingSlotKey());
         BookingSlot bookingSlot = new BookingSlot();
         bookingSlot.setId(bookingSlotSaveDto.getBookingSlotId());
-        BookingArticle bookingArticle = new BookingArticle();
-        bookingArticle.setId(1L);
+        BookingArticle bookingArticle = bookingArticleJpaRepository.getByKey(bookingSlotKey.getBookingArticleKey());
         bookingSlot.setBookingArticle(bookingArticle);
         bookingSlot.setBookingDate(bookingSlotKey.getBookingDate());
         bookingSlot.setBookingTimeSlot(bookingSlotKey.getBookingTimeSlot());
-        BookingUser bookedByUser = new BookingUser();
-        bookedByUser.setId(bookingSlotSaveDto.getBookedByBookingUserId());
+        BookingUser bookedByUser =bookingUserJpaRepository.getById(bookingSlotSaveDto.getBookedByBookingUserId());
         bookingSlot.setBookedByUser(bookedByUser);
         bookingSlot.setSlotValue(bookingSlotSaveDto.getBookingSlotValue());
         bookingSlot.setNote(bookingSlotSaveDto.getNote());
         if(bookingSlotSaveDto.getBookingUsersIds()!=null) {
             List<BookingUser> bookingUsers = Arrays.stream(bookingSlotSaveDto.getBookingUsersIds()).map(bookingUserId -> {
-                BookingUser bookingUser = new BookingUser();
-                bookingUser.setId(bookingUserId);
+                BookingUser bookingUser = bookingUserJpaRepository.getById(bookingUserId);
                 return bookingUser;
             }).collect(Collectors.toList());
             bookingSlot.setBookingUsers(bookingUsers);
