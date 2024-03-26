@@ -35,26 +35,15 @@ function Booking({ refresh }: BookingProps) {
   const [bookingSlots, setBookingSlots] = useState<BookingSlot[]>();
   const [editMode, setEditMode] = useState<editModes>(editModes.TABLE);
   const [editBookingSlotKey, setEditBookingSlotKey] = useState<string>("");
-  const [refreshState, setRefreshState] = useState<number>(0);
-
   const applicationContext = useApplicationContext();
 
   useEffect(() => {
     if (applicationContext.bookingDate) {
-      console.log("use effect ac []:" + bookingDate);
-      setBookingDate(applicationContext.bookingDate);
+      setDate(applicationContext.bookingDate);
     } else {
-      console.log("use effect init []:" + bookingDate);
-      setBookingDate(new Date(new Date().setHours(0, 0, 0, 0)));
+      setDate(new Date(new Date().setHours(0, 0, 0, 0)));
     }
   }, []);
-
-  useEffect(() => {
-    console.log("use effect [bookingDate,]:" + bookingDate);
-    if (bookingDate) {
-      setDate(bookingDate);
-    }
-  }, [bookingDate]);
 
   useEffect(() => {
     doRefresh();
@@ -65,6 +54,7 @@ function Booking({ refresh }: BookingProps) {
     setError(false);
     setReady(false);
     setSpin(true);
+    setBookingDate(date);
     Promise.all([
       bookingService.getBookingTableStructure1().then((data) => {
         setBookingTableStructure(data);
@@ -83,26 +73,24 @@ function Booking({ refresh }: BookingProps) {
       });
   }
   function doRefresh() {
-    setRefreshState(refreshState + 1);
     if (bookingDate) {
-      setBookingDate(new Date(bookingDate.getTime()));
+      setDate(bookingDate);
     }
   }
 
   function onDateChange(date: Date) {
-    console.log("on date change");
-    setBookingDate(date);
+    if (date) {
+      setDate(date);
+    }
   }
 
   function onBookingSlotClick(
     bookingSlotKey: string,
     bookingSlotValue: string
   ) {
-    console.log("on onBookingSlotClick:" + bookingSlotKey);
     setEditBookingSlotKey(bookingSlotKey);
     if (userContext.bookingUser) {
       //dodelat kontrolu, zda jiz neni slot vytvoren, ci zmenen
-
       switch (bookingSlotValue) {
         case BookingSlotTypes.FREE:
           setEditMode(editModes.FORMNEWBOOOKING);
@@ -120,6 +108,8 @@ function Booking({ refresh }: BookingProps) {
     doRefresh();
     setEditMode(editModes.TABLE);
   }
+
+  console.log("RENDER");
   if (error) {
     return <div>{errorMessage}</div>;
   } else {
@@ -128,7 +118,7 @@ function Booking({ refresh }: BookingProps) {
         {error && <div>{errorMessage}</div>}
         <div className="booking">
           <p>ebooking</p>
-          {spin && <p>Loading</p>}
+          {spin && <p>Loading booking</p>}
 
           {ready && editMode === editModes.TABLE && (
             <div>

@@ -36,11 +36,6 @@ function BookingSlotForm({
     initLoad();
   }, []);
 
-  /* useEffect(() => {
-    console.log(JSON.stringify(userContext.bookingUser));
-    setInputControls();
-  }, [bookingSlot]);
-*/
   useEffect(() => {
     if (loaded) {
       setInputControls();
@@ -183,15 +178,27 @@ function BookingSlotForm({
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
         console.log("save result:" + JSON.stringify(bookingSlotDto));
-        setMode(formModes.VIEW);
-        setBookingSlot(bookingSlotDto);
-        setLoaded(true);
+        //setMode(formModes.VIEW);
+        //setBookingSlot(bookingSlotDto);
+        //setLoaded(true);
+        onDone();
       } else {
         //show error
       }
     });
   }
 
+  function onEdit() {
+    setMode(formModes.EDIT);
+  }
+
+  function onCancel() {
+    onDone();
+  }
+
+  function onClose() {
+    onDone();
+  }
   function getBookingDate(): string | undefined {
     if (mode === formModes.NEW) {
       return bookingSlot?.bookingDate;
@@ -225,42 +232,68 @@ function BookingSlotForm({
           <p>booking slot form {bookingSlotKey}</p>
           <p>booking date: {getBookingDate()}</p>
           <p>booking booked by: {getBookedBy()}</p>
-          <label>
-            Pick a user(s):
-            <select
-              name="boookingUser1"
-              onChange={handleBookingUser1Element}
-              value={bookingUser1Id}
-            >
-              <option value=""></option>
-              {bookingUsers?.map((bookingUser) => (
-                <option key={bookingUser.id} value={bookingUser.id}>
-                  {bookingUser.secondName} {bookingUser.firstName}{" "}
-                  {bookingUser.id}
-                </option>
+          {(mode === formModes.EDIT || mode === formModes.NEW) && (
+            <div>
+              <label>
+                Pick a user(s):
+                <select
+                  name="boookingUser1"
+                  onChange={handleBookingUser1Element}
+                  value={bookingUser1Id}
+                  disabled={true}
+                >
+                  <option value=""></option>
+                  {bookingUsers?.map((bookingUser) => (
+                    <option key={bookingUser.id} value={bookingUser.id}>
+                      {bookingUser.secondName} {bookingUser.firstName}{" "}
+                      {bookingUser.id}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  name="boookingUser2"
+                  onChange={handleBookingUser2Element}
+                  value={bookingUser2Id}
+                >
+                  <option></option>
+                  {bookingUsers?.map((bookingUser) => (
+                    <option key={bookingUser.id} value={bookingUser.id}>
+                      {bookingUser.secondName} {bookingUser.firstName}{" "}
+                      {bookingUser.id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <textarea
+                name="note"
+                onChange={handleBookingNoteElement}
+                value={bookingNote}
+              ></textarea>
+              <button onClick={() => onCancel()}> cancel</button>
+              <button onClick={() => onSave()}> save</button>
+            </div>
+          )}
+          {mode === formModes.VIEW && (
+            <div>
+              <p>
+                {" "}
+                booked by:
+                {bookingSlot?.bookedByUserDto.firstName +
+                  " " +
+                  bookingSlot?.bookedByUserDto.secondName}
+              </p>
+
+              {bookingSlot?.bookingUsersDto?.map((bookingUser) => (
+                <p>
+                  {" "}
+                  user:{bookingUser.firstName + " " + bookingUser.secondName}
+                </p>
               ))}
-            </select>
-            <select
-              name="boookingUser2"
-              onChange={handleBookingUser2Element}
-              value={bookingUser2Id}
-            >
-              <option></option>
-              {bookingUsers?.map((bookingUser) => (
-                <option key={bookingUser.id} value={bookingUser.id}>
-                  {bookingUser.secondName} {bookingUser.firstName}{" "}
-                  {bookingUser.id}
-                </option>
-              ))}
-            </select>
-          </label>
-          <textarea
-            name="note"
-            onChange={handleBookingNoteElement}
-            value={bookingNote}
-          ></textarea>
-          <button onClick={() => onDone()}> done</button>
-          <button onClick={() => onSave()}> save</button>
+              <p>note:{bookingSlot?.note} </p>
+              <button onClick={() => onEdit()}> edit</button>
+              <button onClick={() => onClose()}> close</button>
+            </div>
+          )}
         </div>
       )}
     </div>

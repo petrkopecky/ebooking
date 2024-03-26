@@ -2,11 +2,7 @@ import * as bookingTableT from "../../types/bookingTable.ts";
 import "./BookingTable.css";
 import utilsService from "../../service/UtilsService.ts";
 import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
-import {
-  UserContext,
-  UserContextType,
-  useUserContext,
-} from "../../UserContext";
+import { useUserContext } from "../../UserContext";
 
 interface BookingTableProps {
   bookingDate?: Date;
