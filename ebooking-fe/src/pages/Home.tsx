@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { UserContext, UserContextType, useUserContext } from "../UserContext";
+import { useUserContext } from "../UserContext";
 import Booking from "../components/Booking/Booking";
 import authenticationService from "../service/AuthorizationService.ts";
 import "./Home.css";
