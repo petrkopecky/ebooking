@@ -23,6 +23,8 @@ function BookingSlotForm({
   //const [bookingSlotId, setBookingSlotId] = useState<string>();
   const [bookingUser1Id, setBookingUser1Id] = useState<number>();
   const [bookingUser2Id, setBookingUser2Id] = useState<number>();
+  const [bookingUser3Id, setBookingUser3Id] = useState<number>();
+  const [bookingUser4Id, setBookingUser4Id] = useState<number>();
   const [bookingNote, setBookingNote] = useState<string>();
 
   const [bookingSlot, setBookingSlot] = useState<BookingSlotDto>();
@@ -120,6 +122,20 @@ function BookingSlotForm({
       ) {
         setBookingUser2Id(bookingSlot.bookingUsersDto[1].id);
       }
+      if (
+        bookingSlot &&
+        bookingSlot.bookingUsersDto &&
+        bookingSlot.bookingUsersDto[2]
+      ) {
+        setBookingUser3Id(bookingSlot.bookingUsersDto[2].id);
+      }
+      if (
+        bookingSlot &&
+        bookingSlot.bookingUsersDto &&
+        bookingSlot.bookingUsersDto[3]
+      ) {
+        setBookingUser4Id(bookingSlot.bookingUsersDto[3].id);
+      }
       if (bookingSlot && bookingSlot.note) {
         setBookingNote(bookingSlot.note);
       }
@@ -146,6 +162,20 @@ function BookingSlotForm({
     setBookingUser2Id(parseInt(value));
   };
 
+  const handleBookingUser3Element = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setBookingUser3Id(parseInt(value));
+  };
+
+  const handleBookingUser4Element = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setBookingUser4Id(parseInt(value));
+  };
+
   function onSave() {
     if (userContext.bookingUser === undefined) {
       throw "not logged in";
@@ -165,6 +195,18 @@ function BookingSlotForm({
       }
       bookingSlotSaveDto.bookingUsersIds.push(bookingUser2Id);
     }
+    if (bookingUser3Id) {
+      if (bookingSlotSaveDto.bookingUsersIds === undefined) {
+        bookingSlotSaveDto.bookingUsersIds = [] as Array<number>;
+      }
+      bookingSlotSaveDto.bookingUsersIds.push(bookingUser3Id);
+    }
+    if (bookingUser4Id) {
+      if (bookingSlotSaveDto.bookingUsersIds === undefined) {
+        bookingSlotSaveDto.bookingUsersIds = [] as Array<number>;
+      }
+      bookingSlotSaveDto.bookingUsersIds.push(bookingUser4Id);
+    }
     bookingSlotSaveDto.bookedByBookingUserId = userContext.bookingUser.id;
     bookingSlotSaveDto.bookingSlotValue = "BOOKED";
     bookingSlotSaveDto.note = bookingNote;
@@ -179,9 +221,6 @@ function BookingSlotForm({
       if (data.statusCode === "OK") {
         const bookingSlotDto: BookingSlotDto = data.response as BookingSlotDto;
         console.log("save result:" + JSON.stringify(bookingSlotDto));
-        //setMode(formModes.VIEW);
-        //setBookingSlot(bookingSlotDto);
-        //setLoaded(true);
         onDone();
       } else {
         //show error
@@ -243,7 +282,6 @@ function BookingSlotForm({
                   name="boookingUser1"
                   onChange={handleBookingUser1Element}
                   value={bookingUser1Id}
-                  disabled={true}
                 >
                   <option value=""></option>
                   {bookingUsers?.map((bookingUser) => (
@@ -253,25 +291,62 @@ function BookingSlotForm({
                     </option>
                   ))}
                 </select>
-                <p />
-                <label>
-                  {" "}
-                  {l.select_user}:
-                  <select
-                    name="boookingUser2"
-                    onChange={handleBookingUser2Element}
-                    value={bookingUser2Id}
-                  >
-                    <option></option>
-                    {bookingUsers?.map((bookingUser) => (
-                      <option key={bookingUser.id} value={bookingUser.id}>
-                        {bookingUser.secondName} {bookingUser.firstName}{" "}
-                        {bookingUser.id}
-                      </option>
-                    ))}
-                  </select>
-                </label>
               </label>
+              <p />
+              <label>
+                {" "}
+                {l.select_user}:
+                <select
+                  name="boookingUser2"
+                  onChange={handleBookingUser2Element}
+                  value={bookingUser2Id}
+                >
+                  <option></option>
+                  {bookingUsers?.map((bookingUser) => (
+                    <option key={bookingUser.id} value={bookingUser.id}>
+                      {bookingUser.secondName} {bookingUser.firstName}{" "}
+                      {bookingUser.id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p />
+              <label>
+                {" "}
+                {l.select_user}:
+                <select
+                  name="boookingUser3"
+                  onChange={handleBookingUser3Element}
+                  value={bookingUser3Id}
+                >
+                  <option></option>
+                  {bookingUsers?.map((bookingUser) => (
+                    <option key={bookingUser.id} value={bookingUser.id}>
+                      {bookingUser.secondName} {bookingUser.firstName}{" "}
+                      {bookingUser.id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p />
+              <label>
+                {" "}
+                {l.select_user}:
+                <select
+                  name="boookingUser4"
+                  onChange={handleBookingUser4Element}
+                  value={bookingUser4Id}
+                >
+                  <option></option>
+                  {bookingUsers?.map((bookingUser) => (
+                    <option key={bookingUser.id} value={bookingUser.id}>
+                      {bookingUser.secondName} {bookingUser.firstName}{" "}
+                      {bookingUser.id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
               <br />
               <p>{l.note}:</p>
               <textarea
