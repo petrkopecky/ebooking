@@ -9,6 +9,8 @@
   "password": "heslo",
   "submit": "potvrdit",
   "cancel": "zrušit",
+  "edit": "upravit",
+  "close": "zavřít",
   "home_link": "zpět",
   "ebooking": "e-rezervace",
   "today": "dnes",
@@ -22,5 +24,10 @@
   "select_user": "uživatel",
   "booked_by": "zamluvil",
   "note": "poznámka",
-  "booking_date": "datum rezervace"
+  "booking_date": "datum rezervace",
+  "users": "uživatelé",
+  "booking_slot_key": "id rezervace",
+  "form_mode_NEW": "nová rezervace",
+  "form_mode_EDIT": "editace rezervace",
+  "form_mode_VIEW": "prohližení rezervace"
 }

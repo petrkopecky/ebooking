@@ -193,10 +193,6 @@ function BookingSlotForm({
     setMode(formModes.EDIT);
   }
 
-  function onCancel() {
-    onDone();
-  }
-
   function onClose() {
     onDone();
   }
@@ -229,8 +225,10 @@ function BookingSlotForm({
       {!ready && <p>Loading</p>}
       {ready && (
         <div>
-          <p>form mode {mode}</p>
-          <p>booking slot form {bookingSlotKey}</p>
+          <p>{getL("form_mode_" + mode)}</p>
+          <p>
+            {l.booking_slot_key}: {bookingSlotKey}
+          </p>
           <p>
             {l.booking_date}: {getBookingDate()}
           </p>
@@ -255,51 +253,51 @@ function BookingSlotForm({
                     </option>
                   ))}
                 </select>
-                <select
-                  name="boookingUser2"
-                  onChange={handleBookingUser2Element}
-                  value={bookingUser2Id}
-                >
-                  <option></option>
-                  {bookingUsers?.map((bookingUser) => (
-                    <option key={bookingUser.id} value={bookingUser.id}>
-                      {bookingUser.secondName} {bookingUser.firstName}{" "}
-                      {bookingUser.id}
-                    </option>
-                  ))}
-                </select>
+                <p />
+                <label>
+                  {" "}
+                  {l.select_user}:
+                  <select
+                    name="boookingUser2"
+                    onChange={handleBookingUser2Element}
+                    value={bookingUser2Id}
+                  >
+                    <option></option>
+                    {bookingUsers?.map((bookingUser) => (
+                      <option key={bookingUser.id} value={bookingUser.id}>
+                        {bookingUser.secondName} {bookingUser.firstName}{" "}
+                        {bookingUser.id}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </label>
-              <label>
-                {l.note}
-                <textarea
-                  name="note"
-                  onChange={handleBookingNoteElement}
-                  value={bookingNote}
-                ></textarea>
-              </label>
-              <button onClick={() => onCancel()}> {l.cancel}</button>
+              <br />
+              <p>{l.note}:</p>
+              <textarea
+                name="note"
+                onChange={handleBookingNoteElement}
+                value={bookingNote}
+              ></textarea>
+
+              <br />
+              <p />
+              <button onClick={() => onClose()}> {l.close}</button>
               <button onClick={() => onSave()}> {l.submit}</button>
             </div>
           )}
           {mode === formModes.VIEW && (
             <div>
-              <p>
-                {" "}
-                booked by:
-                {bookingSlot?.bookedByUserDto.firstName +
-                  " " +
-                  bookingSlot?.bookedByUserDto.secondName}
-              </p>
-
               {bookingSlot?.bookingUsersDto?.map((bookingUser) => (
                 <p>
-                  {" "}
-                  user:{bookingUser.firstName + " " + bookingUser.secondName}
+                  {l.users}:
+                  {bookingUser.firstName + " " + bookingUser.secondName}
                 </p>
               ))}
-              <p>note:{bookingSlot?.note} </p>
-              <button onClick={() => onEdit()}> edit</button>
-              <button onClick={() => onClose()}> close</button>
+              <p>{l.note}:</p>
+              <p>{bookingSlot?.note}</p>
+              <button onClick={() => onEdit()}> {l.edit}</button>
+              <button onClick={() => onClose()}> {l.close}</button>
             </div>
           )}
         </div>
