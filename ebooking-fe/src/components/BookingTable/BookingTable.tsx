@@ -186,7 +186,6 @@ function BookingTable({
 
   return (
     <div>
-      booking table:{bookingDate?.toDateString()}
       {bookingDate && bookingTableStructure && bookingSlots && (
         <table>
           <thead>

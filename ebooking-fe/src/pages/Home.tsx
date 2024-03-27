@@ -4,7 +4,7 @@ import { useUserContext } from "../UserContext";
 import Booking from "../components/Booking/Booking";
 import authenticationService from "../service/AuthorizationService.ts";
 import "./Home.css";
-
+import l from "../service/Localization.ts";
 const Home = () => {
   const userContext = useUserContext();
   const [refreshState, setRefreshState] = useState<number>(1);
@@ -13,7 +13,6 @@ const Home = () => {
     setRefreshState(refreshState + 1);
   }
 
-  console.log("Home:" + userContext.bookingUser);
   return (
     <>
       {refreshState && (
@@ -21,18 +20,20 @@ const Home = () => {
           <div className="home-nav-bar">
             <ul>
               <li>
-                <Link to="/news">News</Link>
+                <Link to="/news">{l.news}</Link>
               </li>
               <li>
-                <Link to="/contact">Contact</Link>
+                <Link to="/contact">{l.contact}</Link>
               </li>
               {userContext?.bookingUser && (
                 <li>
-                  <Link to="/my-bookings">My bookings</Link>
+                  <Link to="/my-bookings">{l.my_bookings}</Link>
                 </li>
               )}
               <li>
-                {!userContext?.bookingUser && <Link to="/login">Login</Link>}
+                {!userContext?.bookingUser && (
+                  <Link to="/login">{l.Login}</Link>
+                )}
                 {userContext?.bookingUser && (
                   <a
                     onClick={() => {
@@ -41,7 +42,7 @@ const Home = () => {
                       doRefresh();
                     }}
                   >
-                    Logout-{userContext?.bookingUser?.userName}
+                    {l.logout}-{userContext?.bookingUser?.userName}
                   </a>
                 )}
               </li>

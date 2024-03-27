@@ -6,6 +6,7 @@ import { BookingUserDto } from "../../types/bookingUserDto.ts";
 import { BookingSlotSaveDto } from "../../types/bookingSlotSaveDto.ts";
 import { useUserContext } from "../../UserContext";
 import UtilsService from "../../service/UtilsService.ts";
+import l, { getL } from "../../service/Localization.ts";
 
 interface BookingSlotFormProps {
   bookingSlotKey: string;
@@ -230,12 +231,16 @@ function BookingSlotForm({
         <div>
           <p>form mode {mode}</p>
           <p>booking slot form {bookingSlotKey}</p>
-          <p>booking date: {getBookingDate()}</p>
-          <p>booking booked by: {getBookedBy()}</p>
+          <p>
+            {l.booking_date}: {getBookingDate()}
+          </p>
+          <p>
+            {l.booked_by}: {getBookedBy()}
+          </p>
           {(mode === formModes.EDIT || mode === formModes.NEW) && (
             <div>
               <label>
-                Pick a user(s):
+                {l.select_user}:
                 <select
                   name="boookingUser1"
                   onChange={handleBookingUser1Element}
@@ -264,13 +269,16 @@ function BookingSlotForm({
                   ))}
                 </select>
               </label>
-              <textarea
-                name="note"
-                onChange={handleBookingNoteElement}
-                value={bookingNote}
-              ></textarea>
-              <button onClick={() => onCancel()}> cancel</button>
-              <button onClick={() => onSave()}> save</button>
+              <label>
+                {l.note}
+                <textarea
+                  name="note"
+                  onChange={handleBookingNoteElement}
+                  value={bookingNote}
+                ></textarea>
+              </label>
+              <button onClick={() => onCancel()}> {l.cancel}</button>
+              <button onClick={() => onSave()}> {l.submit}</button>
             </div>
           )}
           {mode === formModes.VIEW && (

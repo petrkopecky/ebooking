@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./DatePicker.css";
+import l, { getL } from "../../service/Localization.ts";
 
 interface DatePickerProps {
   initialDate?: Date;
@@ -30,15 +31,27 @@ function DatePicker({ onDateChange, initialDate }: DatePickerProps) {
   return (
     <div>
       <button onClick={() => onDateSub(pickerDate)}>&lt;</button>
-      <span>{pickerDate.toDateString()}</span>
+      <span>{getDateString(pickerDate)}</span>
       <button onClick={() => onDateAdd(pickerDate)}>&gt;</button>
-      <button onClick={() => onDateToday(pickerDate)}>today</button>
+      <button onClick={() => onDateToday(pickerDate)}>{l.today}</button>
     </div>
   );
 }
 
 function addDays(date: Date, days: number): Date {
   return new Date(date.getTime() + 1000 * 60 * 60 * 24 * days);
+}
+
+function getDateString(date: Date) {
+  return (
+    getL("day_" + date.getDay()) +
+    " " +
+    date.getDate() +
+    "." +
+    (date.getMonth() + 1) +
+    " " +
+    date.getFullYear()
+  );
 }
 
 export default DatePicker;

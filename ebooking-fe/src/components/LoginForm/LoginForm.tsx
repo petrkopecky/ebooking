@@ -5,6 +5,7 @@ import bookingService from "../../service/BookingService.ts";
 import { BookingUser } from "../../types/bookingUser.ts";
 import authorizationService from "../../service/AuthorizationService.ts";
 import "./LoginForm.css";
+import l from "../../service/Localization.ts";
 
 type RedirectLocationState = {
   redirectTo: Location;
@@ -64,11 +65,11 @@ const Login = () => {
 
   return (
     <div className="login-form-container">
-      <h1> Login</h1>
+      <h1> {l.login_form_title}</h1>
       <form onSubmit={handleSubmitEvent}>
         {error && <div>{errorMessage}</div>}
         <div className="login-form-input">
-          <label htmlFor="user-name">User:</label>
+          <label htmlFor="user-name">{l.user_name}:</label>
           <input
             type="text"
             id="user-name"
@@ -78,7 +79,7 @@ const Login = () => {
           />
         </div>
         <div className="login-form-input">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">{l.password}:</label>
           <input
             type="password"
             id="password"
@@ -86,7 +87,7 @@ const Login = () => {
             onChange={handleInput}
           />
         </div>
-        <button className="login-form-btn-submit">Submit</button>
+        <button className="login-form-btn-submit">{l.submit}</button>
       </form>
     </div>
   );

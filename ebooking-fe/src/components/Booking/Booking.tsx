@@ -12,6 +12,7 @@ import { formModes } from "../../types/formMode.ts";
 import { BookingSlotTypes } from "../../types/bookingSlotTypes.ts";
 import { useUserContext } from "../../UserContext";
 import { useApplicationContext } from "../../ApplicationContext.tsx";
+import l from "../../service/Localization.ts";
 
 enum editModes {
   "TABLE",
@@ -117,7 +118,7 @@ function Booking({ refresh }: BookingProps) {
       <>
         {error && <div>{errorMessage}</div>}
         <div className="booking">
-          <p>ebooking</p>
+          <p>{l.ebooking}</p>
           {spin && <p>Loading booking</p>}
 
           {ready && editMode === editModes.TABLE && (
@@ -128,7 +129,7 @@ function Booking({ refresh }: BookingProps) {
                 }}
                 initialDate={bookingDate}
               ></DatePicker>
-
+              <p></p>
               <div>
                 <BookingTable
                   bookingDate={bookingDate}
