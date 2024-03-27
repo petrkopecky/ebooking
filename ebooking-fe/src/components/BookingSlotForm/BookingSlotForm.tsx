@@ -378,9 +378,9 @@ function BookingSlotForm({
               {bookingSlot?.bookingSlotUsersDto?.map((bookingSlotUser) => (
                 <p>
                   {l.users}:
-                  {bookingSlotUser.bookingUser?.firstName +
+                  {bookingSlotUser.bookingUserDto?.firstName +
                     " " +
-                    bookingSlotUser.bookingUser?.secondName}
+                    bookingSlotUser.bookingUserDto?.secondName}
                 </p>
               ))}
               <p>{l.note}:</p>
