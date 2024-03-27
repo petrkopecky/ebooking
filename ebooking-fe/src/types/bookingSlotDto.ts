@@ -1,5 +1,6 @@
 import { BookingArticleDto } from "./bookingArticleDto";
 import { BookingUserDto } from "./bookingUserDto";
+import { BookingSlotUserDto } from "./bookingSlotUserDto";
 
 export type BookingSlotDto = {
   id: number;
@@ -8,6 +9,6 @@ export type BookingSlotDto = {
   note: string;
   bookingDate: string;
   bookingTimeSlot: string;
-  bookingUsersDto: BookingUserDto[];
+  bookingSlotUsersDto: BookingSlotUserDto[];
   bookedByUserDto: BookingUserDto;
 };

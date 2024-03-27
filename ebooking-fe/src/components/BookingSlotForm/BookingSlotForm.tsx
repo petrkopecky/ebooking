@@ -3,6 +3,7 @@ import { BookingSlotDto } from "../../types/bookingSlotDto.ts";
 import bookingService from "../../service/BookingService.ts";
 import { formModes } from "../../types/formMode.ts";
 import { BookingUserDto } from "../../types/bookingUserDto.ts";
+import { BookingSlotUserDto } from "../../types/bookingSlotUserDto.ts";
 import { BookingSlotSaveDto } from "../../types/bookingSlotSaveDto.ts";
 import { useUserContext } from "../../UserContext";
 import UtilsService from "../../service/UtilsService.ts";
@@ -109,32 +110,43 @@ function BookingSlotForm({
     } else {
       if (
         bookingSlot &&
-        bookingSlot.bookingUsersDto &&
-        bookingSlot.bookingUsersDto[0]
+        bookingSlot.bookingSlotUsersDto &&
+        bookingSlot.bookingSlotUsersDto[0]
       ) {
-        setBookingUser1Id(bookingSlot.bookingUsersDto[0].id);
+        console.log(
+          "xxxx:" + bookingSlot.bookingSlotUsersDto[0].bookingUserDto?.id
+        );
+        setBookingUser1Id(
+          bookingSlot.bookingSlotUsersDto[0].bookingUserDto?.id
+        );
       }
 
       if (
         bookingSlot &&
-        bookingSlot.bookingUsersDto &&
-        bookingSlot.bookingUsersDto[1]
+        bookingSlot.bookingSlotUsersDto &&
+        bookingSlot.bookingSlotUsersDto[1]
       ) {
-        setBookingUser2Id(bookingSlot.bookingUsersDto[1].id);
+        setBookingUser2Id(
+          bookingSlot.bookingSlotUsersDto[1].bookingUserDto?.id
+        );
       }
       if (
         bookingSlot &&
-        bookingSlot.bookingUsersDto &&
-        bookingSlot.bookingUsersDto[2]
+        bookingSlot.bookingSlotUsersDto &&
+        bookingSlot.bookingSlotUsersDto[2]
       ) {
-        setBookingUser3Id(bookingSlot.bookingUsersDto[2].id);
+        setBookingUser3Id(
+          bookingSlot.bookingSlotUsersDto[2].bookingUserDto?.id
+        );
       }
       if (
         bookingSlot &&
-        bookingSlot.bookingUsersDto &&
-        bookingSlot.bookingUsersDto[3]
+        bookingSlot.bookingSlotUsersDto &&
+        bookingSlot.bookingSlotUsersDto[3]
       ) {
-        setBookingUser4Id(bookingSlot.bookingUsersDto[3].id);
+        setBookingUser4Id(
+          bookingSlot.bookingSlotUsersDto[3].bookingUserDto?.id
+        );
       }
       if (bookingSlot && bookingSlot.note) {
         setBookingNote(bookingSlot.note);
@@ -363,10 +375,12 @@ function BookingSlotForm({
           )}
           {mode === formModes.VIEW && (
             <div>
-              {bookingSlot?.bookingUsersDto?.map((bookingUser) => (
+              {bookingSlot?.bookingSlotUsersDto?.map((bookingSlotUser) => (
                 <p>
                   {l.users}:
-                  {bookingUser.firstName + " " + bookingUser.secondName}
+                  {bookingSlotUser.bookingUser?.firstName +
+                    " " +
+                    bookingSlotUser.bookingUser?.secondName}
                 </p>
               ))}
               <p>{l.note}:</p>

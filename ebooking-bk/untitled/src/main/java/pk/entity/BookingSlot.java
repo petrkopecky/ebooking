@@ -21,14 +21,16 @@ public class BookingSlot {
     String note;
     String bookingDate; //20240406
     String bookingTimeSlot; //0800-0830
-    @ManyToMany
+
+    /*@ManyToMany
     @JoinTable(
             name = "booking_slot_booking_user",
             joinColumns = @JoinColumn(name = "booking_slot_id"),
             inverseJoinColumns = @JoinColumn(name = "booking_user_id"))
 
-
-    List<BookingUser> bookingUsers;
+*/
+    @OneToMany(mappedBy = "bookingSlot")
+    List<BookingSlotUser> bookingSlotUsers;
     @ManyToOne
     @JoinColumn(name="booked_by")
     BookingUser bookedByUser;
@@ -83,12 +85,12 @@ public class BookingSlot {
         this.bookingArticle = bookingArticle;
     }
 
-    public List<BookingUser> getBookingUsers() {
-        return bookingUsers;
+    public List<BookingSlotUser> getBookingSlotUsers() {
+        return bookingSlotUsers;
     }
 
-    public void setBookingUsers(List<BookingUser> bookingUsers) {
-        this.bookingUsers = bookingUsers;
+    public void setBookingSlotUsers(List<BookingSlotUser> bookingSlotUsers) {
+        this.bookingSlotUsers = bookingSlotUsers;
     }
 
     public BookingUser getBookedByUser() {

@@ -10,7 +10,7 @@ public class BookingSlotDto {
     String note;
     String bookingDate; //20240406
     String bookingTimeSlot; //0800-0830
-    List<BookingUserDto> bookingUsersDto;
+    List<BookingSlotUserDto> bookingSlotUsersDto;
 
     BookingUserDto bookedByUserDto;
 
@@ -62,12 +62,12 @@ public class BookingSlotDto {
         this.bookingTimeSlot = bookingTimeSlot;
     }
 
-    public List<BookingUserDto> getBookingUsersDto() {
-        return bookingUsersDto;
+    public List<BookingSlotUserDto> getBookingSlotUsersDto() {
+        return bookingSlotUsersDto;
     }
 
-    public void setBookingUsersDto(List<BookingUserDto> bookingUsersDto) {
-        this.bookingUsersDto = bookingUsersDto;
+    public void setBookingSlotUsersDto(List<BookingSlotUserDto> bookingSlotUsersDto) {
+        this.bookingSlotUsersDto = bookingSlotUsersDto;
     }
 
     public BookingUserDto getBookedByUserDto() {

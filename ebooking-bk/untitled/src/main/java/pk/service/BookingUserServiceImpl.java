@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pk.entity.BookingUser;
-import pk.mapperDto.BookingUserMapper;
+import pk.mapperDto.BookingUserMapperImpl;
 import pk.modelDto.BookingUserDto;
 import pk.modelDto.LoggedUserDto;
 import pk.modelDto.LoginUserDto;
@@ -24,7 +24,7 @@ public class BookingUserServiceImpl implements BookingUserService {
     }
 
     private final BookingUserJpaRepository bookingUserJpaRepository;
-    private final BookingUserMapper bookingUserMapper = Mappers.getMapper(BookingUserMapper.class);
+    private final BookingUserMapperImpl bookingUserMapper = new BookingUserMapperImpl();
 
 
     @Override

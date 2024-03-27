@@ -4,16 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pk.entity.BookingArticle;
-import pk.entity.BookingArticleSlot;
-import pk.entity.BookingSlot;
-import pk.entity.BookingUser;
-import pk.mapperDto.BookingSlotMapper;
+import pk.entity.*;
+import pk.mapperDto.BookingSlotMapperImpl;
 import pk.modelDto.*;
-import pk.repository.BookingArticleJpaRepository;
-import pk.repository.BookingArticleSlotJpaRepository;
-import pk.repository.BookingSlotJpaRepository;
-import pk.repository.BookingUserJpaRepository;
+import pk.repository.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -29,18 +23,21 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
 
     @Autowired
-    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository, BookingUserJpaRepository bookingUserJpaRepository, BookingArticleJpaRepository bookingArticleJpaRepository) {
+    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository, BookingUserJpaRepository bookingUserJpaRepository, BookingArticleJpaRepository bookingArticleJpaRepository, BookingSlotUserJpaRepository bookingSlotUserJpaRepository) {
         this.bookingSlotJpaRepository = bookingSlotJpaRepository;
         this.bookingArticleSlotJpaRepository = bookingArticleSlotJpaRepository;
         this.bookingUserJpaRepository=bookingUserJpaRepository;
         this.bookingArticleJpaRepository=bookingArticleJpaRepository;
+        this.bookingSlotUserJpaRepository=bookingSlotUserJpaRepository;
     }
 
     private final BookingSlotJpaRepository bookingSlotJpaRepository;
     private final BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository;
     private final BookingUserJpaRepository bookingUserJpaRepository;
     private final BookingArticleJpaRepository bookingArticleJpaRepository;
-    private final BookingSlotMapper bookingSlotMapper = Mappers.getMapper(BookingSlotMapper.class);
+
+    private final BookingSlotUserJpaRepository bookingSlotUserJpaRepository;
+    private final BookingSlotMapperImpl bookingSlotMapper = new BookingSlotMapperImpl();
 
 
 
@@ -80,14 +77,16 @@ public class BookingSlotServiceImpl implements BookingSlotService {
                     bookingTableSlot.setSlotKey(getSlotKey(bookingSlot.getBookingArticle().getKey(), bookingDate, bookingSlot.getBookingTimeSlot()));
                     if (bookingUserDto != null && bookingSlot.getSlotValue().equals("BOOKED") && bookingSlot.getBookedByUser().getUserName().equals(bookingUserDto.getUserName())) {
                         bookingTableSlot.setSlotValue("BOOKEDBYUSER");
-                    } else if (bookingUserDto != null && bookingSlot.getBookingUsers().stream().filter(bookingUser -> bookingUser.getUserName().equals(bookingUserDto.getUserName())).findAny().isPresent()) {
+                    } else if (bookingUserDto != null && bookingSlot.getBookingSlotUsers().stream().filter(bookingSlotUser -> bookingSlotUser.getBookingUser().getUserName().equals(bookingUserDto.getUserName())).findAny().isPresent()) {
                         bookingTableSlot.setSlotValue("BOOKEDFORUSER");
+
+
                     } else {
                         bookingTableSlot.setSlotValue(bookingSlot.getSlotValue());
                     }
 
                     //bookingTableSlot.setInfo();
-                    bookingTableSlot.setUserPins(bookingSlot.getBookingUsers().stream().map(BookingUser::getPin).collect(Collectors.toList()));
+                    //bookingTableSlot.setUserPins(bookingSlot.getBookingSlotUsers().stream().map(BookingSlotUser::getBookingUser).collect(Collectors.toList()));
                     bookingTableSlot.setPriority(10);
                     return bookingTableSlot;
                 }
@@ -203,17 +202,27 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         bookingSlot.setSlotValue(bookingSlotSaveDto.getBookingSlotValue());
         bookingSlot.setNote(bookingSlotSaveDto.getNote());
         if(bookingSlotSaveDto.getBookingUsersIds()!=null) {
-            List<BookingUser> bookingUsers = Arrays.stream(bookingSlotSaveDto.getBookingUsersIds()).map(bookingUserId -> {
+            List<BookingSlotUser> bookingSlotUsers = Arrays.stream(bookingSlotSaveDto.getBookingUsersIds()).map(bookingUserId -> {
                 BookingUser bookingUser = bookingUserJpaRepository.getById(bookingUserId);
-                return bookingUser;
+                BookingSlotUser bookingSlotUser=new BookingSlotUser();
+                bookingSlotUser.setBookingUser(bookingUser);
+                bookingSlotUser.setBookingSlot(bookingSlot);
+                return bookingSlotUser;
             }).collect(Collectors.toList());
-            bookingSlot.setBookingUsers(bookingUsers);
+            bookingSlot.setBookingSlotUsers(bookingSlotUsers);
+
         }
 
 
         BookingSlot bookingSlotSaved = bookingSlotJpaRepository.save(bookingSlot);
+        bookingSlot.getBookingSlotUsers().stream().forEach(
+                bookingSlotUser ->{
+                 bookingSlotUserJpaRepository.save(bookingSlotUser);
+                }
+        );
+        BookingSlotDto bookingSlotDto= bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotSaved);
 
-        return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotSaved);
+        return bookingSlotDto;
 
         //BookingSlot bookingSlot =new BookingSlot();
         //return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotJpaRepository.save(bookingSlot));
