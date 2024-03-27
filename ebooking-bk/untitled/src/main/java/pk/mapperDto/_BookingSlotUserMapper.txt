@@ -1,0 +1,25 @@
+package pk.mapperDto;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import pk.entity.BookingSlot;
+import pk.entity.BookingSlotUser;
+import pk.modelDto.BookingSlotDto;
+import pk.modelDto.BookingSlotUserDto;
+
+@Mapper
+public interface BookingSlotUserMapper {
+
+    @Mapping(source="bookingSlot", target="bookingSlotDto")
+    @Mapping(source="bookingUser", target="bookingUserDto")
+    BookingSlotUserDto bookingSlotUserToBookingSlotUserDto(BookingSlotUser bookingSlotUser);
+    @Mapping(source="bookingSlotDto", target="bookingSlot")
+    @Mapping(source="bookingUserDto", target="bookingUser")
+    BookingSlotUser bookingSlotUserDtoToBookingSlot( BookingSlotUserDto bookingSlotUserDto);
+
+/*
+    List<BookingSlotDto> bookingSlotsToBookingSlotsDto(List<BookingSlot> bookingSlots);
+    List<BookingSlot> bookingSlotsDtoToBookingSlots( List<BookingSlotDto> bookingSlotsDto);
+*/
+
+}

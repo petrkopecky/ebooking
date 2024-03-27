@@ -1,3 +1,4 @@
+/*
 package pk.mapperDto;
 
 import org.mapstruct.Mapper;
@@ -12,10 +13,12 @@ import java.util.List;
 public interface BookingSlotMapper {
     @Mapping(source="bookingArticle", target="bookingArticleDto")
     @Mapping(source="bookedByUser", target="bookedByUserDto")
-    @Mapping(source="bookingUsers", target="bookingUsersDto")
+    @Mapping(source="bookingSlotUsers", target="bookingSlotUsersDto")
+
     BookingSlotDto bookingSlotToBookingSlotDto( BookingSlot bookingSlot);
     @Mapping(source="bookingArticleDto", target="bookingArticle")
     @Mapping(source="bookedByUserDto", target="bookedByUser")
+
     BookingSlot bookingSlotDtoToBookingSlot( BookingSlotDto bookingSlotDto);
 
 /*
@@ -24,3 +27,4 @@ public interface BookingSlotMapper {
 */
 
 }
+*/
