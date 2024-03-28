@@ -1,5 +1,6 @@
 package pk.service;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -186,7 +188,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         bookingSlotKey.setBookingTimeSlot(bookingSlotKeyParts[4] + "-" + bookingSlotKeyParts[5]);
         return bookingSlotKey;
     }
-
+    @Transactional
     @Override
     public BookingSlotDto saveBookingSlot(BookingSlotSaveDto bookingSlotSaveDto) {
         log.info("save");
@@ -201,12 +203,15 @@ public class BookingSlotServiceImpl implements BookingSlotService {
         bookingSlot.setBookedByUser(bookedByUser);
         bookingSlot.setSlotValue(bookingSlotSaveDto.getBookingSlotValue());
         bookingSlot.setNote(bookingSlotSaveDto.getNote());
+
         if(bookingSlotSaveDto.getBookingUsersIds()!=null) {
+            AtomicInteger index = new AtomicInteger();
             List<BookingSlotUser> bookingSlotUsers = Arrays.stream(bookingSlotSaveDto.getBookingUsersIds()).map(bookingUserId -> {
                 BookingUser bookingUser = bookingUserJpaRepository.getById(bookingUserId);
                 BookingSlotUser bookingSlotUser=new BookingSlotUser();
                 bookingSlotUser.setBookingUser(bookingUser);
                 bookingSlotUser.setBookingSlot(bookingSlot);
+                bookingSlotUser.setOrderNumber(index.getAndIncrement());
                 return bookingSlotUser;
             }).collect(Collectors.toList());
             bookingSlot.setBookingSlotUsers(bookingSlotUsers);
@@ -215,6 +220,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
 
         BookingSlot bookingSlotSaved = bookingSlotJpaRepository.save(bookingSlot);
+        bookingSlotUserJpaRepository.deleteByBookingSlot(bookingSlot);
         bookingSlot.getBookingSlotUsers().stream().forEach(
                 bookingSlotUser ->{
                  bookingSlotUserJpaRepository.save(bookingSlotUser);
