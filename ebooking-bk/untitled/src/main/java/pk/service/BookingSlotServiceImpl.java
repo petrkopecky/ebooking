@@ -231,11 +231,13 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
         BookingSlot bookingSlotSaved = bookingSlotJpaRepository.save(bookingSlot);
         bookingSlotUserJpaRepository.deleteByBookingSlot(bookingSlot);
-        bookingSlot.getBookingSlotUsers().stream().forEach(
-                bookingSlotUser ->{
-                 bookingSlotUserJpaRepository.save(bookingSlotUser);
-                }
-        );
+        if( bookingSlot.getBookingSlotUsers()!=null) {
+            bookingSlot.getBookingSlotUsers().stream().forEach(
+                    bookingSlotUser -> {
+                        bookingSlotUserJpaRepository.save(bookingSlotUser);
+                    }
+            );
+        }
         BookingSlotDto bookingSlotDto= bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotSaved);
 
         return bookingSlotDto;
