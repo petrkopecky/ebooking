@@ -70,7 +70,6 @@ export function getBookingSlot(
         throw text;
       });
     } else {
-      console.log("RRRR" + response.status);
       return response.json() as Promise<ApiResponse<BookingSlotDto>>;
     }
   });

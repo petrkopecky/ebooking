@@ -113,9 +113,6 @@ function BookingSlotForm({
         bookingSlot.bookingSlotUsersDto &&
         bookingSlot.bookingSlotUsersDto[0]
       ) {
-        console.log(
-          "xxxx:" + bookingSlot.bookingSlotUsersDto[0].bookingUserDto?.id
-        );
         setBookingUser1Id(
           bookingSlot.bookingSlotUsersDto[0].bookingUserDto?.id
         );
@@ -164,28 +161,44 @@ function BookingSlotForm({
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setBookingUser1Id(parseInt(value));
+    if (value) {
+      setBookingUser1Id(parseInt(value));
+    } else {
+      setBookingUser1Id(undefined);
+    }
   };
 
   const handleBookingUser2Element = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setBookingUser2Id(parseInt(value));
+    if (value) {
+      setBookingUser2Id(parseInt(value));
+    } else {
+      setBookingUser2Id(undefined);
+    }
   };
 
   const handleBookingUser3Element = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setBookingUser3Id(parseInt(value));
+    if (value) {
+      setBookingUser3Id(parseInt(value));
+    } else {
+      setBookingUser3Id(undefined);
+    }
   };
 
   const handleBookingUser4Element = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setBookingUser4Id(parseInt(value));
+    if (value) {
+      setBookingUser4Id(parseInt(value));
+    } else {
+      setBookingUser4Id(undefined);
+    }
   };
 
   function onSave() {
@@ -306,14 +319,13 @@ function BookingSlotForm({
               </label>
               <p />
               <label>
-                {" "}
                 {l.select_user}:
                 <select
                   name="boookingUser2"
                   onChange={handleBookingUser2Element}
                   value={bookingUser2Id}
                 >
-                  <option></option>
+                  <option value=""></option>
                   {bookingUsers?.map((bookingUser) => (
                     <option key={bookingUser.id} value={bookingUser.id}>
                       {bookingUser.secondName} {bookingUser.firstName}{" "}
@@ -324,14 +336,13 @@ function BookingSlotForm({
               </label>
               <p />
               <label>
-                {" "}
                 {l.select_user}:
                 <select
                   name="boookingUser3"
                   onChange={handleBookingUser3Element}
                   value={bookingUser3Id}
                 >
-                  <option></option>
+                  <option value=""></option>
                   {bookingUsers?.map((bookingUser) => (
                     <option key={bookingUser.id} value={bookingUser.id}>
                       {bookingUser.secondName} {bookingUser.firstName}{" "}
@@ -342,14 +353,13 @@ function BookingSlotForm({
               </label>
               <p />
               <label>
-                {" "}
                 {l.select_user}:
                 <select
                   name="boookingUser4"
                   onChange={handleBookingUser4Element}
                   value={bookingUser4Id}
                 >
-                  <option></option>
+                  <option value=""></option>
                   {bookingUsers?.map((bookingUser) => (
                     <option key={bookingUser.id} value={bookingUser.id}>
                       {bookingUser.secondName} {bookingUser.firstName}{" "}
@@ -376,7 +386,7 @@ function BookingSlotForm({
           {mode === formModes.VIEW && (
             <div>
               {bookingSlot?.bookingSlotUsersDto?.map((bookingSlotUser) => (
-                <p>
+                <p key={bookingSlotUser.id}>
                   {l.users}:
                   {bookingSlotUser.bookingUserDto?.firstName +
                     " " +

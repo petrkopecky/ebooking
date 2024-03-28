@@ -30,7 +30,7 @@ const MyBookings = () => {
       let x = n ^ (n + 1 / n);
     }
   }
-  console.log("RENDER");
+
   return (
     <div>
       <p>My bookings</p>

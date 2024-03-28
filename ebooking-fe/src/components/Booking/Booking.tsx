@@ -109,8 +109,6 @@ function Booking({ refresh }: BookingProps) {
     doRefresh();
     setEditMode(editModes.TABLE);
   }
-
-  console.log("RENDER");
   if (error) {
     return <div>{errorMessage}</div>;
   } else {
