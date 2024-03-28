@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import pk.entity.BookingSlot;
 import pk.modelDto.*;
 import pk.service.BookingSlotService;
 import pk.service.BookingTableStructureService;
@@ -84,6 +85,7 @@ public class BookingController {
             restApiResponse.setStatusCode("OK");
         }catch(Exception e){
             restApiResponse.setStatusCode("OTHER_EXCEPTION");
+            restApiResponse.setStatusMessage(e.getMessage());
         }
         return restApiResponse;
 
@@ -106,5 +108,14 @@ public class BookingController {
 
     }
 
-
+    @PostMapping("/booking-findx")
+    public BookingSlot getBookingSlot(){
+        BookingSlot bookingSlot =null;
+        try {
+             bookingSlot= bookingSlotService.findx();
+        }catch(Exception e){
+            log.error(e.getMessage());
+        }
+        return  bookingSlot;
+    }
 }

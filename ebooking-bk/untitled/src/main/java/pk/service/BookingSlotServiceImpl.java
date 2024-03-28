@@ -4,8 +4,11 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pk.entity.*;
+import pk.mapperDto.BookingSlotDao;
 import pk.mapperDto.BookingSlotMapperImpl;
 import pk.modelDto.*;
 import pk.repository.*;
@@ -19,18 +22,22 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static pk.mapperDto.BookingSlotSpecifications.hasNoteLike;
+import static pk.mapperDto.BookingSlotSpecifications.hasOrderNumber;
+
 @Service
 @Slf4j
 public class BookingSlotServiceImpl implements BookingSlotService {
 
 
     @Autowired
-    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository, BookingUserJpaRepository bookingUserJpaRepository, BookingArticleJpaRepository bookingArticleJpaRepository, BookingSlotUserJpaRepository bookingSlotUserJpaRepository) {
+    public BookingSlotServiceImpl(BookingSlotJpaRepository bookingSlotJpaRepository, BookingArticleSlotJpaRepository bookingArticleSlotJpaRepository, BookingUserJpaRepository bookingUserJpaRepository, BookingArticleJpaRepository bookingArticleJpaRepository, BookingSlotUserJpaRepository bookingSlotUserJpaRepository, BookingSlotDao bookingSlotDao) {
         this.bookingSlotJpaRepository = bookingSlotJpaRepository;
         this.bookingArticleSlotJpaRepository = bookingArticleSlotJpaRepository;
         this.bookingUserJpaRepository=bookingUserJpaRepository;
         this.bookingArticleJpaRepository=bookingArticleJpaRepository;
         this.bookingSlotUserJpaRepository=bookingSlotUserJpaRepository;
+        this.bookingSlotDao=bookingSlotDao;
     }
 
     private final BookingSlotJpaRepository bookingSlotJpaRepository;
@@ -39,7 +46,9 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     private final BookingArticleJpaRepository bookingArticleJpaRepository;
 
     private final BookingSlotUserJpaRepository bookingSlotUserJpaRepository;
+    private final  BookingSlotDao bookingSlotDao;
     private final BookingSlotMapperImpl bookingSlotMapper = new BookingSlotMapperImpl();
+
 
 
 
@@ -175,6 +184,7 @@ public class BookingSlotServiceImpl implements BookingSlotService {
     @Override
     public BookingSlotDto getBookingSlotDtoBySlotKey(String bookingSlotKeyString) {
         BookingSlotKey bookingSlotKey = parseBookingSlotKey(bookingSlotKeyString);
+
         BookingSlot bookingSlot = bookingSlotJpaRepository.findByBookingKey(bookingSlotKey.getBookingArticleKey(), bookingSlotKey.getBookingDate(), bookingSlotKey.getBookingTimeSlot());
         BookingSlotDto bookingSlotDto = bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlot);
         return bookingSlotDto;
@@ -232,5 +242,18 @@ public class BookingSlotServiceImpl implements BookingSlotService {
 
         //BookingSlot bookingSlot =new BookingSlot();
         //return bookingSlotMapper.bookingSlotToBookingSlotDto(bookingSlotJpaRepository.save(bookingSlot));
+    }
+
+    /*
+    public BookingSlot findx(){
+        Specification<BookingSlot> specification = hasOrderNumber(2);
+        List<BookingSlot> bookingSlots=bookingSlotJpaRepository.findAll(specification);
+        return null;
+    }
+    */
+
+    public BookingSlot findx(){
+        bookingSlotDao.x();
+        return null;
     }
 }

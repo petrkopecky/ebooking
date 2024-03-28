@@ -30,6 +30,7 @@ public class BookingSlot {
 
 */
     @OneToMany(mappedBy = "bookingSlot")
+    @OrderBy("orderNumber ASC")
     List<BookingSlotUser> bookingSlotUsers;
     @ManyToOne
     @JoinColumn(name="booked_by")
